@@ -11,28 +11,22 @@
   --bg:#0c0c18;--card:#14142a;--bd:#2a2a45;--ac:#7c6aff;--ac2:#a855f7;--txt:#e0e0f5;--mut:#6a6a8a;--ok:#34d399;--er:#f87171;--warn:#fbbf24;
   --pink:#ff6b9d;--cherry:#d63870;--pink-light:#ffe0ed;--pink-pale:#fff5f9;--pborder:#f0c8d8;--ptxt:#2d2d2d;--gray:#888;--shadow:rgba(255,107,157,0.15);
 }
-*{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR',system-ui,sans-serif;min-height:100vh;font-size:14px}
 .app-wrap{max-width:560px;margin:0 auto;padding:0 0 40px}
-
 .app-header{text-align:center;padding:20px 16px 8px}
 .app-header h1{font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--ac),var(--ac2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .app-header p{font-size:11px;color:var(--mut);margin-top:4px}
-
 .main-tabs{display:flex;gap:0;padding:12px 16px 0}
 .main-tab{flex:1;padding:11px 8px;border:none;border-radius:0;background:var(--card);color:var(--mut);font-size:12px;font-weight:700;cursor:pointer;transition:.2s;text-align:center;line-height:1.4;border-bottom:3px solid transparent}
 .main-tab:first-child{border-radius:10px 0 0 0}
 .main-tab:last-child{border-radius:0 10px 0 0}
 .main-tab.active{color:var(--txt);border-bottom-color:var(--ac);background:#1a1a30}
 .main-tab .ti{font-size:16px;display:block;margin-bottom:2px}
-
 .page{display:none;padding:16px}
 .page.show{display:block}
-
 .card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px}
 .card-title{font-size:13px;font-weight:700;color:#b080ff;margin-bottom:12px}
-
-.api-saved{background:#0a1f0a;border:1px solid #1a5a1a;border-radius:8px;padding:10px 12px;font-size:12px;color:var(--ok);margin-bottom:10px;display:none}
+.api-saved{background:#0a1f0a;border:1px solid #1a5a1a;border-radius:8px;padding:10px 12px;font-size:12px;color:var(--ok);margin-bottom:10px;cursor:pointer}
 .api-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .api-row label{font-size:12px;color:var(--mut);white-space:nowrap;width:70px}
 .inp{background:#0a0a1a;border:1px solid var(--bd);border-radius:8px;color:var(--txt);padding:8px 10px;font-size:12px;flex:1;font-family:monospace}
@@ -40,13 +34,11 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .inp-full{width:100%}
 .api-hint{font-size:10px;color:var(--mut);margin-top:4px;line-height:1.5}
 .api-hint a{color:var(--ac);text-decoration:none}
-
-.drop{border:2px dashed #333355;border-radius:10px;padding:22px 20px;text-align:center;cursor:pointer;transition:.2s}
+.drop{border:2px dashed #333355;border-radius:10px;padding:18px 16px;text-align:center;cursor:pointer;transition:.2s}
 .drop:hover,.drop.over{border-color:var(--ac);background:#18183a}
-.di{font-size:28px;display:block;margin-bottom:6px}
+.di{font-size:26px;display:block;margin-bottom:6px}
 .dh{color:var(--mut);font-size:12px;line-height:1.7}
-.dh strong{color:var(--txt);display:block;font-size:14px;font-weight:700}
-
+.dh strong{color:var(--txt);display:block;font-size:13px;font-weight:700}
 .finfo{background:#0a0a1a;border-radius:8px;padding:10px 12px;margin-top:10px;font-size:12px;display:none}
 .finfo-row{display:flex;justify-content:space-between;margin-bottom:4px}
 .finfo-row:last-child{margin-bottom:0}
@@ -54,18 +46,15 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .fval{color:var(--txt);font-weight:600}
 .fval.ok{color:var(--ok)}
 .fval.warn{color:var(--warn)}
-
 .prev-list{max-height:100px;overflow-y:auto;margin-top:8px}
 .prev-item{padding:4px 8px;border-radius:6px;font-size:11px;margin-bottom:3px}
 .prev-item.match{background:#0d2d1a;border:1px solid #1a5a30;color:var(--ok)}
 .prev-item.other{background:#1a1a2e;color:var(--mut)}
-
 .setting-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .setting-row:last-child{margin-bottom:0}
 .setting-label{font-size:12px;color:var(--txt)}
 select.inp{padding:6px 8px}
 textarea.inp{resize:vertical;min-height:70px;font-family:'Noto Sans KR',sans-serif;font-size:12px;line-height:1.5}
-
 .btn{width:100%;padding:13px;border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;transition:.2s;margin-bottom:8px}
 .btn:last-child{margin-bottom:0}
 .btn-main{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
@@ -74,30 +63,34 @@ textarea.inp{resize:vertical;min-height:70px;font-family:'Noto Sans KR',sans-ser
 .btn-dl{background:linear-gradient(135deg,#059669,#34d399);color:#fff}
 .btn-use{background:linear-gradient(135deg,#1d4ed8,#60a5fa);color:#fff}
 .btn-save-key{background:linear-gradient(135deg,#92400e,#d97706);color:#fff}
-.api-sel-tab{flex:1;padding:9px 8px;border:1px solid var(--bd);border-radius:8px;background:transparent;color:var(--mut);font-size:12px;font-weight:700;cursor:pointer;transition:.2s;text-align:center;line-height:1.5}
-.api-sel-tab.active{border-color:var(--ac);background:#1e1e40;color:var(--txt)}
 .btn-sm{padding:8px 14px;width:auto;font-size:12px;border-radius:8px;margin-bottom:0}
-
 .prog-wrap{display:none}
 .prog-hd{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:8px}
 .pbg{background:#1e1e35;border-radius:99px;height:5px;overflow:hidden;margin-bottom:10px}
 .pfill{height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:99px;width:0%;transition:width .3s}
 .logbox{background:#060610;border-radius:8px;padding:8px 10px;font-family:'SF Mono',monospace;font-size:11px;max-height:130px;overflow-y:auto;border:1px solid #1a1a30}
 .ll{padding:1px 0}.li{color:var(--ac)}.lok{color:var(--ok)}.ler{color:var(--er)}.lwarn{color:var(--warn)}
-
 .track-row{background:#1c1c35;border-radius:9px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
 .track-info{flex:1;min-width:0}
 .track-name{font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .track-meta{font-size:11px;color:var(--mut);margin-top:3px}
 .track-btns{display:flex;flex-direction:column;gap:6px;flex-shrink:0}
-
 .result-section{display:none}
 .result-preview{background:#060610;border-radius:8px;padding:10px;font-size:11px;max-height:150px;overflow-y:auto;border:1px solid #1a1a30;font-family:monospace;white-space:pre-wrap;word-break:break-all;color:#a0a0c0;margin-bottom:10px}
-
 .notice{background:#1a1000;border:1px solid #554400;border-radius:10px;padding:10px 12px;font-size:11px;color:#bb8800;line-height:1.6;margin-bottom:14px}
 .transfer-banner{background:#0d1f3a;border:1px solid #1a3a6a;border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;display:none}
 .transfer-banner strong{color:#60a5fa;display:block;margin-bottom:4px}
-
+/* 이미지 업로드 */
+.img-upload-wrap{position:relative;border:2px dashed #333355;border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:.2s;background:#0a0a1a}
+.img-upload-wrap:hover{border-color:var(--ac);background:#18183a}
+.img-upload-wrap input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-thumb-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.img-thumb{position:relative;width:72px;height:72px;border-radius:8px;overflow:hidden;border:2px solid var(--bd)}
+.img-thumb img{width:100%;height:100%;object-fit:cover}
+.img-thumb-del{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.6);color:white;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.file-badge{display:inline-block;background:#1e1e40;border:1px solid var(--bd);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--txt);margin-top:8px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-badge.ok{border-color:var(--ok);color:var(--ok);background:#0a1f0a}
+.pair-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 /* 블로그 */
 .blog-wrap{background:linear-gradient(160deg,#fff0f6 0%,#fdf6f9 60%,#f9f0ff 100%);border-radius:14px;padding:20px 16px;color:var(--ptxt)}
 .blog-header{text-align:center;padding-bottom:16px}
@@ -105,35 +98,35 @@ textarea.inp{resize:vertical;min-height:70px;font-family:'Noto Sans KR',sans-ser
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .blog-header h2{font-size:20px;font-weight:900;color:var(--cherry);line-height:1.3}
 .blog-header p{margin-top:6px;font-size:12px;color:var(--gray);font-family:'Gowun Dodum',sans-serif}
-.blog-tabs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding-bottom:16px}
-.blog-tab{padding:7px 14px;border-radius:24px;border:2px solid var(--pborder);background:white;color:var(--gray);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Noto Sans KR',sans-serif}
-.blog-tab:hover{border-color:var(--pink);color:var(--pink)}
-.blog-tab.active{background:var(--pink);border-color:var(--pink);color:white;box-shadow:0 4px 14px var(--shadow)}
+.radio-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.radio-pill{padding:7px 14px;border-radius:24px;border:2px solid var(--pborder);background:white;color:var(--gray);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Noto Sans KR',sans-serif;user-select:none}
+.radio-pill.active{background:var(--pink);border-color:var(--pink);color:white;box-shadow:0 4px 14px var(--shadow)}
 .bcard{background:white;border-radius:16px;padding:20px;box-shadow:0 4px 24px var(--shadow);border:1px solid var(--pborder);margin-bottom:14px}
 .bcard-label{font-size:11px;font-weight:700;color:var(--pink);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px}
 .bform-row{margin-bottom:12px}
 label.fl{display:block;font-size:13px;font-weight:700;margin-bottom:5px;color:var(--ptxt)}
 .hint{font-size:11px;color:var(--gray);font-weight:400;margin-left:6px}
-.req{color:var(--pink)}
 .binp{width:100%;padding:9px 13px;border:2px solid var(--pborder);border-radius:10px;font-size:13px;font-family:'Noto Sans KR',sans-serif;color:var(--ptxt);background:#fff5f9;outline:none;transition:border .2s;resize:vertical}
 .binp:focus{border-color:var(--pink);background:white}
-textarea.binp{min-height:70px}
+textarea.binp{min-height:120px}
 .bgrid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ep-box{background:#fffde7;border:1.5px dashed #ffe082;border-radius:10px;padding:12px 14px;margin-bottom:12px}
-.ep-box-label{font-size:12px;font-weight:700;color:#a07800;margin-bottom:8px}
-.ep-box textarea{background:white;border-color:#ffe082;min-height:60px}
 .bdyn{display:none}
 .bdyn.show{display:block}
-.autofill-row{display:flex;gap:8px;align-items:center}
-.autofill-row .binp{flex:1}
-.autofill-btn{padding:9px 12px;background:#ffe0ed;color:var(--cherry);border:2px solid var(--pborder);border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;transition:all .15s;flex-shrink:0}
-.autofill-status{font-size:11px;color:var(--pink);margin-top:4px;font-family:'Gowun Dodum',sans-serif;min-height:16px}
 .check-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
 .check-pill{display:flex;align-items:center;gap:5px;padding:6px 12px;border:2px solid var(--pborder);border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;color:var(--gray);background:white;transition:all .15s;user-select:none}
 .check-pill input{display:none}
 .check-pill.on{border-color:var(--pink);color:var(--cherry);background:#ffe0ed}
-.gen-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--pink),var(--cherry));color:white;border:none;border-radius:14px;font-size:14px;font-weight:900;font-family:'Noto Sans KR',sans-serif;cursor:pointer;box-shadow:0 6px 22px rgba(214,56,112,.3);transition:transform .15s,box-shadow .15s;margin-bottom:16px}
+/* 이미지 업로드 (블로그용) */
+.bimg-wrap{position:relative;border:2px dashed var(--pborder);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:.2s;background:#fff5f9}
+.bimg-wrap:hover{border-color:var(--pink);background:#ffe0ed}
+.bimg-wrap input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.bimg-thumb-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.bimg-thumb{position:relative;width:72px;height:72px;border-radius:8px;overflow:hidden;border:2px solid var(--pborder)}
+.bimg-thumb img{width:100%;height:100%;object-fit:cover}
+.bimg-thumb-del{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.5);color:white;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.gen-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--pink),var(--cherry));color:white;border:none;border-radius:14px;font-size:14px;font-weight:900;font-family:'Noto Sans KR',sans-serif;cursor:pointer;box-shadow:0 6px 22px rgba(214,56,112,.3);transition:transform .15s;margin-bottom:16px}
 .gen-btn:hover{transform:translateY(-2px)}
+.gen-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .steps-row{display:flex;gap:0;margin-bottom:14px;background:white;border-radius:14px;border:1px solid var(--pborder);overflow:hidden;box-shadow:0 2px 12px var(--shadow)}
 .step-r{flex:1;padding:12px 8px;text-align:center;font-size:11px;color:var(--gray);font-family:'Gowun Dodum',sans-serif;border-right:1px solid var(--pborder);line-height:1.5}
 .step-r:last-child{border-right:none}
@@ -143,13 +136,14 @@ textarea.binp{min-height:70px}
 @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .bresult-top{background:linear-gradient(135deg,#fff5f9,#fff);padding:14px 18px;border-bottom:1px solid var(--pborder);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .bresult-label{font-size:13px;font-weight:700;color:var(--cherry)}
-.bcopy-btn{padding:7px 14px;border-radius:20px;border:none;background:#ffe0ed;color:var(--cherry);font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .15s}
+.bcopy-btn{padding:7px 14px;border-radius:20px;border:none;background:#ffe0ed;color:var(--cherry);font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
 .bcopy-btn.done{background:#d4edda;color:#27ae60}
 .guide-banner{background:#fffde7;border-bottom:1px solid #ffe082;padding:10px 18px;font-size:12px;color:#a07800;font-family:'Gowun Dodum',sans-serif;line-height:1.7}
-.prompt-output{padding:18px;background:#fff5f9;font-family:'Gowun Dodum',sans-serif;font-size:13px;line-height:1.9;color:var(--ptxt);white-space:pre-wrap;max-height:500px;overflow-y:auto;border-radius:0 0 14px 14px}
-
+.prompt-output{padding:18px;background:#fff5f9;font-family:'Gowun Dodum',sans-serif;font-size:13px;line-height:1.9;color:var(--ptxt);white-space:pre-wrap;max-height:500px;overflow-y:auto}
+.blog-loading{display:none;text-align:center;padding:20px;color:var(--pink);font-family:'Gowun Dodum',sans-serif;font-size:14px}
+.blog-loading.show{display:block}
 .footer-note{text-align:center;font-size:10px;color:var(--mut);margin-top:16px}
-@media(max-width:480px){.bgrid2{grid-template-columns:1fr}.autofill-row{flex-direction:column}}
+@media(max-width:480px){.bgrid2{grid-template-columns:1fr}.pair-row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -193,15 +187,26 @@ textarea.binp{min-height:70px}
     <span id="transfer-info"></span>
   </div>
 
-  <!-- API 키 설정 -->
+  <!-- API 키 -->
   <div class="card">
     <div class="card-title">⚙️ Gemini API 키</div>
     <div class="api-saved" id="saved-gemini" style="display:none">✅ Gemini 키 저장됨 <span style="font-size:10px;color:var(--mut)">(탭하면 수정)</span></div>
     <div id="input-gemini">
       <div class="api-row"><label>API Key</label><input class="inp" type="password" id="key-gemini" placeholder="AIza..." autocomplete="off"></div>
       <div class="api-hint">무료 발급: <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a> · 일 1,500회 무료</div>
-      <button class="btn btn-save-key" style="margin-top:10px" onclick="saveKey('gemini')">💾 이 기기에 저장</button>
+      <button class="btn btn-save-key" style="margin-top:10px" onclick="saveKey()">💾 이 기기에 저장</button>
     </div>
+  </div>
+
+  <!-- 드라마 소개 이미지 -->
+  <div class="card">
+    <div class="card-title">🎭 드라마 소개 이미지 <span style="color:var(--mut);font-weight:400;font-size:11px">(선택 · 분위기/톤 파악용)</span></div>
+    <div class="img-upload-wrap" id="drama-img-wrap">
+      <span style="font-size:24px">🖼️</span>
+      <div style="font-size:12px;color:var(--mut);margin-top:6px">포스터, 스틸컷 등 드라마 분위기 이미지<br><span style="color:var(--txt);font-weight:700">탭하거나 드래그</span></div>
+      <input type="file" id="fi-drama-img" accept="image/*" multiple onchange="handleDramaImgs(this)">
+    </div>
+    <div class="img-thumb-wrap" id="drama-img-preview"></div>
   </div>
 
   <!-- 번역할 SMI -->
@@ -210,7 +215,7 @@ textarea.binp{min-height:70px}
     <div class="drop" id="dz-smi">
       <span class="di">📝</span>
       <div class="dh"><strong>SMI 파일 선택</strong>탭하거나 드래그 · 또는 추출 탭에서 자동 전달</div>
-      <input type="file" id="fi-smi" accept="*/*" style="display:none">
+      <input type="file" id="fi-smi" accept=".smi,text/sami,text/plain,application/octet-stream" style="display:none">
     </div>
     <div class="finfo" id="finfo">
       <div class="finfo-row"><span class="fkey">파일명</span><span class="fval" id="fi-name">-</span></div>
@@ -220,15 +225,30 @@ textarea.binp{min-height:70px}
     </div>
   </div>
 
-  <!-- 이전 편 -->
+  <!-- 앞 회차 참고 파일 -->
   <div class="card">
-    <div class="card-title">📚 이전 편 참고본 <span style="color:var(--mut);font-weight:400">(선택)</span></div>
-    <div class="drop" id="dz-prev">
-      <span class="di">📂</span>
-      <div class="dh"><strong>이전 편 SMI 파일들 선택</strong>여러 파일 선택 가능</div>
-      <input type="file" id="fi-prev" accept="*/*" multiple style="display:none">
+    <div class="card-title">📚 앞 회차 참고 파일 <span style="color:var(--mut);font-weight:400;font-size:11px">(선택)</span></div>
+    <div style="font-size:11px;color:var(--mut);margin-bottom:12px;line-height:1.7">원문+완성본을 함께 올리면 용어·호칭·말투를 자동으로 맞춰요.<br>1화 파일을 올리면 드라마 전체 기준이 잡혀요.</div>
+    <div class="pair-row">
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--warn);margin-bottom:8px">📄 원문 SMI</div>
+        <div class="drop" id="dz-ref-orig" style="padding:14px">
+          <span class="di" style="font-size:20px">📂</span>
+          <div class="dh"><strong style="font-size:12px">원문 파일들</strong><span style="font-size:11px">여러 개 가능</span></div>
+          <input type="file" id="fi-ref-orig" accept=".smi,text/sami,text/plain,application/octet-stream" multiple style="display:none">
+        </div>
+        <div id="ref-orig-list" class="prev-list"></div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--ok);margin-bottom:8px">✅ 완성본 SMI</div>
+        <div class="drop" id="dz-ref-done" style="padding:14px">
+          <span class="di" style="font-size:20px">📂</span>
+          <div class="dh"><strong style="font-size:12px">완성본 파일들</strong><span style="font-size:11px">여러 개 가능</span></div>
+          <input type="file" id="fi-ref-done" accept=".smi,text/sami,text/plain,application/octet-stream" multiple style="display:none">
+        </div>
+        <div id="ref-done-list" class="prev-list"></div>
+      </div>
     </div>
-    <div class="prev-list" id="prev-list"></div>
   </div>
 
   <!-- 번역 설정 -->
@@ -275,88 +295,53 @@ textarea.binp{min-height:70px}
   <div class="blog-header">
     <div class="petals">🌸🌸🌸</div>
     <h2>벚꽃송송이 블로그<br>AI 글쓰기</h2>
-    <p>정보 입력 → 프롬프트 복사 → Claude 채팅에 붙여넣기!</p>
-  </div>
-  <div class="blog-tabs">
-    <button class="blog-tab active" onclick="setBlogTab('travel',this)">✈️ 여행기</button>
-    <button class="blog-tab" onclick="setBlogTab('webtoon',this)">📚 웹툰</button>
-    <button class="blog-tab" onclick="setBlogTab('drama',this)">🎬 드라마</button>
-    <button class="blog-tab" onclick="setBlogTab('movie',this)">🎥 영화</button>
-    <button class="blog-tab" onclick="setBlogTab('actor',this)">🌟 배우</button>
+    <p>정보 입력 → 프롬프트 생성 → Claude 채팅에 붙여넣기!</p>
   </div>
   <div class="bcard">
     <div class="bcard-label">✏️ 글쓰기 정보</div>
-    <!-- 여행 -->
-    <div id="bdyn-travel" class="bdyn show">
-      <div class="bform-row"><label class="fl">주제 / 핵심 내용 <span class="req">*</span></label>
-        <textarea class="binp" id="tr-topic" placeholder="예: 상해 3일차 – 신천지, 임시정부, 와이탄 야경"></textarea></div>
-      <div class="bform-row"><label class="fl">방문 장소/코스</label>
-        <input class="binp" type="text" id="tr-places" placeholder="예: 신천지 → 임시정부 → 와이탄 야경"></div>
-      <div class="bform-row"><label class="fl">팁 / 주의사항</label>
-        <textarea class="binp" id="tr-tips" placeholder="예: 임시정부 연휴 통제, 와이탄↔동방명주 페리 2위안"></textarea></div>
-      <div class="ep-box"><div class="ep-box-label">✨ 직접 겪은 에피소드 / 감정</div>
-        <textarea class="binp" id="tr-ep" placeholder="예: 임시정부에서 사진 안 찍음 – 애국자 모드 발동 ㅋ"></textarea></div>
-    </div>
-    <!-- 웹툰 -->
-    <div id="bdyn-webtoon" class="bdyn">
-      <div class="bgrid2">
-        <div class="bform-row"><label class="fl">작품명 <span class="req">*</span></label>
-          <div class="autofill-row"><input class="binp" type="text" id="wt-title" placeholder="예: 체탐자">
-          <button class="autofill-btn" onclick="bAutoFill('webtoon')">🔍 자동채우기</button></div>
-          <div class="autofill-status" id="wt-status"></div></div>
-        <div class="bform-row"><label class="fl">연재 상태</label>
-          <select class="binp" id="wt-status-sel"><option>연재중</option><option>완결</option><option>시즌2 진행중</option><option>휴재중</option></select></div>
+
+    <!-- 카테고리 라디오 -->
+    <div class="bform-row">
+      <label class="fl">카테고리 <span class="req" style="color:var(--pink)">*</span></label>
+      <div class="radio-wrap">
+        <label class="radio-pill active" id="rpill-travel" onclick="setBlogCat('travel',this)">✈️ 여행기</label>
+        <label class="radio-pill" id="rpill-webtoon" onclick="setBlogCat('webtoon',this)">📚 웹툰</label>
+        <label class="radio-pill" id="rpill-drama" onclick="setBlogCat('drama',this)">🎬 드라마</label>
+        <label class="radio-pill" id="rpill-movie" onclick="setBlogCat('movie',this)">🎥 영화</label>
+        <label class="radio-pill" id="rpill-actor" onclick="setBlogCat('actor',this)">🌟 배우</label>
       </div>
-      <div class="bform-row"><label class="fl">작품 정보 + 추천 포인트</label>
-        <textarea class="binp" id="wt-info" rows="4" placeholder="자동채우기 또는 직접 입력 🌸"></textarea></div>
-      <div class="ep-box"><div class="ep-box-label">✨ 직접 읽은 소감</div>
-        <textarea class="binp" id="wt-ep" placeholder="예: 국뽕 맞고 쌍욕하면서 봄 ㅋㅋ"></textarea></div>
     </div>
-    <!-- 드라마 -->
-    <div id="bdyn-drama" class="bdyn">
-      <div class="bform-row"><label class="fl">드라마 제목 <span class="req">*</span></label>
-        <div class="autofill-row"><input class="binp" type="text" id="dr-title" placeholder="예: 눈물의 여왕">
-        <button class="autofill-btn" onclick="bAutoFill('drama')">🔍 자동채우기</button></div>
-        <div class="autofill-status" id="dr-status"></div></div>
-      <div class="bform-row"><label class="fl">드라마 정보 + 총평</label>
-        <textarea class="binp" id="dr-info" rows="4" placeholder="자동채우기 또는 직접 입력 🌸"></textarea></div>
-      <div class="ep-box"><div class="ep-box-label">✨ 직접 본 소감</div>
-        <textarea class="binp" id="dr-ep" placeholder="예: 원작보다 더 재밌음, 캐스팅 완벽"></textarea></div>
+
+    <!-- 제목 (여행기 제외) -->
+    <div class="bform-row" id="b-title-row" style="display:none">
+      <label class="fl" id="b-title-label">제목 <span class="req" style="color:var(--pink)">*</span></label>
+      <input class="binp" type="text" id="b-title" placeholder="">
     </div>
-    <!-- 영화 -->
-    <div id="bdyn-movie" class="bdyn">
-      <div class="bform-row"><label class="fl">영화 제목 <span class="req">*</span></label>
-        <div class="autofill-row"><input class="binp" type="text" id="mv-title" placeholder="예: 파묘">
-        <button class="autofill-btn" onclick="bAutoFill('movie')">🔍 자동채우기</button></div>
-        <div class="autofill-status" id="mv-status"></div></div>
-      <div class="bform-row"><label class="fl">영화 정보 + 총평</label>
-        <textarea class="binp" id="mv-info" rows="4" placeholder="자동채우기 또는 직접 입력"></textarea></div>
-      <div class="ep-box"><div class="ep-box-label">✨ 직접 본 소감</div>
-        <textarea class="binp" id="mv-ep" placeholder="예: 후반 반전에서 소름, 공포수위 괜찮음"></textarea></div>
+
+    <!-- 내용 -->
+    <div class="bform-row">
+      <label class="fl" id="b-info-label">내용 <span class="req" style="color:var(--pink)">*</span></label>
+      <textarea class="binp" id="b-info" placeholder="자유롭게 주저리주저리 적어주세요!"></textarea>
     </div>
-    <!-- 배우 -->
-    <div id="bdyn-actor" class="bdyn">
-      <div class="bform-row"><label class="fl">배우명 <span class="req">*</span></label>
-        <div class="autofill-row"><input class="binp" type="text" id="ac-name" placeholder="예: 샤오잔, 변우석">
-        <button class="autofill-btn" onclick="bAutoFill('actor')">🔍 자동채우기</button></div>
-        <div class="autofill-status" id="ac-status"></div></div>
-      <div class="bform-row"><label class="fl">입덕 계기</label>
-        <input class="binp" type="text" id="ac-trigger" placeholder="예: 상해 여행 중 곳곳에서 보다가 입덕"></div>
-      <div class="bform-row"><label class="fl">배우 정보</label>
-        <textarea class="binp" id="ac-info" rows="4" placeholder="자동채우기 또는 직접 입력"></textarea></div>
-      <div class="ep-box"><div class="ep-box-label">✨ 팬으로서 느낀 점</div>
-        <textarea class="binp" id="ac-ep" placeholder="예: 상해 여행 내내 샤오잔 보임 ㅋㅋ"></textarea></div>
+
+    <!-- 이미지 (여행기 제외) -->
+    <div class="bform-row" id="b-img-row" style="display:none">
+      <label class="fl" id="b-img-label">소개 이미지 <span style="color:var(--gray);font-weight:400;font-size:11px">(선택)</span></label>
+      <div class="bimg-wrap">
+        <span style="font-size:22px" id="b-img-icon">🖼️</span>
+        <div style="font-size:12px;color:var(--gray);margin-top:4px">포스터, 표지, 스틸컷 등 업로드</div>
+        <input type="file" id="b-imgs" accept="image/*" multiple onchange="handleBlogImgs(this)">
+      </div>
+      <div class="bimg-thumb-wrap" id="b-preview"></div>
     </div>
+
     <!-- 공통 옵션 -->
-    <div class="bgrid2" style="margin-bottom:12px">
-      <div class="bform-row" style="margin-bottom:0"><label class="fl">SEO 키워드</label>
-        <input class="binp" type="text" id="seoKw" placeholder="예: 상해 여행 코스 추천"></div>
-      <div class="bform-row" style="margin-bottom:0"><label class="fl">글 길이</label>
-        <select class="binp" id="blength">
-          <option value="normal">보통 (800~1200자)</option>
-          <option value="short">짧게 (500~800자)</option>
-          <option value="long">길게 (1500자 이상)</option>
-        </select></div>
+    <div class="bform-row" style="margin-top:8px"><label class="fl">글 길이</label>
+      <select class="binp" id="blength" style="min-height:auto;resize:none">
+        <option value="normal">보통 (800~1200자)</option>
+        <option value="short">짧게 (500~800자)</option>
+        <option value="long">길게 (1500자 이상)</option>
+      </select>
     </div>
     <label class="fl" style="margin-bottom:8px">추가로 포함할 것</label>
     <div class="check-wrap" id="checkWrap">
@@ -367,13 +352,17 @@ textarea.binp{min-height:70px}
       <label class="check-pill" onclick="togglePill(this)"><input type="checkbox" value="ending">👋 마무리 멘트</label>
     </div>
   </div>
-  <button class="gen-btn" onclick="generateBlogPrompt()">📋 프롬프트 생성하기</button>
+
+  <button class="gen-btn" id="gen-btn" onclick="generateBlogPrompt()">📋 프롬프트 생성하기</button>
+  <div class="blog-loading" id="blog-loading">🌸 이미지 분석 중... 잠깐만요!</div>
+
   <div class="steps-row">
     <div class="step-r"><div class="step-n">1</div><br>정보 입력</div>
     <div class="step-r"><div class="step-n">2</div><br>프롬프트 복사</div>
     <div class="step-r"><div class="step-n">3</div><br>Claude에 붙여넣기</div>
     <div class="step-r"><div class="step-n">4</div><br>완성글 받기 🌸</div>
   </div>
+
   <div class="bresult" id="bresult">
     <div class="bresult-top">
       <div class="bresult-label">📋 생성된 프롬프트</div>
@@ -399,40 +388,41 @@ function setMain(p){
   });
 }
 
-// ════════ API 키 저장/불러오기 ════════
-let curTransAPI = 'gemini';
-
-function saveKey(api) {
-  const key = document.getElementById('key-'+api).value.trim();
-  if (!key) { alert('API 키를 입력해주세요'); return; }
-  localStorage.setItem(api+'_api_key', key);
-  showSavedKey(api);
+// ════════ API 키 ════════
+function saveKey(){
+  const key=document.getElementById('key-gemini').value.trim();
+  if(!key){alert('API 키를 입력해주세요');return;}
+  localStorage.setItem('gemini_api_key',key);
+  document.getElementById('saved-gemini').style.display='block';
+  document.getElementById('input-gemini').style.display='none';
   checkReady();
-  alert('✅ 이 기기에 저장됐어요!\n다음에 열어도 자동으로 불러와요.');
+  alert('✅ 이 기기에 저장됐어요!');
+}
+function getAPIKey(){return localStorage.getItem('gemini_api_key')||document.getElementById('key-gemini').value.trim();}
+function loadKeys(){
+  const saved=localStorage.getItem('gemini_api_key');
+  if(saved){document.getElementById('key-gemini').value=saved;document.getElementById('saved-gemini').style.display='block';document.getElementById('input-gemini').style.display='none';}
+  document.getElementById('saved-gemini').addEventListener('click',()=>{document.getElementById('saved-gemini').style.display='none';document.getElementById('input-gemini').style.display='block';});
 }
 
-function showSavedKey(api) {
-  document.getElementById('saved-'+api).style.display = 'block';
-  document.getElementById('input-'+api).style.display = 'none';
-}
-
-function loadKeys() {
-  ['gemini'].forEach(api => {
-    const saved = localStorage.getItem(api+'_api_key');
-    if (saved) {
-      document.getElementById('key-'+api).value = saved;
-      showSavedKey(api);
-    }
-    document.getElementById('saved-'+api).addEventListener('click', () => {
-      document.getElementById('saved-'+api).style.display = 'none';
-      document.getElementById('input-'+api).style.display = 'block';
-    });
+// ════════ 드라마 소개 이미지 ════════
+let dramaImgs=[];
+function handleDramaImgs(input){
+  [...input.files].forEach(f=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      const b64=e.target.result.split(',')[1];
+      dramaImgs.push({b64,type:f.type,name:f.name});
+      const wrap=document.getElementById('drama-img-preview');
+      const thumb=document.createElement('div');thumb.className='img-thumb';
+      const idx=dramaImgs.length-1;
+      thumb.innerHTML=`<img src="${e.target.result}"><button class="img-thumb-del" onclick="removeDramaImg(${idx},this.parentNode)">✕</button>`;
+      wrap.appendChild(thumb);
+    };
+    r.readAsDataURL(f);
   });
 }
-
-function getAPIKey() {
-  return localStorage.getItem('gemini_api_key') || document.getElementById('key-gemini').value.trim();
-}
+function removeDramaImg(idx,el){dramaImgs[idx]=null;el.remove();}
 
 // ════════ EBML / MKV ════════
 const EID={EBML:0x1A45DFA3,Segment:0x18538067,Info:0x1549A966,TimestampScale:0x2AD7B1,Tracks:0x1654AE6B,TrackEntry:0xAE,TrackNumber:0xD7,TrackType:0x83,CodecID:0x86,CodecPrivate:0x63A2,TrackName:0x536E,Language:0x22B59C,Cluster:0x1F43B675,Timestamp:0xE7,BlockGroup:0xA0,Block:0xA1,BlockDuration:0x9B,SimpleBlock:0xA3};
@@ -500,8 +490,9 @@ async function extractMKV(file){
   document.getElementById('track-section').style.display='block';
 }
 
-// ════════ 번역 탭 전달 ════════
-let mainFile=null,mainSMI='',prevFiles={},resultSMI='';
+// ════════ 번역 상태 ════════
+let mainFile=null,mainSMI='',resultSMI='';
+let refOrigFiles={},refDoneFiles={};
 
 function transferToTranslate(smiText,fname,track){
   const blob=new Blob([smiText],{type:'text/plain'});
@@ -516,7 +507,6 @@ function detectEp(fn){const f=fn.replace(/\.[^.]+$/,'');let m=f.match(/[Ss](\d{1
 function detectLang(t){const cls=(t.match(/Class=(\w+)/i)||[])[1]||'';if(/KR|KO/i.test(cls))return'한국어';if(/ZH|CN|CH|TC|SC/i.test(cls))return'중국어';if(/TH/i.test(cls))return'태국어';if(/EN/i.test(cls))return'영어';if(/JP|JA/i.test(cls))return'일본어';const s=t.slice(0,2000);if(/[\u0E00-\u0E7F]/.test(s))return'태국어';if(/[\u4E00-\u9FFF]/.test(s))return'중국어';if(/[\uAC00-\uD7A3]/.test(s))return'한국어';if(/[\u3040-\u30FF]/.test(s))return'일본어';return'영어/기타';}
 function parseSMILines(t){const lines=[];const re=/<SYNC\s+Start=(\d+)[^>]*>\s*<P[^>]*>([\s\S]*?)<\/SYNC>/gi;let m;while((m=re.exec(t))!==null){const ms=parseInt(m[1]);const raw=m[2].replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').replace(/&nbsp;/gi,'').trim();lines.push({ms,text:raw});}return lines;}
 function chunkLines(lines,max=80){const f=lines.filter(l=>l.text),c=[];for(let i=0;i<f.length;i+=max)c.push(f.slice(i,i+max));return c;}
-function getPrevContent(){if(!mainFile)return null;const ep=detectEp(mainFile.name);if(!ep||ep.ep<=1)return null;return prevFiles[`${ep.season}_${ep.ep-1}`]?.content||null;}
 
 function updateFileInfo(fname,smiText){
   const ep=detectEp(fname),lang=detectLang(smiText),lc=parseSMILines(smiText).filter(l=>l.text).length;
@@ -529,56 +519,112 @@ function updateFileInfo(fname,smiText){
   checkReady();
 }
 
-// ════════ 프롬프트 빌더 ════════
-function buildTransPrompt(lines,ci,totalChunks){
-  const gm={drama:'드라마',romance:'로맨스 드라마',action:'액션/범죄 드라마',historical:'사극/시대극',comedy:'코미디',thriller:'스릴러/미스터리'};
-  const lm={auto:'자동 감지',zh:'중국어(보통화)','zh-yue':'광둥어',th:'태국어',ja:'일본어',en:'영어'};
-  const genre=document.getElementById('genre').value,srcLang=document.getElementById('src-lang').value,extra=document.getElementById('extra-prompt').value.trim();
-  const txt=lines.map((l,i)=>`[${i}] ${l.text.replace(/\n/g,' | ')}`).join('\n');
-  let prev='';
-  if(ci===0){const pc=getPrevContent();if(pc){const pl=parseSMILines(pc).filter(l=>l.text).slice(-20);prev=`\n\n## 이전 편 마지막 20줄 (톤/이름 참고)\n${pl.map(l=>`- ${l.text}`).join('\n')}`;}}
-  return `당신은 ${gm[genre]||'드라마'} 자막 번역 전문가입니다.\n\n## 규칙\n- 원본 언어: ${lm[srcLang]||'자동 감지'}\n- 각 줄 번호 [N] 유지\n- JSON만 출력 (설명·마크다운 없이): {"0":"번역","1":"번역",...}\n- 자막 특성상 간결하고 자연스러운 한국어로\n- 인물 이름/호칭/말투를 이전 편과 일치${extra?`\n- 추가 지시: ${extra}`:''}${prev}\n\n## 번역할 자막 (${ci+1}/${totalChunks} 청크)\n${txt}\n\n## 출력 (JSON만):`;
+// ════════ 참고 파일에서 용어/호칭 추출 ════════
+function extractTerms(origLines, doneLines, maxPairs=80) {
+  // 원문+완성본 대조 쌍 만들기
+  const pairs = [];
+  const minLen = Math.min(origLines.length, doneLines.length);
+  for (let i = 0; i < Math.min(minLen, maxPairs); i++) {
+    if (origLines[i].text && doneLines[i].text)
+      pairs.push(`${origLines[i].text} → ${doneLines[i].text}`);
+  }
+  return pairs;
 }
 
-// ════════ API 번역 ════════
-async function callGemini(prompt){
-  const key=getAPIKey();
-  if(!key)throw new Error('API 키를 입력해주세요');
-  const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.3,maxOutputTokens:8192}})});
-  if(!res.ok){const e=await res.json();throw new Error(e.error?.message||res.status);}
-  const d=await res.json();return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
+function buildRefSection() {
+  const ep = mainFile ? detectEp(mainFile.name) : null;
+  const sections = [];
+
+  // 원문+완성본 대조 (1화 우선, 없으면 직전 편)
+  const keys = Object.keys(refOrigFiles).sort((a,b)=>parseInt(a.split('_')[1])-parseInt(b.split('_')[1]));
+
+  if (keys.length > 0) {
+    // 1화 기준 용어집
+    const ep1Key = keys.find(k => k.endsWith('_1')) || keys[0];
+    if (refOrigFiles[ep1Key] && refDoneFiles[ep1Key]) {
+      const origLines = parseSMILines(refOrigFiles[ep1Key].content).filter(l=>l.text);
+      const doneLines = parseSMILines(refDoneFiles[ep1Key].content).filter(l=>l.text);
+      const pairs = extractTerms(origLines, doneLines, 80);
+      if (pairs.length)
+        sections.push(`## 1화 원문↔번역 대조 (용어/호칭/말투 기준)\n${pairs.join('\n')}`);
+    }
+
+    // 직전 편 완성본 마지막 30줄 (흐름 유지)
+    if (ep && ep.ep > 1) {
+      const prevKey = `${ep.season}_${ep.ep-1}`;
+      if (refDoneFiles[prevKey]) {
+        const prevLines = parseSMILines(refDoneFiles[prevKey].content).filter(l=>l.text).slice(-30);
+        if (prevLines.length)
+          sections.push(`## 직전 편(${ep.ep-1}화) 번역 마지막 30줄 (흐름 유지)\n${prevLines.map(l=>l.text).join('\n')}`);
+      }
+    }
+  }
+  return sections.join('\n\n');
 }
-async function callDeepSeek(prompt){
-  const key=getAPIKey();
-  if(!key)throw new Error('API 키를 입력해주세요');
-  const res=await fetch('https://api.deepseek.com/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({model:'deepseek-chat',messages:[{role:'user',content:prompt}],temperature:0.3,max_tokens:8192})});
-  if(!res.ok){const e=await res.json();throw new Error(e.error?.message||res.status);}
-  const d=await res.json();return d.choices?.[0]?.message?.content||'';
+
+// ════════ Gemini API ════════
+async function callGemini(prompt, images=[]) {
+  const key = getAPIKey();
+  if (!key) throw new Error('API 키를 입력해주세요');
+  const parts = [];
+  images.filter(Boolean).forEach(img => {
+    parts.push({inlineData:{mimeType:img.type,data:img.b64}});
+  });
+  parts.push({text: prompt});
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({contents:[{parts}], generationConfig:{temperature:0.3,maxOutputTokens:8192}})
+  });
+  if (!res.ok) {const e=await res.json();throw new Error(e.error?.message||res.status);}
+  const d = await res.json();
+  return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
 }
-async function callAPI(prompt){
-  return callGemini(prompt);
-}
+
 function safeJSON(raw){try{return JSON.parse(raw.replace(/```json|```/g,'').trim());}catch{}const m=raw.match(/\{[\s\S]+\}/);if(m){try{return JSON.parse(m[0]);}catch{}}return{};}
 function TL(msg,t=''){const b=document.getElementById('tlb');const d=document.createElement('div');d.className='ll'+(t?' l'+t:'');d.textContent=msg;b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function TP(pct,lbl){document.getElementById('tfill').style.width=pct+'%';document.getElementById('tpct').textContent=pct+'%';if(lbl)document.getElementById('tlbl').textContent=lbl;}
 
-async function startTranslate(){
+// ════════ 번역 프롬프트 ════════
+function buildTransPrompt(lines, ci, total, refSection) {
+  const gm={drama:'드라마',romance:'로맨스 드라마',action:'액션/범죄 드라마',historical:'사극/시대극',comedy:'코미디',thriller:'스릴러/미스터리'};
+  const lm={auto:'자동 감지',zh:'중국어(보통화)','zh-yue':'광둥어',th:'태국어',ja:'일본어',en:'영어'};
+  const genre=document.getElementById('genre').value;
+  const srcLang=document.getElementById('src-lang').value;
+  const extra=document.getElementById('extra-prompt').value.trim();
+  const txt=lines.map((l,i)=>`[${i}] ${l.text.replace(/\n/g,' | ')}`).join('\n');
+  const imgNote = dramaImgs.filter(Boolean).length > 0 && ci===0
+    ? '\n- 첨부된 드라마 소개 이미지를 참고해 분위기/톤을 파악하여 번역에 반영해줘' : '';
+  const refNote = refSection && ci===0 ? `\n\n${refSection}` : '';
+  return `당신은 ${gm[genre]||'드라마'} 자막 번역 전문가입니다.\n\n## 규칙\n- 원본 언어: ${lm[srcLang]||'자동 감지'}\n- 각 줄 번호 [N] 유지\n- JSON만 출력 (설명·마크다운 없이): {"0":"번역","1":"번역",...}\n- 자막 특성상 간결하고 자연스러운 한국어로${imgNote}\n- 인물 이름/호칭/말투를 참고 자료와 일치${extra?`\n- 추가 지시: ${extra}`:''}${refNote}\n\n## 번역할 자막 (${ci+1}/${total} 청크)\n${txt}\n\n## 출력 (JSON만):`;
+}
+
+async function startTranslate() {
   const btn=document.getElementById('btn-translate');btn.disabled=true;
   document.getElementById('prog-trans').style.display='block';
   document.getElementById('result-section').style.display='none';
   document.getElementById('tlb').innerHTML='';TP(0,'번역 준비 중...');
-  try{
+  try {
     const epInfo=detectEp(mainFile.name);
-    TL(`📄 ${mainFile.name}`,'i');if(epInfo)TL(`🔢 화수: ${epInfo.label}`,'i');
-    const pc=getPrevContent();
-    if(epInfo&&epInfo.ep>1){if(pc)TL('📚 이전 편 참고 확인','ok');else TL('⚠️ 이전 편 없음','warn');}
+    TL(`📄 ${mainFile.name}`,'i');
+    if(epInfo)TL(`🔢 화수: ${epInfo.label}`,'i');
+
+    // 참고 자료 분석
+    const refSection = buildRefSection();
+    if(refSection) TL('📚 참고 자료 분석 완료','ok');
+    const imgs = dramaImgs.filter(Boolean);
+    if(imgs.length) TL(`🖼️ 드라마 이미지 ${imgs.length}장 포함`,'ok');
+
     const lines=parseSMILines(mainSMI),chunks=chunkLines(lines.filter(l=>l.text),80);
     TL(`📊 ${lines.filter(l=>l.text).length}줄 / ${chunks.length}청크`,'i');
+
     const allTrans={};let gIdx=0;
     for(let ci=0;ci<chunks.length;ci++){
       TP(Math.round((ci/chunks.length)*85)+5,`번역 중... ${ci+1}/${chunks.length}`);
       TL(`⏳ 청크 ${ci+1}/${chunks.length}...`,'i');
-      const raw=await callAPI(buildTransPrompt(chunks[ci],ci,chunks.length));
+      // 첫 청크에만 이미지 + 참고자료 포함
+      const chunkImgs = ci===0 ? imgs : [];
+      const prompt = buildTransPrompt(chunks[ci], ci, chunks.length, refSection);
+      const raw = await callGemini(prompt, chunkImgs);
       const parsed=safeJSON(raw);
       for(const[li,txt] of Object.entries(parsed))allTrans[gIdx+parseInt(li)]=txt;
       gIdx+=chunks[ci].length;
@@ -599,7 +645,7 @@ function readFile(f){return new Promise((res,rej)=>{const r=new FileReader();r.o
 async function loadSMIFile(f){mainFile=f;mainSMI=await readFile(f);updateFileInfo(f.name,mainSMI);}
 function checkReady(){document.getElementById('btn-translate').disabled=!(mainFile&&getAPIKey());}
 
-// ════════ 드롭존 이벤트 ════════
+// ════════ 드롭존 ════════
 function setupDrop(dzId,fiId,onFile){
   const dz=document.getElementById(dzId),fi=document.getElementById(fiId);
   dz.addEventListener('click',()=>fi.click());
@@ -611,44 +657,140 @@ function setupDrop(dzId,fiId,onFile){
 setupDrop('dz-mkv','fi-mkv',extractMKV);
 setupDrop('dz-smi','fi-smi',loadSMIFile);
 
-// 이전 편 드롭존
-const dzPrev=document.getElementById('dz-prev'),fiPrev=document.getElementById('fi-prev');
-dzPrev.addEventListener('click',()=>fiPrev.click());
-fiPrev.addEventListener('change',async()=>{
-  prevFiles={};const list=document.getElementById('prev-list');list.innerHTML='';
-  for(const f of fiPrev.files){const ep=detectEp(f.name);if(!ep)continue;const content=await readFile(f);prevFiles[`${ep.season}_${ep.ep}`]={name:f.name,content};const div=document.createElement('div');div.className='prev-item other';div.textContent=`${ep.label} · ${f.name}`;list.appendChild(div);}
-  if(mainFile){const ep=detectEp(mainFile.name);if(ep&&ep.ep>1){const key=`${ep.season}_${ep.ep-1}`;document.querySelectorAll('.prev-item').forEach(el=>{if(prevFiles[key]&&el.textContent.includes(prevFiles[key].name))el.classList.replace('other','match');});}}
+// 원문 참고 파일
+async function loadRefFiles(inputEl, store, listId) {
+  store = {};
+  const list = document.getElementById(listId); list.innerHTML = '';
+  for (const f of inputEl.files) {
+    const ep = detectEp(f.name); if (!ep) continue;
+    const content = await readFile(f);
+    store[`${ep.season}_${ep.ep}`] = {name:f.name, content};
+    const div = document.createElement('div');
+    div.className = 'prev-item ok';
+    div.textContent = `${ep.label} · ${f.name}`;
+    list.appendChild(div);
+  }
+  return store;
+}
+
+document.getElementById('dz-ref-orig').addEventListener('click',()=>document.getElementById('fi-ref-orig').click());
+document.getElementById('dz-ref-done').addEventListener('click',()=>document.getElementById('fi-ref-done').click());
+document.getElementById('fi-ref-orig').addEventListener('change',async function(){refOrigFiles=await loadRefFiles(this,refOrigFiles,'ref-orig-list');});
+document.getElementById('fi-ref-done').addEventListener('change',async function(){refDoneFiles=await loadRefFiles(this,refDoneFiles,'ref-done-list');});
+
+// 드래그앤드롭 (참고 파일)
+['dz-ref-orig','dz-ref-done'].forEach(id=>{
+  const dz=document.getElementById(id);
+  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over')});
+  dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
+  dz.addEventListener('drop',async e=>{
+    e.preventDefault();dz.classList.remove('over');
+    const isOrig=id.includes('orig');
+    const tmpInput={files:e.dataTransfer.files};
+    if(isOrig)refOrigFiles=await loadRefFiles(tmpInput,refOrigFiles,'ref-orig-list');
+    else refDoneFiles=await loadRefFiles(tmpInput,refDoneFiles,'ref-done-list');
+  });
 });
 
 // ════════ 블로그 ════════
 let curBlogCat='travel';
-function setBlogTab(cat,btn){curBlogCat=cat;document.querySelectorAll('.blog-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.bdyn').forEach(d=>d.classList.remove('show'));document.getElementById('bdyn-'+cat).classList.add('show');}
+const blogImgs={dr:[],mv:[],ac:[]};
+
+function setBlogTab(cat,btn){
+  curBlogCat=cat;
+  document.querySelectorAll('.blog-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  document.querySelectorAll('.bdyn').forEach(d=>d.classList.remove('show'));
+  document.getElementById('bdyn-'+cat).classList.add('show');
+}
 function togglePill(el){el.classList.toggle('on');el.querySelector('input').checked=el.classList.contains('on');}
 function bv(id){const e=document.getElementById(id);return e?e.value.trim():'';}
 function getBlogOpts(){return[...document.querySelectorAll('#checkWrap .check-pill.on input')].map(i=>i.value);}
-function bAutoFill(cat){
-  const sm={webtoon:'wt-status',drama:'dr-status',movie:'mv-status',actor:'ac-status'};
-  const im={webtoon:'wt-info',drama:'dr-info',movie:'mv-info',actor:'ac-info'};
-  document.getElementById(sm[cat]).textContent='💡 무료 버전은 직접 입력해주세요~';
-  const el=document.getElementById(im[cat]);
-  if(!el.value){const h={webtoon:'예: 네이버 웹툰, 작가명, 장르, 줄거리',drama:'예: 방송사, 방영연도, 장르, 출연진, 줄거리',movie:'예: 개봉연도, 장르, 감독, 출연진, 줄거리',actor:'예: 국적, 데뷔연도, 대표작 2~3개, 매력 포인트'};el.placeholder=h[cat]||'정보를 직접 입력해주세요!';el.focus();}
+
+function handleBlogImgs(prefix, input) {
+  [...input.files].forEach(f => {
+    const r = new FileReader();
+    r.onload = e => {
+      const b64 = e.target.result.split(',')[1];
+      blogImgs[prefix].push({b64, type:f.type, name:f.name});
+      const wrap = document.getElementById(prefix+'-preview');
+      const idx = blogImgs[prefix].length-1;
+      const thumb = document.createElement('div'); thumb.className='bimg-thumb';
+      thumb.innerHTML=`<img src="${e.target.result}"><button class="bimg-thumb-del" onclick="removeBlogImg('${prefix}',${idx},this.parentNode)">✕</button>`;
+      wrap.appendChild(thumb);
+    };
+    r.readAsDataURL(f);
+  });
 }
-function generateBlogPrompt(){
-  const lenMap={normal:'800~1200자',short:'500~800자',long:'1500자 이상'};
-  const len=lenMap[bv('blength')];const seo=bv('seoKw');const opts=getBlogOpts();
-  let topic='',catBlock='';
-  if(curBlogCat==='travel'){topic=bv('tr-topic');if(!topic){alert('주제를 입력해주세요! 🌸');return;}catBlock=`카테고리: 여행기\n주제: ${topic}${bv('tr-places')?'\n방문 장소/코스: '+bv('tr-places'):''}${bv('tr-tips')?'\n팁/주의사항: '+bv('tr-tips'):''}${bv('tr-ep')?'\n에피소드/감정: '+bv('tr-ep'):''}`;}
-  else if(curBlogCat==='webtoon'){topic=bv('wt-title');if(!topic){alert('작품명을 입력해주세요! 🌸');return;}catBlock=`카테고리: 웹툰 리뷰\n작품명: ${topic} (${bv('wt-status-sel')})${bv('wt-info')?'\n작품 정보: '+bv('wt-info'):''}${bv('wt-ep')?'\n직접 읽은 소감: '+bv('wt-ep'):''}`;}
-  else if(curBlogCat==='drama'){topic=bv('dr-title');if(!topic){alert('드라마 제목을 입력해주세요! 🌸');return;}catBlock=`카테고리: 드라마 리뷰\n드라마명: ${topic}${bv('dr-info')?'\n드라마 정보: '+bv('dr-info'):''}${bv('dr-ep')?'\n직접 본 소감: '+bv('dr-ep'):''}`;}
-  else if(curBlogCat==='movie'){topic=bv('mv-title');if(!topic){alert('영화 제목을 입력해주세요! 🌸');return;}catBlock=`카테고리: 영화 리뷰\n영화명: ${topic}${bv('mv-info')?'\n영화 정보: '+bv('mv-info'):''}${bv('mv-ep')?'\n직접 본 소감: '+bv('mv-ep'):''}`;}
-  else if(curBlogCat==='actor'){topic=bv('ac-name');if(!topic){alert('배우명을 입력해주세요! 🌸');return;}catBlock=`카테고리: 배우 소개\n배우명: ${topic}${bv('ac-trigger')?'\n입덕 계기: '+bv('ac-trigger'):''}${bv('ac-info')?'\n배우 정보: '+bv('ac-info'):''}${bv('ac-ep')?'\n팬으로서 느낀 점: '+bv('ac-ep'):''}`;}
+function removeBlogImg(prefix,idx,el){blogImgs[prefix][idx]=null;el.remove();}
+
+async function generateBlogPrompt() {
+  const opts = getBlogOpts();
+  const len = {normal:'800~1200자',short:'500~800자',long:'1500자 이상'}[bv('blength')];
+  const btn = document.getElementById('gen-btn');
+  const loading = document.getElementById('blog-loading');
+
+  // 카테고리별 데이터 수집
+  let topic='', info='', imgs=[];
+  if(curBlogCat==='travel'){
+    topic=bv('tr-topic'); if(!topic){alert('내용을 입력해주세요! 🌸');return;}
+    info=topic;
+  } else if(curBlogCat==='webtoon'){
+    topic=bv('wt-title'); if(!topic){alert('작품명을 입력해주세요! 🌸');return;}
+    info=`작품명: ${topic}\n${bv('wt-info')}`;
+  } else if(curBlogCat==='drama'){
+    topic=bv('dr-title'); if(!topic){alert('드라마 제목을 입력해주세요! 🌸');return;}
+    info=`드라마명: ${topic}\n${bv('dr-info')}`;
+    imgs=blogImgs['dr'].filter(Boolean);
+  } else if(curBlogCat==='movie'){
+    topic=bv('mv-title'); if(!topic){alert('영화 제목을 입력해주세요! 🌸');return;}
+    info=`영화명: ${topic}\n${bv('mv-info')}`;
+    imgs=blogImgs['mv'].filter(Boolean);
+  } else if(curBlogCat==='actor'){
+    topic=bv('ac-name'); if(!topic){alert('배우명을 입력해주세요! 🌸');return;}
+    info=`배우명: ${topic}\n${bv('ac-info')}`;
+    imgs=blogImgs['ac'].filter(Boolean);
+  }
+
   const imgSec=opts.includes('images')?'\n- 글 흐름에 맞게 이미지 삽입 위치를 [📷 이미지: 설명 | 팁] 형식으로 3~6개 표시':'';
-  const seoSec=opts.includes('seo_titles')?'\n- 글 마지막에 --- 후 [SEO 제목 후보] 형식으로 제목 3개 제안':'';
+  const seoSec=opts.includes('seo_titles')?'\n- 글 마지막에 --- 후 [SEO 제목 후보] 형식으로 제목 3개 제안 (숫자+정보형/질문형/감탄형)':'';
   const tagSec=opts.includes('tags')?'\n- --- 후 [추천 태그] 형식으로 네이버 블로그 태그 10~15개 (#태그 형식)':'';
-  const prompt=`아래 정보를 바탕으로 네이버 블로그 포스팅을 완성해줘.\n\n━━━ 글쓰기 정보 ━━━\n${catBlock}\n${seo?'SEO 키워드: '+seo:''}\n글 길이: ${len}\n\n━━━ 말투 & 스타일 규칙 (꼭 지켜줘!) ━━━\n- 친근한 구어체로, 독자를 "잇님들"로 호칭\n- 존댓말 기본 (~요, ~네요 자연스럽게 혼용)\n- 중요한 정보엔 느낌표 3~5개 연속 (예: 꼭 가보세요!!!!!)\n- "존맛!!!!", "국뽕 올라요", "대박이에요?!?!" 같은 생동감 있는 감탄 표현 사용\n- 짧은 문장 끊어쓰기로 리듬감 살리기\n- ㅠㅠ, ㅋㅋ, ~♡ 이모티콘 적당히 사용\n- 솔직한 단점/아쉬운 점도 숨기지 않기\n- 내가 입력한 에피소드가 없는 부분은 [[여기에 직접 경험 추가]] 표시해줘${imgSec}${opts.includes('tips')?'\n- 실용 팁은 본문 안에 자연스럽게 포함':''}${opts.includes('ending')?'\n- 마지막에 따뜻한 마무리 문단 추가':''}${seoSec}${tagSec}`;
-  document.getElementById('blogPromptText').textContent=prompt;
-  const card=document.getElementById('bresult');card.classList.add('show');card.scrollIntoView({behavior:'smooth',block:'start'});
+  const tipSec=opts.includes('tips')?'\n- 실용 팁은 본문 안에 자연스럽게 포함':'';
+  const endSec=opts.includes('ending')?'\n- 마지막에 따뜻한 마무리 문단 추가':'';
+
+  // 이미지 있으면 Gemini로 키워드 분석
+  if (imgs.length > 0 && ['drama','movie','actor'].includes(curBlogCat)) {
+    btn.disabled=true; loading.classList.add('show');
+    try {
+      const apiKey = getAPIKey();
+      if (!apiKey) { alert('Gemini API 키를 먼저 입력해주세요!'); btn.disabled=false; loading.classList.remove('show'); return; }
+
+      const kwPrompt = `아래 이미지와 텍스트를 분석해서 네이버 블로그 SEO에 최적화된 키워드 5~8개를 추출해줘.\n텍스트: ${info}\n키워드만 쉼표로 구분해서 한 줄로 출력해줘. 다른 설명 없이.`;
+      const kwResult = await callGemini(kwPrompt, imgs);
+      const seoKw = kwResult.trim().replace(/\n/g,' ');
+
+      const prompt = buildBlogPrompt(info, seoKw, len, imgSec, seoSec, tagSec, tipSec, endSec, imgs.length>0);
+      document.getElementById('blogPromptText').textContent = prompt;
+    } catch(e) {
+      // API 실패시 키워드 없이 진행
+      const prompt = buildBlogPrompt(info, '', len, imgSec, seoSec, tagSec, tipSec, endSec, false);
+      document.getElementById('blogPromptText').textContent = prompt;
+    }
+    btn.disabled=false; loading.classList.remove('show');
+  } else {
+    const prompt = buildBlogPrompt(info, '', len, imgSec, seoSec, tagSec, tipSec, endSec, false);
+    document.getElementById('blogPromptText').textContent = prompt;
+  }
+
+  const card=document.getElementById('bresult'); card.classList.add('show');
+  card.scrollIntoView({behavior:'smooth',block:'start'});
 }
+
+function buildBlogPrompt(info, seoKw, len, imgSec, seoSec, tagSec, tipSec, endSec, hasImg) {
+  const imgNote = hasImg ? '\n- 첨부된 이미지를 참고해 분위기와 내용을 파악해줘' : '';
+  const kwNote = seoKw ? `\nSEO 키워드 (자동 추출): ${seoKw}` : '\n- SEO 키워드는 내용을 분석해서 직접 선정해줘';
+  return `아래 정보를 바탕으로 네이버 블로그 포스팅을 완성해줘.\n\n━━━ 글쓰기 정보 ━━━\n${info}${kwNote}\n글 길이: ${len}\n\n━━━ 말투 & 스타일 규칙 ━━━\n- 친근한 구어체, 독자를 "잇님들"로 호칭\n- 존댓말 기본 (~요, ~네요 자연스럽게 혼용)\n- 중요한 정보엔 느낌표 연속 (예: 꼭 가보세요!!!!!)\n- "존맛!!!!", "국뽕 올라요" 같은 생동감 있는 감탄 표현\n- 짧은 문장 끊어쓰기로 리듬감\n- ㅠㅠ, ㅋㅋ, ~♡ 이모티콘 적당히\n- 솔직한 단점도 숨기지 않기\n- 내가 입력한 에피소드가 없는 부분은 [[여기에 직접 경험 추가]] 표시${imgNote}${imgSec}${tipSec}${endSec}${seoSec}${tagSec}`;
+}
+
 function copyBlogPrompt(){
   navigator.clipboard.writeText(document.getElementById('blogPromptText').textContent).then(()=>{
     const btn=document.getElementById('bcopyBtn');btn.textContent='✅ 복사됐어요!';btn.classList.add('done');
