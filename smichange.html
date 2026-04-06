@@ -74,6 +74,8 @@ textarea.inp{resize:vertical;min-height:70px;font-family:'Noto Sans KR',sans-ser
 .btn-dl{background:linear-gradient(135deg,#059669,#34d399);color:#fff}
 .btn-use{background:linear-gradient(135deg,#1d4ed8,#60a5fa);color:#fff}
 .btn-save-key{background:linear-gradient(135deg,#92400e,#d97706);color:#fff}
+.api-sel-tab{flex:1;padding:9px 8px;border:1px solid var(--bd);border-radius:8px;background:transparent;color:var(--mut);font-size:12px;font-weight:700;cursor:pointer;transition:.2s;text-align:center;line-height:1.5}
+.api-sel-tab.active{border-color:var(--ac);background:#1e1e40;color:var(--txt)}
 .btn-sm{padding:8px 14px;width:auto;font-size:12px;border-radius:8px;margin-bottom:0}
 
 .prog-wrap{display:none}
@@ -194,14 +196,11 @@ textarea.binp{min-height:70px}
   <!-- API 키 설정 -->
   <div class="card">
     <div class="card-title">⚙️ Gemini API 키</div>
-    <div class="api-saved" id="api-saved">✅ 저장된 API 키가 있어요</div>
-    <div id="api-input-wrap">
-      <div class="api-row">
-        <label>API Key</label>
-        <input class="inp" type="password" id="key-gemini" placeholder="AIza..." autocomplete="off">
-      </div>
+    <div class="api-saved" id="saved-gemini" style="display:none">✅ Gemini 키 저장됨 <span style="font-size:10px;color:var(--mut)">(탭하면 수정)</span></div>
+    <div id="input-gemini">
+      <div class="api-row"><label>API Key</label><input class="inp" type="password" id="key-gemini" placeholder="AIza..." autocomplete="off"></div>
       <div class="api-hint">무료 발급: <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a> · 일 1,500회 무료</div>
-      <button class="btn btn-save-key" style="margin-top:10px" onclick="saveAPIKey()">💾 이 기기에 키 저장</button>
+      <button class="btn btn-save-key" style="margin-top:10px" onclick="saveKey('gemini')">💾 이 기기에 저장</button>
     </div>
   </div>
 
@@ -211,7 +210,7 @@ textarea.binp{min-height:70px}
     <div class="drop" id="dz-smi">
       <span class="di">📝</span>
       <div class="dh"><strong>SMI 파일 선택</strong>탭하거나 드래그 · 또는 추출 탭에서 자동 전달</div>
-      <input type="file" id="fi-smi" accept=".smi,text/sami,text/plain,application/octet-stream" style="display:none">
+      <input type="file" id="fi-smi" accept="*/*" style="display:none">
     </div>
     <div class="finfo" id="finfo">
       <div class="finfo-row"><span class="fkey">파일명</span><span class="fval" id="fi-name">-</span></div>
@@ -227,7 +226,7 @@ textarea.binp{min-height:70px}
     <div class="drop" id="dz-prev">
       <span class="di">📂</span>
       <div class="dh"><strong>이전 편 SMI 파일들 선택</strong>여러 파일 선택 가능</div>
-      <input type="file" id="fi-prev" accept=".smi,text/sami,text/plain,application/octet-stream" multiple style="display:none">
+      <input type="file" id="fi-prev" accept="*/*" multiple style="display:none">
     </div>
     <div class="prev-list" id="prev-list"></div>
   </div>
@@ -255,7 +254,7 @@ textarea.binp{min-height:70px}
     </div>
   </div>
 
-  <button class="btn btn-main" id="btn-translate" onclick="startTranslate()" disabled>🚀 Gemini 자동 번역 시작</button>
+  <button class="btn btn-main" id="btn-translate" onclick="startTranslate()" disabled>🚀 Gemini 번역 시작</button>
 
   <div class="card prog-wrap" id="prog-trans">
     <div class="prog-hd"><span id="tlbl">번역 준비 중...</span><span style="color:var(--mut)" id="tpct">0%</span></div>
@@ -401,34 +400,39 @@ function setMain(p){
 }
 
 // ════════ API 키 저장/불러오기 ════════
-function saveAPIKey(){
-  const key=document.getElementById('key-gemini').value.trim();
-  if(!key){alert('API 키를 입력해주세요');return;}
-  localStorage.setItem('gemini_api_key',key);
-  showSavedKey();
+let curTransAPI = 'gemini';
+
+function saveKey(api) {
+  const key = document.getElementById('key-'+api).value.trim();
+  if (!key) { alert('API 키를 입력해주세요'); return; }
+  localStorage.setItem(api+'_api_key', key);
+  showSavedKey(api);
   checkReady();
   alert('✅ 이 기기에 저장됐어요!\n다음에 열어도 자동으로 불러와요.');
 }
-function loadAPIKey(){
-  const saved=localStorage.getItem('gemini_api_key');
-  if(saved){
-    document.getElementById('key-gemini').value=saved;
-    showSavedKey();
-  }
-}
-function showSavedKey(){
-  document.getElementById('api-saved').style.display='block';
-  document.getElementById('api-input-wrap').style.display='none';
-}
-function getAPIKey(){
-  return localStorage.getItem('gemini_api_key')||document.getElementById('key-gemini').value.trim();
+
+function showSavedKey(api) {
+  document.getElementById('saved-'+api).style.display = 'block';
+  document.getElementById('input-'+api).style.display = 'none';
 }
 
-// 저장된 키 표시 클릭하면 수정 가능
-document.getElementById('api-saved').addEventListener('click',()=>{
-  document.getElementById('api-saved').style.display='none';
-  document.getElementById('api-input-wrap').style.display='block';
-});
+function loadKeys() {
+  ['gemini'].forEach(api => {
+    const saved = localStorage.getItem(api+'_api_key');
+    if (saved) {
+      document.getElementById('key-'+api).value = saved;
+      showSavedKey(api);
+    }
+    document.getElementById('saved-'+api).addEventListener('click', () => {
+      document.getElementById('saved-'+api).style.display = 'none';
+      document.getElementById('input-'+api).style.display = 'block';
+    });
+  });
+}
+
+function getAPIKey() {
+  return localStorage.getItem('gemini_api_key') || document.getElementById('key-gemini').value.trim();
+}
 
 // ════════ EBML / MKV ════════
 const EID={EBML:0x1A45DFA3,Segment:0x18538067,Info:0x1549A966,TimestampScale:0x2AD7B1,Tracks:0x1654AE6B,TrackEntry:0xAE,TrackNumber:0xD7,TrackType:0x83,CodecID:0x86,CodecPrivate:0x63A2,TrackName:0x536E,Language:0x22B59C,Cluster:0x1F43B675,Timestamp:0xE7,BlockGroup:0xA0,Block:0xA1,BlockDuration:0x9B,SimpleBlock:0xA3};
@@ -544,6 +548,16 @@ async function callGemini(prompt){
   if(!res.ok){const e=await res.json();throw new Error(e.error?.message||res.status);}
   const d=await res.json();return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
 }
+async function callDeepSeek(prompt){
+  const key=getAPIKey();
+  if(!key)throw new Error('API 키를 입력해주세요');
+  const res=await fetch('https://api.deepseek.com/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({model:'deepseek-chat',messages:[{role:'user',content:prompt}],temperature:0.3,max_tokens:8192})});
+  if(!res.ok){const e=await res.json();throw new Error(e.error?.message||res.status);}
+  const d=await res.json();return d.choices?.[0]?.message?.content||'';
+}
+async function callAPI(prompt){
+  return callGemini(prompt);
+}
 function safeJSON(raw){try{return JSON.parse(raw.replace(/```json|```/g,'').trim());}catch{}const m=raw.match(/\{[\s\S]+\}/);if(m){try{return JSON.parse(m[0]);}catch{}}return{};}
 function TL(msg,t=''){const b=document.getElementById('tlb');const d=document.createElement('div');d.className='ll'+(t?' l'+t:'');d.textContent=msg;b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function TP(pct,lbl){document.getElementById('tfill').style.width=pct+'%';document.getElementById('tpct').textContent=pct+'%';if(lbl)document.getElementById('tlbl').textContent=lbl;}
@@ -564,7 +578,7 @@ async function startTranslate(){
     for(let ci=0;ci<chunks.length;ci++){
       TP(Math.round((ci/chunks.length)*85)+5,`번역 중... ${ci+1}/${chunks.length}`);
       TL(`⏳ 청크 ${ci+1}/${chunks.length}...`,'i');
-      const raw=await callGemini(buildTransPrompt(chunks[ci],ci,chunks.length));
+      const raw=await callAPI(buildTransPrompt(chunks[ci],ci,chunks.length));
       const parsed=safeJSON(raw);
       for(const[li,txt] of Object.entries(parsed))allTrans[gIdx+parseInt(li)]=txt;
       gIdx+=chunks[ci].length;
@@ -643,7 +657,7 @@ function copyBlogPrompt(){
 }
 
 // ════════ 초기화 ════════
-loadAPIKey();
+loadKeys();
 </script>
 </body>
 </html>
