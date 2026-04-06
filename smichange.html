@@ -166,7 +166,7 @@ textarea.binp{min-height:120px}
     <div class="drop" id="dz-mkv">
       <span class="di">🎞️</span>
       <div class="dh"><strong>MKV 파일 선택</strong>탭하거나 드래그하여 업로드</div>
-      <input type="file" id="fi-mkv" accept=".mkv,video/x-matroska" style="display:none">
+      <input type="file" id="fi-mkv" style="display:none">
     </div>
   </div>
   <div class="card prog-wrap" id="prog-extract">
@@ -204,7 +204,7 @@ textarea.binp{min-height:120px}
     <div class="img-upload-wrap" id="drama-img-wrap">
       <span style="font-size:24px">🖼️</span>
       <div style="font-size:12px;color:var(--mut);margin-top:6px">포스터, 스틸컷 등 드라마 분위기 이미지<br><span style="color:var(--txt);font-weight:700">탭하거나 드래그</span></div>
-      <input type="file" id="fi-drama-img" accept="image/*" multiple onchange="handleDramaImgs(this)">
+      <input type="file" id="fi-drama-img" multiple onchange="handleDramaImgs(this)">
     </div>
     <div class="img-thumb-wrap" id="drama-img-preview"></div>
   </div>
@@ -215,7 +215,7 @@ textarea.binp{min-height:120px}
     <div class="drop" id="dz-smi">
       <span class="di">📝</span>
       <div class="dh"><strong>SMI 파일 선택</strong>탭하거나 드래그 · 또는 추출 탭에서 자동 전달</div>
-      <input type="file" id="fi-smi" accept=".smi,text/sami,text/plain,application/octet-stream" style="display:none">
+      <input type="file" id="fi-smi" style="display:none">
     </div>
     <div class="finfo" id="finfo">
       <div class="finfo-row"><span class="fkey">파일명</span><span class="fval" id="fi-name">-</span></div>
@@ -235,7 +235,7 @@ textarea.binp{min-height:120px}
         <div class="drop" id="dz-ref-orig" style="padding:14px">
           <span class="di" style="font-size:20px">📂</span>
           <div class="dh"><strong style="font-size:12px">원문 파일들</strong><span style="font-size:11px">여러 개 가능</span></div>
-          <input type="file" id="fi-ref-orig" accept=".smi,text/sami,text/plain,application/octet-stream" multiple style="display:none">
+          <input type="file" id="fi-ref-orig" multiple style="display:none">
         </div>
         <div id="ref-orig-list" class="prev-list"></div>
       </div>
@@ -244,7 +244,7 @@ textarea.binp{min-height:120px}
         <div class="drop" id="dz-ref-done" style="padding:14px">
           <span class="di" style="font-size:20px">📂</span>
           <div class="dh"><strong style="font-size:12px">완성본 파일들</strong><span style="font-size:11px">여러 개 가능</span></div>
-          <input type="file" id="fi-ref-done" accept=".smi,text/sami,text/plain,application/octet-stream" multiple style="display:none">
+          <input type="file" id="fi-ref-done" multiple style="display:none">
         </div>
         <div id="ref-done-list" class="prev-list"></div>
       </div>
@@ -330,7 +330,7 @@ textarea.binp{min-height:120px}
       <div class="bimg-wrap">
         <span style="font-size:22px" id="b-img-icon">🖼️</span>
         <div style="font-size:12px;color:var(--gray);margin-top:4px">포스터, 표지, 스틸컷 등 업로드</div>
-        <input type="file" id="b-imgs" accept="image/*" multiple onchange="handleBlogImgs(this)">
+        <input type="file" id="b-imgs" multiple onchange="handleBlogImgs(this)">
       </div>
       <div class="bimg-thumb-wrap" id="b-preview"></div>
     </div>
@@ -694,34 +694,65 @@ document.getElementById('fi-ref-done').addEventListener('change',async function(
 
 // ════════ 블로그 ════════
 let curBlogCat='travel';
-const blogImgs={dr:[],mv:[],ac:[]};
+const blogImgList=[];
 
-function setBlogTab(cat,btn){
-  curBlogCat=cat;
-  document.querySelectorAll('.blog-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
-  document.querySelectorAll('.bdyn').forEach(d=>d.classList.remove('show'));
-  document.getElementById('bdyn-'+cat).classList.add('show');
+const catConfig={
+  travel:{title:null,  infoLabel:'주제 / 핵심 내용',    infoPlaceholder:'방문 장소, 코스, 팁, 에피소드 등 자유롭게 주저리주저리 적어주세요!', imgIcon:null},
+  webtoon:{title:'작품명', infoLabel:'작품 정보 + 소감', infoPlaceholder:'장르, 줄거리, 직접 읽은 소감, 추천 포인트 등 자유롭게 적어주세요!', imgIcon:'📚', imgLabel:'표지/컷 이미지'},
+  drama:  {title:'드라마 제목', infoLabel:'드라마 정보 + 소감', infoPlaceholder:'방송사, 장르, 출연진, 줄거리, 직접 본 소감 등 자유롭게 주저리주저리 적어주세요!', imgIcon:'🎬', imgLabel:'포스터/스틸컷'},
+  movie:  {title:'영화 제목',   infoLabel:'영화 정보 + 소감',   infoPlaceholder:'개봉연도, 장르, 감독, 출연진, 줄거리, 직접 본 소감 등 자유롭게 주저리주저리 적어주세요!', imgIcon:'🎥', imgLabel:'포스터'},
+  actor:  {title:'배우명',      infoLabel:'배우 정보 + 소감',   infoPlaceholder:'국적, 대표작, 입덕 계기, 팬으로서 느낀 점 등 자유롭게 주저리주저리 적어주세요!', imgIcon:'🌟', imgLabel:'배우 이미지'},
+};
+
+function setBlogCat(cat, el) {
+  curBlogCat = cat;
+  document.querySelectorAll('.radio-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  const cfg = catConfig[cat];
+  // 제목 행
+  const titleRow = document.getElementById('b-title-row');
+  if (cfg.title) {
+    titleRow.style.display='';
+    document.getElementById('b-title-label').textContent = cfg.title + ' *';
+    document.getElementById('b-title').placeholder = `예: ${cat==='webtoon'?'체탐자':cat==='drama'?'눈물의 여왕':cat==='movie'?'파묘':'샤오잔'}`;
+  } else {
+    titleRow.style.display='none';
+  }
+  // 내용
+  document.getElementById('b-info-label').textContent = cfg.infoLabel + ' *';
+  document.getElementById('b-info').placeholder = cfg.infoPlaceholder;
+  // 이미지 행
+  const imgRow = document.getElementById('b-img-row');
+  if (cfg.imgIcon) {
+    imgRow.style.display='';
+    document.getElementById('b-img-icon').textContent = cfg.imgIcon;
+    document.getElementById('b-img-label').textContent = cfg.imgLabel + ' (선택)';
+  } else {
+    imgRow.style.display='none';
+  }
+  // 이미지/입력 초기화
+  blogImgList.length=0;
+  document.getElementById('b-preview').innerHTML='';
+  document.getElementById('b-title').value='';
+  document.getElementById('b-info').value='';
 }
-function togglePill(el){el.classList.toggle('on');el.querySelector('input').checked=el.classList.contains('on');}
-function bv(id){const e=document.getElementById(id);return e?e.value.trim():'';}
-function getBlogOpts(){return[...document.querySelectorAll('#checkWrap .check-pill.on input')].map(i=>i.value);}
 
-function handleBlogImgs(prefix, input) {
+function handleBlogImgs(input) {
   [...input.files].forEach(f => {
     const r = new FileReader();
     r.onload = e => {
       const b64 = e.target.result.split(',')[1];
-      blogImgs[prefix].push({b64, type:f.type, name:f.name});
-      const wrap = document.getElementById(prefix+'-preview');
-      const idx = blogImgs[prefix].length-1;
+      blogImgList.push({b64, type:f.type, name:f.name});
+      const wrap = document.getElementById('b-preview');
+      const idx = blogImgList.length-1;
       const thumb = document.createElement('div'); thumb.className='bimg-thumb';
-      thumb.innerHTML=`<img src="${e.target.result}"><button class="bimg-thumb-del" onclick="removeBlogImg('${prefix}',${idx},this.parentNode)">✕</button>`;
+      thumb.innerHTML=`<img src="${e.target.result}"><button class="bimg-thumb-del" onclick="removeBlogImg(${idx},this.parentNode)">✕</button>`;
       wrap.appendChild(thumb);
     };
     r.readAsDataURL(f);
   });
 }
-function removeBlogImg(prefix,idx,el){blogImgs[prefix][idx]=null;el.remove();}
+function removeBlogImg(idx,el){blogImgList[idx]=null;el.remove();}
 
 async function generateBlogPrompt() {
   const opts = getBlogOpts();
@@ -729,27 +760,17 @@ async function generateBlogPrompt() {
   const btn = document.getElementById('gen-btn');
   const loading = document.getElementById('blog-loading');
 
-  // 카테고리별 데이터 수집
-  let topic='', info='', imgs=[];
-  if(curBlogCat==='travel'){
-    topic=bv('tr-topic'); if(!topic){alert('내용을 입력해주세요! 🌸');return;}
-    info=topic;
-  } else if(curBlogCat==='webtoon'){
-    topic=bv('wt-title'); if(!topic){alert('작품명을 입력해주세요! 🌸');return;}
-    info=`작품명: ${topic}\n${bv('wt-info')}`;
-  } else if(curBlogCat==='drama'){
-    topic=bv('dr-title'); if(!topic){alert('드라마 제목을 입력해주세요! 🌸');return;}
-    info=`드라마명: ${topic}\n${bv('dr-info')}`;
-    imgs=blogImgs['dr'].filter(Boolean);
-  } else if(curBlogCat==='movie'){
-    topic=bv('mv-title'); if(!topic){alert('영화 제목을 입력해주세요! 🌸');return;}
-    info=`영화명: ${topic}\n${bv('mv-info')}`;
-    imgs=blogImgs['mv'].filter(Boolean);
-  } else if(curBlogCat==='actor'){
-    topic=bv('ac-name'); if(!topic){alert('배우명을 입력해주세요! 🌸');return;}
-    info=`배우명: ${topic}\n${bv('ac-info')}`;
-    imgs=blogImgs['ac'].filter(Boolean);
-  }
+  const titleVal = bv('b-title');
+  const infoVal = bv('b-info');
+  if(!infoVal){alert('내용을 입력해주세요! 🌸');return;}
+
+  const catLabel = {travel:'여행기',webtoon:'웹툰 리뷰',drama:'드라마 리뷰',movie:'영화 리뷰',actor:'배우 소개'}[curBlogCat];
+  let info = `카테고리: ${catLabel}\n`;
+  if(titleVal) info += `제목: ${titleVal}\n`;
+  info += infoVal;
+
+  const imgs = blogImgList.filter(Boolean);
+  const hasImg = imgs.length > 0;
 
   const imgSec=opts.includes('images')?'\n- 글 흐름에 맞게 이미지 삽입 위치를 [📷 이미지: 설명 | 팁] 형식으로 3~6개 표시':'';
   const seoSec=opts.includes('seo_titles')?'\n- 글 마지막에 --- 후 [SEO 제목 후보] 형식으로 제목 3개 제안 (숫자+정보형/질문형/감탄형)':'';
@@ -757,28 +778,21 @@ async function generateBlogPrompt() {
   const tipSec=opts.includes('tips')?'\n- 실용 팁은 본문 안에 자연스럽게 포함':'';
   const endSec=opts.includes('ending')?'\n- 마지막에 따뜻한 마무리 문단 추가':'';
 
-  // 이미지 있으면 Gemini로 키워드 분석
-  if (imgs.length > 0 && ['drama','movie','actor'].includes(curBlogCat)) {
+  if (hasImg && curBlogCat !== 'travel') {
     btn.disabled=true; loading.classList.add('show');
     try {
       const apiKey = getAPIKey();
       if (!apiKey) { alert('Gemini API 키를 먼저 입력해주세요!'); btn.disabled=false; loading.classList.remove('show'); return; }
-
       const kwPrompt = `아래 이미지와 텍스트를 분석해서 네이버 블로그 SEO에 최적화된 키워드 5~8개를 추출해줘.\n텍스트: ${info}\n키워드만 쉼표로 구분해서 한 줄로 출력해줘. 다른 설명 없이.`;
       const kwResult = await callGemini(kwPrompt, imgs);
       const seoKw = kwResult.trim().replace(/\n/g,' ');
-
-      const prompt = buildBlogPrompt(info, seoKw, len, imgSec, seoSec, tagSec, tipSec, endSec, imgs.length>0);
-      document.getElementById('blogPromptText').textContent = prompt;
+      document.getElementById('blogPromptText').textContent = buildBlogPrompt(info, seoKw, len, imgSec, seoSec, tagSec, tipSec, endSec, true);
     } catch(e) {
-      // API 실패시 키워드 없이 진행
-      const prompt = buildBlogPrompt(info, '', len, imgSec, seoSec, tagSec, tipSec, endSec, false);
-      document.getElementById('blogPromptText').textContent = prompt;
+      document.getElementById('blogPromptText').textContent = buildBlogPrompt(info, '', len, imgSec, seoSec, tagSec, tipSec, endSec, false);
     }
     btn.disabled=false; loading.classList.remove('show');
   } else {
-    const prompt = buildBlogPrompt(info, '', len, imgSec, seoSec, tagSec, tipSec, endSec, false);
-    document.getElementById('blogPromptText').textContent = prompt;
+    document.getElementById('blogPromptText').textContent = buildBlogPrompt(info, '', len, imgSec, seoSec, tagSec, tipSec, endSec, false);
   }
 
   const card=document.getElementById('bresult'); card.classList.add('show');
