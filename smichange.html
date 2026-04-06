@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>통합 툴</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Gowun+Dodum&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0c0c18;--card:#14142a;--bd:#2a2a45;--ac:#7c6aff;--ac2:#a855f7;--txt:#e0e0f5;--mut:#6a6a8a;--ok:#34d399;--er:#f87171;--warn:#fbbf24;--claude:#d97706;
+  --pink:#ff6b9d;--cherry:#d63870;--pink-light:#ffe0ed;--pink-pale:#fff5f9;--pborder:#f0c8d8;--ptxt:#2d2d2d;--gray:#888;--shadow:rgba(255,107,157,0.15);
+}
+
+/* ── 전체 레이아웃 ── */
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR',system-ui,sans-serif;min-height:100vh;font-size:14px}
+.app-wrap{max-width:560px;margin:0 auto;padding:0 0 40px}
+
+/* ── 앱 헤더 ── */
+.app-header{text-align:center;padding:20px 16px 8px}
+.app-header h1{font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--ac),var(--ac2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.app-header p{font-size:11px;color:var(--mut);margin-top:4px}
+
+/* ── 메인 탭 ── */
+.main-tabs{display:flex;gap:0;padding:12px 16px 0}
+.main-tab{flex:1;padding:11px 8px;border:none;border-radius:0;background:var(--card);color:var(--mut);font-size:12px;font-weight:700;cursor:pointer;transition:.2s;text-align:center;line-height:1.4;border-bottom:3px solid transparent}
+.main-tab:first-child{border-radius:10px 0 0 0}
+.main-tab:last-child{border-radius:0 10px 0 0}
+.main-tab.active{color:var(--txt);border-bottom-color:var(--ac);background:#1a1a30}
+.main-tab .ti{font-size:16px;display:block;margin-bottom:2px}
+
+/* ── 페이지 ── */
+.page{display:none;padding:16px}
+.page.show{display:block}
+
+/* ── 자막 공통 ── */
+.sub-tabs{display:flex;gap:0;margin-bottom:16px;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:4px}
+.sub-tab{flex:1;padding:9px 8px;border:none;border-radius:9px;background:transparent;color:var(--mut);font-size:12px;font-weight:700;cursor:pointer;transition:.2s;text-align:center;line-height:1.4}
+.sub-tab.active{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.sub-tab .ti{font-size:15px;display:block;margin-bottom:2px}
+
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px}
+.card-title{font-size:13px;font-weight:700;color:#b080ff;margin-bottom:12px}
+
+.mode-tabs{display:flex;gap:8px;margin-bottom:16px}
+.mode-tab{flex:1;padding:10px 8px;border:1px solid var(--bd);border-radius:10px;background:transparent;color:var(--mut);font-size:12px;font-weight:700;cursor:pointer;transition:.2s;text-align:center;line-height:1.4}
+.mode-tab.active{border-color:var(--ac);background:#1e1e40;color:var(--txt)}
+.mode-tab .mode-icon{font-size:18px;display:block;margin-bottom:3px}
+
+.api-tabs{display:flex;gap:8px;margin-bottom:12px}
+.api-tab{flex:1;padding:8px;border:1px solid var(--bd);border-radius:8px;background:transparent;color:var(--mut);font-size:12px;font-weight:600;cursor:pointer;transition:.2s;text-align:center}
+.api-tab.active{border-color:var(--ac);background:#1e1e40;color:var(--txt)}
+.api-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.api-row label{font-size:12px;color:var(--mut);white-space:nowrap;width:70px}
+.inp{background:#0a0a1a;border:1px solid var(--bd);border-radius:8px;color:var(--txt);padding:8px 10px;font-size:12px;flex:1;font-family:monospace}
+.inp:focus{outline:none;border-color:var(--ac)}
+.inp-full{width:100%}
+.api-hint{font-size:10px;color:var(--mut);margin-top:4px;line-height:1.5}
+.api-hint a{color:var(--ac);text-decoration:none}
+
+.drop{border:2px dashed #333355;border-radius:10px;padding:22px 20px;text-align:center;cursor:pointer;transition:.2s}
+.drop:hover,.drop.over{border-color:var(--ac);background:#18183a}
+.di{font-size:28px;display:block;margin-bottom:6px}
+.dh{color:var(--mut);font-size:12px;line-height:1.7}
+.dh strong{color:var(--txt);display:block;font-size:14px;font-weight:700}
+
+.finfo{background:#0a0a1a;border-radius:8px;padding:10px 12px;margin-top:10px;font-size:12px;display:none}
+.finfo-row{display:flex;justify-content:space-between;margin-bottom:4px}
+.finfo-row:last-child{margin-bottom:0}
+.fkey{color:var(--mut)}
+.fval{color:var(--txt);font-weight:600}
+.fval.ok{color:var(--ok)}
+.fval.warn{color:var(--warn)}
+
+.prev-list{max-height:100px;overflow-y:auto;margin-top:8px}
+.prev-item{padding:4px 8px;border-radius:6px;font-size:11px;margin-bottom:3px}
+.prev-item.match{background:#0d2d1a;border:1px solid #1a5a30;color:var(--ok)}
+.prev-item.other{background:#1a1a2e;color:var(--mut)}
+
+.setting-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.setting-row:last-child{margin-bottom:0}
+.setting-label{font-size:12px;color:var(--txt)}
+select.inp{padding:6px 8px}
+textarea.inp{resize:vertical;min-height:70px;font-family:'Noto Sans KR',sans-serif;font-size:12px;line-height:1.5}
+
+.btn{width:100%;padding:13px;border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;transition:.2s;margin-bottom:8px}
+.btn:last-child{margin-bottom:0}
+.btn-main{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.btn-main:hover{opacity:.9}
+.btn-main:disabled{opacity:.35;cursor:default}
+.btn-claude{background:linear-gradient(135deg,#92400e,#d97706);color:#fff}
+.btn-claude:hover{opacity:.9}
+.btn-dl{background:linear-gradient(135deg,#059669,#34d399);color:#fff}
+.btn-use{background:linear-gradient(135deg,#1d4ed8,#60a5fa);color:#fff}
+.btn-sm{padding:8px 14px;width:auto;font-size:12px;border-radius:8px;margin-bottom:0}
+
+.prog-wrap{display:none}
+.prog-hd{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:8px}
+.pbg{background:#1e1e35;border-radius:99px;height:5px;overflow:hidden;margin-bottom:10px}
+.pfill{height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:99px;width:0%;transition:width .3s}
+.logbox{background:#060610;border-radius:8px;padding:8px 10px;font-family:'SF Mono',monospace;font-size:11px;max-height:130px;overflow-y:auto;border:1px solid #1a1a30}
+.ll{padding:1px 0}.li{color:var(--ac)}.lok{color:var(--ok)}.ler{color:var(--er)}.lwarn{color:var(--warn)}
+
+.track-row{background:#1c1c35;border-radius:9px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.track-info{flex:1;min-width:0}
+.track-name{font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.track-meta{font-size:11px;color:var(--mut);margin-top:3px}
+.track-btns{display:flex;flex-direction:column;gap:6px;flex-shrink:0}
+
+.step-box{background:#0a0a1a;border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:12px}
+.step-num{display:inline-block;background:linear-gradient(135deg,var(--claude),#f59e0b);color:#fff;width:22px;height:22px;border-radius:50%;text-align:center;line-height:22px;font-size:11px;font-weight:800;margin-right:8px;flex-shrink:0}
+.step-title{font-size:13px;font-weight:700;color:var(--txt);display:flex;align-items:center;margin-bottom:8px}
+.step-desc{font-size:11px;color:var(--mut);margin-bottom:10px;line-height:1.6;padding-left:30px}
+.prompt-box{background:#060610;border:1px solid #2a2a40;border-radius:8px;padding:10px;font-size:11px;font-family:monospace;max-height:160px;overflow-y:auto;color:#a0c0a0;white-space:pre-wrap;word-break:break-all;margin-bottom:8px;line-height:1.5}
+.result-input{background:#060610;border:1px solid #2a2a40;border-radius:8px;padding:10px;font-size:11px;width:100%;min-height:100px;color:var(--txt);resize:vertical;margin-bottom:8px}
+.result-input:focus{outline:none;border-color:var(--claude)}
+.copy-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chunk-nav{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.chunk-info{font-size:12px;color:var(--mut)}
+.chunk-btn{padding:5px 12px;border:1px solid var(--bd);background:transparent;color:var(--txt);border-radius:6px;font-size:11px;cursor:pointer;transition:.2s}
+.chunk-btn:hover{border-color:var(--ac);color:var(--ac)}
+.chunk-btn:disabled{opacity:.3;cursor:default}
+.chunk-dots{display:flex;gap:4px;flex-wrap:wrap}
+.dot{width:10px;height:10px;border-radius:50%;cursor:pointer;transition:.2s}
+.dot.done{background:var(--ok)}.dot.active{background:var(--ac)}.dot.pending{background:#2a2a40}
+
+.result-section{display:none}
+.result-preview{background:#060610;border-radius:8px;padding:10px;font-size:11px;max-height:150px;overflow-y:auto;border:1px solid #1a1a30;font-family:monospace;white-space:pre-wrap;word-break:break-all;color:#a0a0c0;margin-bottom:10px}
+
+.notice{background:#1a1000;border:1px solid #554400;border-radius:10px;padding:10px 12px;font-size:11px;color:#bb8800;line-height:1.6;margin-bottom:14px}
+.transfer-banner{background:#0d1f3a;border:1px solid #1a3a6a;border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;display:none}
+.transfer-banner strong{color:#60a5fa;display:block;margin-bottom:4px}
+
+/* ── 블로그 섹션 ── */
+.blog-wrap{background:linear-gradient(160deg,#fff0f6 0%,#fdf6f9 60%,#f9f0ff 100%);border-radius:14px;padding:20px 16px;color:var(--ptxt)}
+.blog-header{text-align:center;padding-bottom:16px}
+.petals{font-size:22px;letter-spacing:4px;margin-bottom:8px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.blog-header h2{font-size:20px;font-weight:900;color:var(--cherry);line-height:1.3}
+.blog-header p{margin-top:6px;font-size:12px;color:var(--gray);font-family:'Gowun Dodum',sans-serif}
+
+.blog-tabs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding-bottom:16px}
+.blog-tab{padding:7px 14px;border-radius:24px;border:2px solid var(--pborder);background:white;color:var(--gray);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Noto Sans KR',sans-serif}
+.blog-tab:hover{border-color:var(--pink);color:var(--pink)}
+.blog-tab.active{background:var(--pink);border-color:var(--pink);color:white;box-shadow:0 4px 14px var(--shadow)}
+
+.bcard{background:white;border-radius:16px;padding:20px;box-shadow:0 4px 24px var(--shadow);border:1px solid var(--pborder);margin-bottom:14px}
+.bcard-label{font-size:11px;font-weight:700;color:var(--pink);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px}
+.bform-row{margin-bottom:12px}
+label.fl{display:block;font-size:13px;font-weight:700;margin-bottom:5px;color:var(--ptxt)}
+.hint{font-size:11px;color:var(--gray);font-weight:400;margin-left:6px}
+.req{color:var(--pink)}
+.binp{width:100%;padding:9px 13px;border:2px solid var(--pborder);border-radius:10px;font-size:13px;font-family:'Noto Sans KR',sans-serif;color:var(--ptxt);background:#fff5f9;outline:none;transition:border .2s;resize:vertical}
+.binp:focus{border-color:var(--pink);background:white}
+textarea.binp{min-height:70px}
+.bgrid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.ep-box{background:#fffde7;border:1.5px dashed #ffe082;border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.ep-box-label{font-size:12px;font-weight:700;color:#a07800;margin-bottom:8px}
+.ep-box textarea{background:white;border-color:#ffe082;min-height:60px}
+.ep-box textarea:focus{border-color:#f0a500}
+
+.bdyn{display:none}
+.bdyn.show{display:block}
+
+.autofill-row{display:flex;gap:8px;align-items:center}
+.autofill-row .binp{flex:1}
+.autofill-btn{padding:9px 12px;background:#ffe0ed;color:var(--cherry);border:2px solid var(--pborder);border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.autofill-btn:hover{background:var(--pborder)}
+.autofill-status{font-size:11px;color:var(--pink);margin-top:4px;font-family:'Gowun Dodum',sans-serif;min-height:16px}
+
+.check-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.check-pill{display:flex;align-items:center;gap:5px;padding:6px 12px;border:2px solid var(--pborder);border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;color:var(--gray);background:white;transition:all .15s;user-select:none}
+.check-pill input{display:none}
+.check-pill.on{border-color:var(--pink);color:var(--cherry);background:#ffe0ed}
+
+.gen-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--pink),var(--cherry));color:white;border:none;border-radius:14px;font-size:14px;font-weight:900;font-family:'Noto Sans KR',sans-serif;cursor:pointer;box-shadow:0 6px 22px rgba(214,56,112,.3);transition:transform .15s,box-shadow .15s;margin-bottom:16px}
+.gen-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(214,56,112,.38)}
+
+.steps-row{display:flex;gap:0;margin-bottom:14px;background:white;border-radius:14px;border:1px solid var(--pborder);overflow:hidden;box-shadow:0 2px 12px var(--shadow)}
+.step-r{flex:1;padding:12px 8px;text-align:center;font-size:11px;color:var(--gray);font-family:'Gowun Dodum',sans-serif;border-right:1px solid var(--pborder);line-height:1.5}
+.step-r:last-child{border-right:none}
+.step-n{display:inline-block;width:20px;height:20px;border-radius:50%;background:#ffe0ed;color:var(--cherry);font-size:11px;font-weight:900;line-height:20px;margin-bottom:4px}
+
+.bresult{display:none;background:white;border-radius:16px;box-shadow:0 4px 28px var(--shadow);border:2px solid #ffe0ed;overflow:hidden;animation:slideUp .4s ease}
+.bresult.show{display:block}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.bresult-top{background:linear-gradient(135deg,#fff5f9,#fff);padding:14px 18px;border-bottom:1px solid var(--pborder);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.bresult-label{font-size:13px;font-weight:700;color:var(--cherry)}
+.bcopy-btn{padding:7px 14px;border-radius:20px;border:none;background:#ffe0ed;color:var(--cherry);font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .15s}
+.bcopy-btn:hover{background:var(--pborder)}
+.bcopy-btn.done{background:#d4edda;color:#27ae60}
+.guide-banner{background:#fffde7;border-bottom:1px solid #ffe082;padding:10px 18px;font-size:12px;color:#a07800;font-family:'Gowun Dodum',sans-serif;line-height:1.7}
+.prompt-output{padding:18px;background:#fff5f9;font-family:'Gowun Dodum',sans-serif;font-size:13px;line-height:1.9;color:var(--ptxt);white-space:pre-wrap;max-height:500px;overflow-y:auto;border-radius:0 0 14px 14px}
+
+.footer-note{text-align:center;font-size:10px;color:var(--mut);margin-top:16px}
+
+@media(max-width:480px){.bgrid2{grid-template-columns:1fr}.autofill-row{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="app-wrap">
+
+<div class="app-header">
+  <h1>🎬 통합 제작 툴</h1>
+  <p>MKV 추출 · SMI 번역 · 블로그 글쓰기</p>
+</div>
+
+<!-- 메인 탭 -->
+<div class="main-tabs">
+  <button class="main-tab active" id="mtab-extract" onclick="setMain('extract')"><span class="ti">🎞️</span>MKV 추출</button>
+  <button class="main-tab" id="mtab-translate" onclick="setMain('translate')"><span class="ti">🌐</span>SMI 번역</button>
+  <button class="main-tab" id="mtab-blog" onclick="setMain('blog')"><span class="ti">🌸</span>블로그</button>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE 1: MKV → SMI 추출
+══════════════════════════════ -->
+<div id="page-extract" class="page show">
+  <div class="notice">⚠️ 파일은 기기에서만 처리 — 서버 전송 없음<br>지원: <b>S_TEXT/UTF8(SRT)</b> · <b>S_TEXT/ASS</b> · <b>S_TEXT/SSA</b></div>
+  <div class="card">
+    <div class="drop" id="dz-mkv">
+      <span class="di">🎞️</span>
+      <div class="dh"><strong>MKV 파일 선택</strong>탭하거나 드래그하여 업로드</div>
+      <input type="file" id="fi-mkv" accept=".mkv,.MKV" style="display:none">
+    </div>
+  </div>
+  <div class="card prog-wrap" id="prog-extract">
+    <div class="prog-hd"><span id="elbl">분석 중...</span><span class="fval" id="epct">0%</span></div>
+    <div class="pbg"><div class="pfill" id="efill"></div></div>
+    <div class="logbox" id="elb"></div>
+  </div>
+  <div class="card" id="track-section" style="display:none">
+    <div class="card-title">📋 발견된 자막 트랙</div>
+    <div id="trows"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE 2: SMI 번역
+══════════════════════════════ -->
+<div id="page-translate" class="page">
+  <div class="transfer-banner" id="transfer-banner">
+    <strong>✅ 추출된 SMI 자동 로드됨</strong>
+    <span id="transfer-info"></span>
+  </div>
+  <div class="mode-tabs">
+    <div class="mode-tab active" id="mode-auto" onclick="setMode('auto')"><span class="mode-icon">🤖</span>API 자동<br><span style="color:var(--mut);font-weight:400">Gemini·DeepSeek</span></div>
+    <div class="mode-tab" id="mode-claude" onclick="setMode('claude')"><span class="mode-icon">🧡</span>Claude 수동<br><span style="color:var(--mut);font-weight:400">claude.ai 무료</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📄 번역할 SMI 파일</div>
+    <div class="drop" id="dz-smi">
+      <span class="di">📝</span>
+      <div class="dh"><strong>SMI 파일 선택</strong>탭하거나 드래그 · 또는 추출 탭에서 자동 전달</div>
+      <input type="file" id="fi-smi" accept=".smi,.SMI" style="display:none">
+    </div>
+    <div class="finfo" id="finfo">
+      <div class="finfo-row"><span class="fkey">파일명</span><span class="fval" id="fi-name">-</span></div>
+      <div class="finfo-row"><span class="fkey">감지된 화수</span><span class="fval" id="fi-ep">-</span></div>
+      <div class="finfo-row"><span class="fkey">자막 줄 수</span><span class="fval" id="fi-lines">-</span></div>
+      <div class="finfo-row"><span class="fkey">감지 언어</span><span class="fval" id="fi-lang">-</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📚 이전 편 참고본 <span style="color:var(--mut);font-weight:400">(선택)</span></div>
+    <div class="drop" id="dz-prev">
+      <span class="di">📂</span>
+      <div class="dh"><strong>이전 편 SMI 파일들 선택</strong>여러 파일 선택 가능</div>
+      <input type="file" id="fi-prev" accept=".smi,.SMI" multiple style="display:none">
+    </div>
+    <div class="prev-list" id="prev-list"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🎛️ 번역 설정</div>
+    <div class="setting-row"><div class="setting-label">드라마 장르</div>
+      <select class="inp" id="genre" style="width:140px">
+        <option value="drama">일반 드라마</option><option value="romance">로맨스</option>
+        <option value="action">액션/범죄</option><option value="historical">사극/시대극</option>
+        <option value="comedy">코미디</option><option value="thriller">스릴러/미스터리</option>
+      </select>
+    </div>
+    <div class="setting-row"><div class="setting-label">원본 언어</div>
+      <select class="inp" id="src-lang" style="width:140px">
+        <option value="auto">자동 감지</option><option value="zh">중국어 (보통화)</option>
+        <option value="zh-yue">광둥어</option><option value="th">태국어</option>
+        <option value="ja">일본어</option><option value="en">영어</option>
+      </select>
+    </div>
+    <div class="setting-row" style="flex-direction:column;align-items:flex-start;gap:6px">
+      <div class="setting-label">추가 지시사항 <span style="color:var(--mut);font-weight:400">(선택)</span></div>
+      <textarea class="inp inp-full" id="extra-prompt" placeholder="예: 주인공 이름은 '이준'으로 통일, 존댓말 유지..."></textarea>
+    </div>
+  </div>
+  <div id="section-auto">
+    <div class="card">
+      <div class="card-title">⚙️ API 설정</div>
+      <div class="api-tabs">
+        <div class="api-tab active" id="tab-gemini" onclick="setAPI('gemini')">Gemini 2.0 Flash</div>
+        <div class="api-tab" id="tab-deepseek" onclick="setAPI('deepseek')">DeepSeek V3</div>
+      </div>
+      <div id="cfg-gemini">
+        <div class="api-row"><label>API Key</label><input class="inp" type="password" id="key-gemini" placeholder="AIza..." autocomplete="off"></div>
+        <div class="api-hint">무료 발급: <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a> · 일 1,500회 무료</div>
+      </div>
+      <div id="cfg-deepseek" style="display:none">
+        <div class="api-row"><label>API Key</label><input class="inp" type="password" id="key-deepseek" placeholder="sk-..." autocomplete="off"></div>
+        <div class="api-hint">무료 발급: <a href="https://platform.deepseek.com" target="_blank">DeepSeek Platform</a> · 가입 시 크레딧 제공</div>
+      </div>
+    </div>
+    <button class="btn btn-main" id="btn-translate" onclick="startTranslate()" disabled>🚀 자동 번역 시작</button>
+    <div class="card prog-wrap" id="prog-trans">
+      <div class="prog-hd"><span id="tlbl">번역 준비 중...</span><span style="color:var(--mut)" id="tpct">0%</span></div>
+      <div class="pbg"><div class="pfill" id="tfill"></div></div>
+      <div class="logbox" id="tlb"></div>
+    </div>
+  </div>
+  <div id="section-claude" style="display:none">
+    <div class="card">
+      <div class="card-title">🧡 Claude 수동 번역</div>
+      <div class="step-box">
+        <div class="step-title"><span class="step-num">1</span>프롬프트 복사 → claude.ai 붙여넣기</div>
+        <div class="step-desc">SMI 업로드 시 자동 생성됩니다. 청크가 여러 개면 순서대로 진행하세요.</div>
+        <div class="chunk-nav" id="chunk-nav" style="display:none">
+          <button class="chunk-btn" id="btn-pc" onclick="changeChunk(-1)">◀</button>
+          <span class="chunk-info" id="chunk-info">1 / 1</span>
+          <button class="chunk-btn" id="btn-nc" onclick="changeChunk(1)">▶</button>
+          <div class="chunk-dots" id="chunk-dots"></div>
+        </div>
+        <div class="prompt-box" id="prompt-display">SMI 파일을 먼저 업로드해주세요.</div>
+        <div class="copy-row">
+          <button class="btn btn-claude btn-sm" onclick="copySubPrompt()">📋 복사</button>
+          <a href="https://claude.ai" target="_blank"><button class="btn btn-sm" style="background:#1e1e40;border:1px solid var(--bd);color:var(--txt)">🔗 claude.ai</button></a>
+          <span id="copy-ok" style="font-size:11px;color:var(--ok);display:none">✅ 복사됨!</span>
+        </div>
+      </div>
+      <div class="step-box">
+        <div class="step-title"><span class="step-num">2</span>Claude 결과 붙여넣기</div>
+        <div class="step-desc">Claude가 준 JSON을 그대로 붙여넣으세요.</div>
+        <textarea class="result-input" id="claude-result" placeholder='{"0":"안녕하세요","1":"잘 지내셨어요?",...}'></textarea>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-claude btn-sm" onclick="saveChunkResult()">💾 저장</button>
+          <span id="save-ok" style="font-size:11px;color:var(--ok);display:none;align-self:center">✅ 저장됨!</span>
+        </div>
+      </div>
+      <div class="step-box">
+        <div class="step-title"><span class="step-num">3</span>완료 & 다운로드</div>
+        <div id="chunk-progress-text" style="font-size:12px;color:var(--mut);margin-bottom:10px"></div>
+        <button class="btn btn-dl" id="btn-assemble" onclick="assembleSMI()" disabled>✅ SMI 조립 & 다운로드</button>
+      </div>
+    </div>
+  </div>
+  <div class="card result-section" id="result-section">
+    <div class="card-title">✅ 번역 완료</div>
+    <div class="result-preview" id="result-preview"></div>
+    <button class="btn btn-dl" onclick="downloadResult()">💾 번역된 SMI 다운로드</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE 3: 블로그 글쓰기
+══════════════════════════════ -->
+<div id="page-blog" class="page">
+<div class="blog-wrap">
+  <div class="blog-header">
+    <div class="petals">🌸🌸🌸</div>
+    <h2>벚꽃송송이 블로그<br>AI 글쓰기</h2>
+    <p>정보 입력 → 프롬프트 복사 → Claude 채팅에 붙여넣기!</p>
+  </div>
+
+  <div class="blog-tabs">
+    <button class="blog-tab active" onclick="setBlogTab('travel',this)">✈️ 여행기</button>
+    <button class="blog-tab" onclick="setBlogTab('webtoon',this)">📚 웹툰</button>
+    <button class="blog-tab" onclick="setBlogTab('drama',this)">🎬 드라마</button>
+    <button class="blog-tab" onclick="setBlogTab('movie',this)">🎥 영화</button>
+    <button class="blog-tab" onclick="setBlogTab('actor',this)">🌟 배우</button>
+  </div>
+
+  <div class="bcard">
+    <div class="bcard-label">✏️ 글쓰기 정보</div>
+
+    <!-- 여행 -->
+    <div id="bdyn-travel" class="bdyn show">
+      <div class="bform-row"><label class="fl">주제 / 핵심 내용 <span class="req">*</span></label>
+        <textarea class="binp" id="tr-topic" placeholder="예: 상해 3일차 – 신천지, 대한민국 임시정부, 와이탄 야경, 양꼬치로 마무리"></textarea></div>
+      <div class="bform-row"><label class="fl">방문 장소/코스</label>
+        <input class="binp" type="text" id="tr-places" placeholder="예: 신천지 → 임시정부 → 와이탄 야경"></div>
+      <div class="bform-row"><label class="fl">팁 / 주의사항</label>
+        <textarea class="binp" id="tr-tips" placeholder="예: 임시정부 연휴 통제, 와이탄↔동방명주 페리 2위안"></textarea></div>
+      <div class="ep-box"><div class="ep-box-label">✨ 직접 겪은 에피소드 / 감정</div>
+        <textarea class="binp" id="tr-ep" placeholder="예: 임시정부에서 사진 안 찍음 – 애국자 모드 발동 ㅋ&#10;양꼬치 6위안짜리 먹고 진짜 감동"></textarea></div>
+    </div>
+
+    <!-- 웹툰 -->
+    <div id="bdyn-webtoon" class="bdyn">
+      <div class="bgrid2">
+        <div class="bform-row"><label class="fl">작품명 <span class="req">*</span></label>
+          <div class="autofill-row"><input class="binp" type="text" id="wt-title" placeholder="예: 체탐자">
+          <button class="autofill-btn" onclick="bAutoFill('webtoon')">🔍 자동채우기</button></div>
+          <div class="autofill-status" id="wt-status"></div></div>
+        <div class="bform-row"><label class="fl">연재 상태</label>
+          <select class="binp" id="wt-status-sel"><option>연재중</option><option>완결</option><option>시즌2 진행중</option><option>휴재중</option></select></div>
+      </div>
+      <div class="bform-row"><label class="fl">참고 URL <span class="hint">(선택)</span></label>
+        <input class="binp" type="text" id="wt-url" placeholder="https://..."></div>
+      <div class="bform-row"><label class="fl">작품 정보 + 추천 포인트</label>
+        <textarea class="binp" id="wt-info" rows="4" placeholder="자동채우기 또는 직접 입력 🌸"></textarea></div>
+      <div class="ep-box"><div class="ep-box-label">✨ 직접 읽은 소감</div>
+        <textarea class="binp" id="wt-ep" placeholder="예: 국뽕 맞고 쌍욕하면서 봄 ㅋㅋ"></textarea></div>
+    </div>
+
+    <!-- 드라마 -->
+    <div id="bdyn-drama" class="bdyn">
+      <div class="bform-row"><label class="fl">드라마 제목 <span class="req">*</span></label>
+        <div class="autofill-row"><input class="binp" type="text" id="dr-title" placeholder="예: 눈물의 여왕">
+        <button class="autofill-btn" onclick="bAutoFill('drama')">🔍 자동채우기</button></div>
+        <div class="autofill-status" id="dr-status"></div></div>
+      <div class="bform-row"><label class="fl">참고 URL <span class="hint">(선택)</span></label>
+        <input class="binp" type="text" id="dr-url" placeholder="https://..."></div>
+      <div class="bform-row"><label class="fl">드라마 정보 + 총평</label>
+        <textarea class="binp" id="dr-info" rows="4" placeholder="자동채우기 또는 직접 입력 🌸"></textarea></div>
+      <div class="ep-box"><div class="ep-box-label">✨ 직접 본 소감</div>
+        <textarea class="binp" id="dr-ep" placeholder="예: 원작 웹툰보다 더 재밌음, 캐스팅 완벽"></textarea></div>
+    </div>
+
+    <!-- 영화 -->
+    <div id="bdyn-movie" class="bdyn">
+      <div class="bform-row"><label class="fl">영화 제목 <span class="req">*</span></label>
+        <div class="autofill-row"><input class="binp" type="text" id="mv-title" placeholder="예: 파묘">
+        <button class="autofill-btn" onclick="bAutoFill('movie')">🔍 자동채우기</button></div>
+        <div class="autofill-status" id="mv-status"></div></div>
+      <div class="bform-row"><label class="fl">참고 URL <span class="hint">(선택)</span></label>
+        <input class="binp" type="text" id="mv-url" placeholder="https://..."></div>
+      <div class="bform-row"><label class="fl">영화 정보 + 총평</label>
+        <textarea class="binp" id="mv-info" rows="4" placeholder="자동채우기 또는 직접 입력"></textarea></div>
+      <div class="ep-box"><div class="ep-box-label">✨ 직접 본 소감</div>
+        <textarea class="binp" id="mv-ep" placeholder="예: 후반 반전에서 소름, 공포수위 생각보다 괜찮음"></textarea></div>
+    </div>
+
+    <!-- 배우 -->
+    <div id="bdyn-actor" class="bdyn">
+      <div class="bform-row"><label class="fl">배우명 <span class="req">*</span></label>
+        <div class="autofill-row"><input class="binp" type="text" id="ac-name" placeholder="예: 샤오잔, 변우석">
+        <button class="autofill-btn" onclick="bAutoFill('actor')">🔍 자동채우기</button></div>
+        <div class="autofill-status" id="ac-status"></div></div>
+      <div class="bform-row"><label class="fl">입덕 계기</label>
+        <input class="binp" type="text" id="ac-trigger" placeholder="예: 상해 여행 중 곳곳에서 보다가 입덕"></div>
+      <div class="bform-row"><label class="fl">배우 정보</label>
+        <textarea class="binp" id="ac-info" rows="4" placeholder="자동채우기 또는 직접 입력"></textarea></div>
+      <div class="ep-box"><div class="ep-box-label">✨ 팬으로서 느낀 점</div>
+        <textarea class="binp" id="ac-ep" placeholder="예: 상해 여행 내내 샤오잔 보임 ㅋㅋ"></textarea></div>
+    </div>
+
+    <!-- 공통 옵션 -->
+    <div class="bgrid2" style="margin-bottom:12px">
+      <div class="bform-row" style="margin-bottom:0"><label class="fl">SEO 키워드</label>
+        <input class="binp" type="text" id="seoKw" placeholder="예: 상해 여행 코스 추천"></div>
+      <div class="bform-row" style="margin-bottom:0"><label class="fl">글 길이</label>
+        <select class="binp" id="blength">
+          <option value="normal">보통 (800~1200자)</option>
+          <option value="short">짧게 (500~800자)</option>
+          <option value="long">길게 (1500자 이상)</option>
+        </select></div>
+    </div>
+    <label class="fl" style="margin-bottom:8px">추가로 포함할 것</label>
+    <div class="check-wrap" id="checkWrap">
+      <label class="check-pill on" onclick="togglePill(this)"><input type="checkbox" checked value="images">📸 이미지 위치 표시</label>
+      <label class="check-pill on" onclick="togglePill(this)"><input type="checkbox" checked value="seo_titles">📌 SEO 제목 3개</label>
+      <label class="check-pill on" onclick="togglePill(this)"><input type="checkbox" checked value="tags">🏷️ 네이버 태그</label>
+      <label class="check-pill on" onclick="togglePill(this)"><input type="checkbox" checked value="tips">💡 실용 팁</label>
+      <label class="check-pill" onclick="togglePill(this)"><input type="checkbox" value="ending">👋 마무리 멘트</label>
+    </div>
+  </div>
+
+  <button class="gen-btn" onclick="generateBlogPrompt()">📋 프롬프트 생성하기</button>
+
+  <div class="steps-row">
+    <div class="step-r"><div class="step-n">1</div><br>정보 입력 후<br>버튼 클릭</div>
+    <div class="step-r"><div class="step-n">2</div><br>프롬프트<br>복사하기</div>
+    <div class="step-r"><div class="step-n">3</div><br>Claude 채팅에<br>붙여넣기</div>
+    <div class="step-r"><div class="step-n">4</div><br>완성글<br>받기 🌸</div>
+  </div>
+
+  <div class="bresult" id="bresult">
+    <div class="bresult-top">
+      <div class="bresult-label">📋 생성된 프롬프트</div>
+      <button class="bcopy-btn" id="bcopyBtn" onclick="copyBlogPrompt()">📋 복사하기</button>
+    </div>
+    <div class="guide-banner">💡 아래 내용을 복사해서 <strong>Claude 채팅창(claude.ai)</strong>에 붙여넣으면 글을 써줘요!</div>
+    <div class="prompt-output" id="blogPromptText"></div>
+  </div>
+
+</div><!-- /blog-wrap -->
+</div><!-- /page-blog -->
+
+<div class="footer-note">완전 오프라인 처리 · API 키는 브라우저 메모리에만 저장</div>
+</div><!-- /app-wrap -->
+
+<script>
+'use strict';
+
+// ════════ 메인 탭 ════════
+function setMain(p){
+  ['extract','translate','blog'].forEach(k=>{
+    document.getElementById('mtab-'+k).classList.toggle('active',k===p);
+    document.getElementById('page-'+k).classList.toggle('show',k===p);
+  });
+}
+
+// ════════ 번역 상태 ════════
+let curMode='auto',curAPI='gemini';
+let mainFile=null,mainSMI='',prevFiles={},resultSMI='';
+let claudeChunks=[],claudeResults={},curChunkIdx=0;
+
+function setMode(m){
+  curMode=m;
+  ['auto','claude'].forEach(k=>{
+    document.getElementById('mode-'+k).classList.toggle('active',k===m);
+    document.getElementById('section-'+k).style.display=k===m?'':'none';
+  });
+  if(m==='claude'&&mainSMI)buildClaudeChunks();
+}
+function setAPI(api){
+  curAPI=api;
+  document.getElementById('tab-gemini').classList.toggle('active',api==='gemini');
+  document.getElementById('tab-deepseek').classList.toggle('active',api==='deepseek');
+  document.getElementById('cfg-gemini').style.display=api==='gemini'?'':'none';
+  document.getElementById('cfg-deepseek').style.display=api==='deepseek'?'':'none';
+}
+
+// ════════ EBML / MKV ════════
+const EID={EBML:0x1A45DFA3,Segment:0x18538067,Info:0x1549A966,TimestampScale:0x2AD7B1,Tracks:0x1654AE6B,TrackEntry:0xAE,TrackNumber:0xD7,TrackType:0x83,CodecID:0x86,CodecPrivate:0x63A2,TrackName:0x536E,Language:0x22B59C,Cluster:0x1F43B675,Timestamp:0xE7,BlockGroup:0xA0,Block:0xA1,BlockDuration:0x9B,SimpleBlock:0xA3};
+const SUB_CODECS=new Set(['S_TEXT/UTF8','S_TEXT/ASS','S_TEXT/SSA']);
+function eID(b,p){const v=b[p],n=v>=0x80?1:v>=0x40?2:v>=0x20?3:4;let id=0;for(let i=0;i<n;i++)id=id*256+b[p+i];return[id,n];}
+function vint(b,p){const v=b[p];let n,m;if(v>=0x80){n=1;m=0x7F}else if(v>=0x40){n=2;m=0x3F}else if(v>=0x20){n=3;m=0x1F}else if(v>=0x10){n=4;m=0x0F}else if(v>=0x08){n=5;m=0x07}else if(v>=0x04){n=6;m=0x03}else if(v>=0x02){n=7;m=0x01}else{n=8;m=0x00}let val=v&m,ones=(v&m)===m;for(let i=1;i<n;i++){val=val*256+b[p+i];if(b[p+i]!==0xFF)ones=false;}return[ones?-1:val,n];}
+function uint(b,p,sz){let v=0;for(let i=0;i<sz;i++)v=v*256+b[p+i];return v;}
+function bstr(b,p,sz){return new TextDecoder('utf-8',{fatal:false}).decode(b.subarray(p,p+sz)).replace(/\0/g,'').trim();}
+function parseTrack(b,s,e){const t={num:0,type:0,codec:'',name:'',lang:'',priv:null};let p=s;while(p<e-1&&p<b.length-1){try{const[id,il]=eID(b,p);p+=il;const[sz,sl]=vint(b,p);p+=sl;if(sz<0||sz>e-p+1000)break;if(id===EID.TrackNumber)t.num=uint(b,p,sz);else if(id===EID.TrackType)t.type=uint(b,p,sz);else if(id===EID.CodecID)t.codec=bstr(b,p,sz);else if(id===EID.TrackName)t.name=bstr(b,p,sz);else if(id===EID.Language)t.lang=bstr(b,p,sz);else if(id===EID.CodecPrivate)t.priv=b.slice(p,p+sz);p+=sz;}catch(e){break;}}return t;}
+function parseTracks(b,s,e){const tracks=[];let p=s;while(p<e-1&&p<b.length-1){try{const[id,il]=eID(b,p);p+=il;const[sz,sl]=vint(b,p);p+=sl;if(sz<0)break;if(id===EID.TrackEntry){const t=parseTrack(b,p,p+sz);if(t.type===17&&SUB_CODECS.has(t.codec))tracks.push(t);}p+=sz;}catch(e){break;}}return tracks;}
+function parseBlkHdr(b,pos,sz){const s=pos;const[tn,tnl]=vint(b,pos);pos+=tnl;const raw=(b[pos]<<8)|b[pos+1];pos+=2;const relTs=raw>=32768?raw-65536:raw;pos+=1;return{tn,relTs,ds:pos,dl:sz-(pos-s)};}
+function parseCluster(b,start,end,subs,out){let p=start,clTs=0;while(p<end-1&&p<b.length-2){try{const[id,il]=eID(b,p);p+=il;const[sz,sl]=vint(b,p);p+=sl;const se=sz<0?Math.min(end,b.length):Math.min(p+sz,b.length,end);if(id===EID.Timestamp)clTs=uint(b,p,Math.min(sz,8));else if(id===EID.SimpleBlock&&sz>3){const h=parseBlkHdr(b,p,sz);if(subs.has(h.tn))out.push({tn:h.tn,ts:clTs+h.relTs,dur:0,data:b.slice(h.ds,h.ds+h.dl)});}else if(id===EID.BlockGroup){let gp=p,gb=null,gd=0;while(gp<se-1){const[gi,gil]=eID(b,gp);gp+=gil;const[gs,gsl]=vint(b,gp);gp+=gsl;if(gs<0)break;if(gi===EID.Block&&gs>3)gb=parseBlkHdr(b,gp,gs);else if(gi===EID.BlockDuration)gd=uint(b,gp,Math.min(gs,8));gp+=gs;}if(gb&&subs.has(gb.tn))out.push({tn:gb.tn,ts:clTs+gb.relTs,dur:gd,data:b.slice(gb.ds,gb.ds+gb.dl)});}p=sz<0?se:p+sz;}catch(e){break;}}}
+function blkText(data,codec){const s=new TextDecoder('utf-8',{fatal:false}).decode(data).trim();if(codec==='S_TEXT/UTF8')return s;if(s.startsWith('Dialogue:')){const pts=s.split(',');if(pts.length>=10)return pts.slice(9).join(',').trim().replace(/\{[^}]*\}/g,'').replace(/\\[Nn]/g,'\n');}return s.replace(/\{[^}]*\}/g,'').replace(/\\[Nn]/g,'\n').trim();}
+function toSMI(blocks,codec,name,lang){blocks.sort((a,b)=>a.ts-b.ts);const ll=(lang||'').toLowerCase();const isKo=ll.includes('kor')||ll==='ko';const cls=isKo?'KRCC':(lang?lang.substring(0,2).toUpperCase()+'CC':'KRCC');const lname=isKo?'Korean':(name||lang||'Unknown');const lat=isKo?'ko-KR':(lang||'ko-KR');const evts=[];for(const blk of blocks){const txt=blkText(blk.data,codec);if(!txt)continue;const html=txt.split('\n').map(l=>l.trim()).filter(Boolean).join('<br>');evts.push({ms:blk.ts,t:html});if(blk.dur>0)evts.push({ms:blk.ts+blk.dur,t:''});}const fin=[];for(let i=0;i<evts.length;i++){fin.push(evts[i]);if(evts[i].t&&i+1<evts.length&&evts[i+1].t){const gap=evts[i+1].ms-evts[i].ms;if(gap>300)fin.push({ms:evts[i].ms+Math.min(gap-200,4000),t:'',});}}fin.sort((a,b)=>a.ms-b.ms);let o=`<SAMI>\n<HEAD>\n<STYLE TYPE="text/css">\nP { margin-left:8pt; margin-right:8pt; margin-bottom:2pt; margin-top:2pt; text-align:center; font-size:18pt; font-family:'맑은 고딕', Arial; font-weight:bold; color:white; }\n.${cls} { Name:${lname}; lang:${lat}; SAMI_Type:CC; }\n</STYLE>\n</HEAD>\n<BODY>\n`;for(const e of fin)o+=`<SYNC Start=${e.ms}><P Class=${cls}>${e.t||'&nbsp;'}</P></SYNC>\n`;return o+'</BODY>\n</SAMI>';}
+
+// MKV 추출 로그/진행
+function EL(msg,t=''){const b=document.getElementById('elb');const d=document.createElement('div');d.className='ll'+(t?' l'+t:'');d.textContent=msg;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+function EP(pct,lbl){document.getElementById('efill').style.width=pct+'%';document.getElementById('epct').textContent=pct+'%';if(lbl)document.getElementById('elbl').textContent=lbl;}
+async function readChunk(file,s,len){return new Uint8Array(await file.slice(s,s+len).arrayBuffer());}
+
+async function extractMKV(file){
+  document.getElementById('prog-extract').style.display='block';
+  document.getElementById('track-section').style.display='none';
+  document.getElementById('trows').innerHTML='';
+  document.getElementById('elb').innerHTML='';
+  EP(0,'파일 분석 시작');
+  EL(`파일: ${file.name} (${(file.size/1024/1024).toFixed(1)} MB)`,'i');
+  const hdrSz=Math.min(10*1024*1024,file.size);
+  const hdr=await readChunk(file,0,hdrSz);
+  EL('헤더 & 트랙 파싱 중...','i');
+  let tsScale=1000000,tracks=[];
+  try{
+    let pos=0;const[,el]=eID(hdr,pos);pos+=el;const[esz,esl]=vint(hdr,pos);pos+=esl;if(esz>0)pos+=esz;
+    const[,sl2]=eID(hdr,pos);pos+=sl2;const[ssz,ssl]=vint(hdr,pos);pos+=ssl;
+    const sEnd=ssz<0?hdr.length:Math.min(pos+ssz,hdr.length);
+    while(pos<sEnd-2){const[id,il]=eID(hdr,pos);pos+=il;const[sz,sl]=vint(hdr,pos);pos+=sl;if(sz<0||sz>sEnd-pos+10000)break;
+      if(id===EID.Info){let ip=pos;while(ip<pos+sz-1){const[ii,iil]=eID(hdr,ip);ip+=iil;const[is,isl]=vint(hdr,ip);ip+=isl;if(is<0)break;if(ii===EID.TimestampScale)tsScale=uint(hdr,ip,Math.min(is,8));ip+=is;}EL(`TimestampScale: ${tsScale}`,'i');}
+      else if(id===EID.Tracks){tracks=parseTracks(hdr,pos,pos+sz);if(tracks.length){EL(`자막 트랙 ${tracks.length}개 발견`,'ok');tracks.forEach(t=>EL(`  #${t.num} [${t.codec}] ${t.lang||'?'}`,'i'));}else EL('자막 트랙 없음','er');}
+      else if(id===EID.Cluster)break;pos+=sz;}
+  }catch(e){EL('헤더 오류: '+e.message,'er');}
+  if(!tracks.length){EL('내장 자막 없음','er');EP(100,'완료');return;}
+  const subNums=new Set(tracks.map(t=>t.num)),scale=tsScale/1000000;
+  EL('자막 블록 스캔 중...','i');EP(2,'자막 스캔');
+  const CHUNK=4*1024*1024,CARRY=512*1024;
+  let carry=new Uint8Array(0),off=0;const allBlocks=[],seen=new Set();
+  while(off<file.size){
+    const toRead=Math.min(CHUNK,file.size-off);const chunk=await readChunk(file,off,toRead);off+=toRead;
+    const buf=new Uint8Array(carry.length+chunk.length);buf.set(carry);buf.set(chunk,carry.length);
+    let sp=0;while(sp<=buf.length-4){const ni=buf.indexOf(0x1F,sp);if(ni===-1||ni>buf.length-4)break;sp=ni;if(buf[sp+1]===0x43&&buf[sp+2]===0xB6&&buf[sp+3]===0x75){let cp=sp+4;if(cp+2>buf.length){sp++;continue;}const[clSz,clSl]=vint(buf,cp);cp+=clSl;if(clSz>0&&clSz>80*1024*1024){sp++;continue;}const clEnd=clSz<0?buf.length:Math.min(cp+clSz,buf.length);parseCluster(buf,cp,clEnd,subNums,allBlocks);sp=clEnd;}else sp++;}
+    carry=buf.slice(Math.max(0,buf.length-CARRY));
+    EP(Math.min(99,Math.round(off/file.size*100)),`스캔 중... ${Math.min(99,Math.round(off/file.size*100))}%`);
+    await new Promise(r=>setTimeout(r,0));
+  }
+  for(const b of allBlocks){b.ts=Math.round(b.ts*scale);b.dur=Math.round(b.dur*scale);}
+  const unique=allBlocks.filter(b=>{const k=`${b.tn}:${b.ts}`;if(seen.has(k))return false;seen.add(k);return true;});
+  EL(`총 ${unique.length}개 자막 블록`,'ok');EP(100,'✅ 완료!');
+  const trows=document.getElementById('trows');
+  for(const t of tracks){
+    const tblks=unique.filter(b=>b.tn===t.num);EL(`트랙 #${t.num}: ${tblks.length}개`,'ok');
+    const row=document.createElement('div');row.className='track-row';
+    row.innerHTML=`<div class="track-info"><div class="track-name">${t.name||`Track ${t.num}`}</div><div class="track-meta">${t.codec} · ${t.lang||'?'} · ${tblks.length}개</div></div><div class="track-btns"><button class="btn btn-dl btn-sm"${!tblks.length?' disabled':''}>💾 SMI 저장</button><button class="btn btn-use btn-sm"${!tblks.length?' disabled':''}>🌐 번역으로 전달</button></div>`;
+    row.querySelectorAll('button')[0].onclick=()=>{const smi=toSMI(tblks,t.codec,t.name,t.lang);const blob=new Blob(['\uFEFF'+smi],{type:'text/sami;charset=utf-8'});const url=URL.createObjectURL(blob);const a=Object.assign(document.createElement('a'),{href:url,download:file.name.replace(/\.mkv$/i,`_track${t.num}.smi`)});document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(url),1000);};
+    row.querySelectorAll('button')[1].onclick=()=>{const smi=toSMI(tblks,t.codec,t.name,t.lang);const fname=file.name.replace(/\.mkv$/i,`_track${t.num}.smi`);transferToTranslate(smi,fname,t);};
+    trows.appendChild(row);
+  }
+  document.getElementById('track-section').style.display='block';
+}
+
+function transferToTranslate(smiText,fname,track){
+  const blob=new Blob([smiText],{type:'text/plain'});
+  mainFile=new File([blob],fname,{type:'text/plain'});mainSMI=smiText;
+  const banner=document.getElementById('transfer-banner');banner.style.display='block';
+  document.getElementById('transfer-info').textContent=`${fname} (${track.codec} · ${track.lang||'?'})`;
+  updateFileInfo(fname,smiText);setMain('translate');
+}
+
+// ════════ SMI 파싱 / 감지 ════════
+function detectEp(fn){const f=fn.replace(/\.[^.]+$/,'');let m=f.match(/[Ss](\d{1,2})[Ee](\d{1,3})/);if(m)return{season:parseInt(m[1]),ep:parseInt(m[2]),label:`S${m[1].padStart(2,'0')}E${m[2].padStart(2,'0')}`};m=f.match(/[Ee][Pp]?[.\-_]?(\d{1,3})(?!\d)/);if(m)return{season:1,ep:parseInt(m[1]),label:`E${m[1].padStart(2,'0')}`};m=f.match(/[.\-_ ](\d{2,3})[.\-_ ]/);if(m)return{season:1,ep:parseInt(m[1]),label:`E${m[1].padStart(2,'0')}`};m=f.match(/(\d{1,3})\s*화/);if(m)return{season:1,ep:parseInt(m[1]),label:`${m[1]}화`};m=f.match(/(\d{1,3})$/);if(m)return{season:1,ep:parseInt(m[1]),label:`E${m[1].padStart(2,'0')}`};return null;}
+function detectLang(t){const cls=(t.match(/Class=(\w+)/i)||[])[1]||'';if(/KR|KO/i.test(cls))return'한국어';if(/ZH|CN|CH|TC|SC/i.test(cls))return'중국어';if(/TH/i.test(cls))return'태국어';if(/EN/i.test(cls))return'영어';if(/JP|JA/i.test(cls))return'일본어';const s=t.slice(0,2000);if(/[\u0E00-\u0E7F]/.test(s))return'태국어';if(/[\u4E00-\u9FFF]/.test(s))return'중국어';if(/[\uAC00-\uD7A3]/.test(s))return'한국어';if(/[\u3040-\u30FF]/.test(s))return'일본어';return'영어/기타';}
+function parseSMILines(t){const lines=[];const re=/<SYNC\s+Start=(\d+)[^>]*>\s*<P[^>]*>([\s\S]*?)<\/SYNC>/gi;let m;while((m=re.exec(t))!==null){const ms=parseInt(m[1]);const raw=m[2].replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').replace(/&nbsp;/gi,'').trim();lines.push({ms,text:raw});}return lines;}
+function chunkLines(lines,max=60){const f=lines.filter(l=>l.text),c=[];for(let i=0;i<f.length;i+=max)c.push(f.slice(i,i+max));return c;}
+function getPrevContent(){if(!mainFile)return null;const ep=detectEp(mainFile.name);if(!ep||ep.ep<=1)return null;return prevFiles[`${ep.season}_${ep.ep-1}`]?.content||null;}
+
+function updateFileInfo(fname,smiText){
+  const ep=detectEp(fname),lang=detectLang(smiText),lc=parseSMILines(smiText).filter(l=>l.text).length;
+  document.getElementById('fi-name').textContent=fname;
+  document.getElementById('fi-ep').textContent=ep?ep.label:'감지 실패';
+  document.getElementById('fi-ep').className='fval '+(ep?'ok':'warn');
+  document.getElementById('fi-lines').textContent=lc+'줄';
+  document.getElementById('fi-lang').textContent=lang;
+  document.getElementById('finfo').style.display='block';
+  if(curMode==='claude')buildClaudeChunks();checkReady();
+}
+
+// ════════ 번역 프롬프트 빌더 ════════
+function buildTransPrompt(lines,withPrev,ci){
+  const gm={drama:'드라마',romance:'로맨스 드라마',action:'액션/범죄 드라마',historical:'사극/시대극',comedy:'코미디',thriller:'스릴러/미스터리'};
+  const lm={auto:'자동 감지',zh:'중국어(보통화)','zh-yue':'광둥어',th:'태국어',ja:'일본어',en:'영어'};
+  const genre=document.getElementById('genre').value,srcLang=document.getElementById('src-lang').value,extra=document.getElementById('extra-prompt').value.trim();
+  const txt=lines.map((l,i)=>`[${i}] ${l.text.replace(/\n/g,' | ')}`).join('\n');
+  let prev='';
+  if(withPrev&&ci===0){const pc=getPrevContent();if(pc){const pl=parseSMILines(pc).filter(l=>l.text).slice(-20);prev=`\n\n## 이전 편 마지막 20줄 (톤/이름 참고)\n${pl.map(l=>`- ${l.text}`).join('\n')}`;}}
+  return `당신은 ${gm[genre]||'드라마'} 자막 번역 전문가입니다.\n\n## 규칙\n- 원본 언어: ${lm[srcLang]||'자동 감지'}\n- 각 줄 번호 [N] 유지\n- JSON만 출력 (설명·마크다운 없이): {"0":"번역","1":"번역",...}\n- 자막 특성상 간결하고 자연스러운 한국어로\n- 인물 이름/호칭/말투를 이전 편과 일치${extra?`\n- 추가 지시: ${extra}`:''}${prev}\n\n## 번역할 자막 (${ci+1}번 청크)\n${txt}\n\n## 출력 (JSON만):`;
+}
+
+// ════════ Claude 수동 ════════
+function buildClaudeChunks(){const lines=parseSMILines(mainSMI);claudeChunks=chunkLines(lines.filter(l=>l.text),60).map(c=>({lines:c}));claudeResults={};curChunkIdx=0;renderChunkUI();}
+function renderChunkUI(){
+  const n=claudeChunks.length;
+  document.getElementById('chunk-nav').style.display=n>1?'flex':'none';
+  document.getElementById('chunk-info').textContent=`${curChunkIdx+1} / ${n}`;
+  document.getElementById('btn-pc').disabled=curChunkIdx===0;
+  document.getElementById('btn-nc').disabled=curChunkIdx===n-1;
+  const de=document.getElementById('chunk-dots');de.innerHTML='';
+  for(let i=0;i<n;i++){const d=document.createElement('div');d.className='dot '+(claudeResults[i]?'done':i===curChunkIdx?'active':'pending');d.onclick=()=>{curChunkIdx=i;renderChunkUI();};de.appendChild(d);}
+  if(claudeChunks.length)document.getElementById('prompt-display').textContent=buildTransPrompt(claudeChunks[curChunkIdx].lines,true,curChunkIdx);
+  const saved=claudeResults[curChunkIdx];document.getElementById('claude-result').value=saved?JSON.stringify(saved):'';
+  const done=Object.keys(claudeResults).length;
+  document.getElementById('chunk-progress-text').textContent=`진행: ${done} / ${n} 청크 완료`;
+  document.getElementById('btn-assemble').disabled=done<n;
+}
+function changeChunk(dir){curChunkIdx=Math.max(0,Math.min(claudeChunks.length-1,curChunkIdx+dir));renderChunkUI();}
+function copySubPrompt(){navigator.clipboard.writeText(document.getElementById('prompt-display').textContent).then(()=>{const ok=document.getElementById('copy-ok');ok.style.display='inline';setTimeout(()=>ok.style.display='none',2000);});}
+function saveChunkResult(){
+  const raw=document.getElementById('claude-result').value.trim();if(!raw)return;
+  try{const clean=raw.replace(/```json|```/g,'').trim();const parsed=JSON.parse(clean.match(/\{[\s\S]+\}/)?.[0]||clean);claudeResults[curChunkIdx]=parsed;const ok=document.getElementById('save-ok');ok.style.display='inline';setTimeout(()=>ok.style.display='none',2000);if(curChunkIdx<claudeChunks.length-1)setTimeout(()=>{curChunkIdx++;renderChunkUI();},600);else renderChunkUI();}catch(e){alert('JSON 파싱 오류\n\n'+e.message);}
+}
+function assembleSMI(){
+  const allTrans={};let off=0;for(let ci=0;ci<claudeChunks.length;ci++){const res=claudeResults[ci]||{};for(const[li,txt] of Object.entries(res))allTrans[off+parseInt(li)]=txt;off+=claudeChunks[ci].lines.length;}
+  resultSMI=applyTranslations(mainSMI,parseSMILines(mainSMI),allTrans);
+  document.getElementById('result-preview').textContent=resultSMI.slice(0,1500)+(resultSMI.length>1500?'\n...(이하 생략)':'');
+  document.getElementById('result-section').style.display='block';downloadResult();
+}
+
+// ════════ SMI 재조립 / API ════════
+function applyTranslations(orig,lines,trans){let r=orig;r=r.replace(/(Class=)(\w+)/gi,'$1KRCC');r=r.replace(/Name:[^;"\n]+/gi,'Name:Korean');r=r.replace(/lang:[^;"\n]+/gi,'lang:ko-KR');let i=0;r=r.replace(/<SYNC\s+Start=(\d+)[^>]*>\s*<P[^>]*>([\s\S]*?)<\/SYNC>/gi,(full,ms,inner)=>{const raw=inner.replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').replace(/&nbsp;/gi,'').trim();if(!raw)return full;const translated=trans[i]||raw;i++;return `<SYNC Start=${ms}><P Class=KRCC>${translated.replace(/\n/g,'<br>')}</P></SYNC>`;});return r;}
+async function callGemini(key,prompt){const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.3,maxOutputTokens:8192}})});if(!res.ok){const e=await res.json();throw new Error(e.error?.message||res.status);}const d=await res.json();return d.candidates?.[0]?.content?.parts?.[0]?.text||'';}
+async function callDeepSeek(key,prompt){const res=await fetch('https://api.deepseek.com/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({model:'deepseek-chat',messages:[{role:'user',content:prompt}],temperature:0.3,max_tokens:8192})});if(!res.ok){const e=await res.json();throw new Error(e.error?.message||res.status);}const d=await res.json();return d.choices?.[0]?.message?.content||'';}
+async function callAPI(prompt){const key=curAPI==='gemini'?document.getElementById('key-gemini').value.trim():document.getElementById('key-deepseek').value.trim();if(!key)throw new Error('API 키를 입력해주세요');return curAPI==='gemini'?callGemini(key,prompt):callDeepSeek(key,prompt);}
+function safeJSON(raw){try{return JSON.parse(raw.replace(/```json|```/g,'').trim());}catch{}const m=raw.match(/\{[\s\S]+\}/);if(m){try{return JSON.parse(m[0]);}catch{}}return{};}
+function TL(msg,t=''){const b=document.getElementById('tlb');const d=document.createElement('div');d.className='ll'+(t?' l'+t:'');d.textContent=msg;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+function TP(pct,lbl){document.getElementById('tfill').style.width=pct+'%';document.getElementById('tpct').textContent=pct+'%';if(lbl)document.getElementById('tlbl').textContent=lbl;}
+async function startTranslate(){
+  const btn=document.getElementById('btn-translate');btn.disabled=true;
+  document.getElementById('prog-trans').style.display='block';document.getElementById('result-section').style.display='none';
+  document.getElementById('tlb').innerHTML='';TP(0,'번역 준비 중...');
+  try{
+    const epInfo=detectEp(mainFile.name);TL(`📄 ${mainFile.name}`,'i');if(epInfo)TL(`🔢 화수: ${epInfo.label}`,'i');
+    const pc=getPrevContent();if(epInfo&&epInfo.ep>1){if(pc)TL('📚 이전 편 참고 확인','ok');else TL('⚠️ 이전 편 없음','warn');}
+    const lines=parseSMILines(mainSMI),chunks=chunkLines(lines.filter(l=>l.text),80);
+    TL(`📊 ${lines.filter(l=>l.text).length}줄 / ${chunks.length}청크`,'i');
+    const allTrans={};let gIdx=0;
+    for(let ci=0;ci<chunks.length;ci++){
+      TP(Math.round((ci/chunks.length)*85)+5,`번역 중... ${ci+1}/${chunks.length}`);TL(`⏳ 청크 ${ci+1}/${chunks.length}...`,'i');
+      const raw=await callAPI(buildTransPrompt(chunks[ci],true,ci));const parsed=safeJSON(raw);
+      for(const[li,txt] of Object.entries(parsed))allTrans[gIdx+parseInt(li)]=txt;
+      gIdx+=chunks[ci].length;if(ci<chunks.length-1)await new Promise(r=>setTimeout(r,1500));
+    }
+    TL(`✅ 완료 (${Object.keys(allTrans).length}줄)`,'ok');TP(100,'✅ 완료!');
+    resultSMI=applyTranslations(mainSMI,parseSMILines(mainSMI),allTrans);
+    document.getElementById('result-preview').textContent=resultSMI.slice(0,1500)+(resultSMI.length>1500?'\n...(이하 생략)':'');
+    document.getElementById('result-section').style.display='block';
+  }catch(e){TL('❌ '+e.message,'er');TP(0,'오류');}
+  btn.disabled=false;
+}
+function downloadResult(){if(!resultSMI||!mainFile)return;const fname=mainFile.name.replace(/\.smi$/i,'_KO.smi');const blob=new Blob(['\uFEFF'+resultSMI],{type:'text/sami;charset=utf-8'});const url=URL.createObjectURL(blob);const a=Object.assign(document.createElement('a'),{href:url,download:fname});document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(url),1000);}
+
+// ════════ 파일 읽기 / 이벤트 ════════
+function readFile(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=()=>rej(new Error('읽기 실패'));r.readAsText(f,'utf-8');});}
+async function loadSMIFile(f){mainFile=f;mainSMI=await readFile(f);updateFileInfo(f.name,mainSMI);}
+function checkReady(){const hasFile=!!mainFile;const hasKey=curAPI==='gemini'?!!document.getElementById('key-gemini').value.trim():!!document.getElementById('key-deepseek').value.trim();document.getElementById('btn-translate').disabled=!(hasFile&&hasKey);}
+
+// MKV 드롭존
+const dzMkv=document.getElementById('dz-mkv'),fiMkv=document.getElementById('fi-mkv');
+dzMkv.addEventListener('click',()=>fiMkv.click());
+fiMkv.addEventListener('change',()=>{if(fiMkv.files[0])extractMKV(fiMkv.files[0]);});
+dzMkv.addEventListener('dragover',e=>{e.preventDefault();dzMkv.classList.add('over')});
+dzMkv.addEventListener('dragleave',()=>dzMkv.classList.remove('over'));
+dzMkv.addEventListener('drop',e=>{e.preventDefault();dzMkv.classList.remove('over');if(e.dataTransfer.files[0])extractMKV(e.dataTransfer.files[0]);});
+
+// SMI 드롭존
+const dzSmi=document.getElementById('dz-smi'),fiSmi=document.getElementById('fi-smi');
+dzSmi.addEventListener('click',()=>fiSmi.click());
+fiSmi.addEventListener('change',()=>{if(fiSmi.files[0])loadSMIFile(fiSmi.files[0]);});
+dzSmi.addEventListener('dragover',e=>{e.preventDefault();dzSmi.classList.add('over')});
+dzSmi.addEventListener('dragleave',()=>dzSmi.classList.remove('over'));
+dzSmi.addEventListener('drop',e=>{e.preventDefault();dzSmi.classList.remove('over');const f=e.dataTransfer.files[0];if(f&&/\.smi$/i.test(f.name))loadSMIFile(f);});
+
+// 이전 편 드롭존
+const dzPrev=document.getElementById('dz-prev'),fiPrev=document.getElementById('fi-prev');
+dzPrev.addEventListener('click',()=>fiPrev.click());
+fiPrev.addEventListener('change',async()=>{
+  prevFiles={};const list=document.getElementById('prev-list');list.innerHTML='';
+  for(const f of fiPrev.files){const ep=detectEp(f.name);if(!ep)continue;const content=await readFile(f);prevFiles[`${ep.season}_${ep.ep}`]={name:f.name,content};const div=document.createElement('div');div.className='prev-item other';div.textContent=`${ep.label} · ${f.name}`;list.appendChild(div);}
+  if(mainFile){const ep=detectEp(mainFile.name);if(ep&&ep.ep>1){const key=`${ep.season}_${ep.ep-1}`;document.querySelectorAll('.prev-item').forEach(el=>{if(prevFiles[key]&&el.textContent.includes(prevFiles[key].name))el.classList.replace('other','match');});}}
+  if(curMode==='claude'&&mainSMI)buildClaudeChunks();
+});
+document.getElementById('key-gemini').addEventListener('input',checkReady);
+document.getElementById('key-deepseek').addEventListener('input',checkReady);
+
+// ════════ 블로그 섹션 ════════
+let curBlogCat='travel';
+function setBlogTab(cat,btn){
+  curBlogCat=cat;
+  document.querySelectorAll('.blog-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  document.querySelectorAll('.bdyn').forEach(d=>d.classList.remove('show'));
+  document.getElementById('bdyn-'+cat).classList.add('show');
+}
+function togglePill(el){el.classList.toggle('on');el.querySelector('input').checked=el.classList.contains('on');}
+function bv(id){const e=document.getElementById(id);return e?e.value.trim():'';}
+function getBlogOpts(){return[...document.querySelectorAll('#checkWrap .check-pill.on input')].map(i=>i.value);}
+function bAutoFill(cat){
+  const statMap={webtoon:'wt-status',drama:'dr-status',movie:'mv-status',actor:'ac-status'};
+  const infoMap={webtoon:'wt-info',drama:'dr-info',movie:'mv-info',actor:'ac-info'};
+  const statEl=document.getElementById(statMap[cat]),infoEl=document.getElementById(infoMap[cat]);
+  statEl.style.color='#a07800';statEl.textContent='💡 무료 버전은 자동채우기가 없어요! 아래에 직접 입력해주세요~';
+  if(!infoEl.value){const hints={webtoon:'예: 네이버 웹툰, 작가명, 장르, 줄거리 간단히',drama:'예: 방송사, 방영연도, 장르, 주요 출연진 2~3명, 줄거리',movie:'예: 개봉연도, 장르, 감독, 출연진, 줄거리',actor:'예: 국적, 데뷔연도, 대표작 2~3개, 매력 포인트'};infoEl.placeholder=hints[cat]||'정보를 직접 입력해주세요!';infoEl.focus();}
+}
+function generateBlogPrompt(){
+  const lenMap={normal:'800~1200자',short:'500~800자',long:'1500자 이상'};
+  const len=lenMap[bv('blength')];const seo=bv('seoKw');const opts=getBlogOpts();
+  let topic='',catBlock='';
+  if(curBlogCat==='travel'){
+    topic=bv('tr-topic');if(!topic){alert('주제를 입력해주세요! 🌸');return;}
+    catBlock=`카테고리: 여행기\n주제: ${topic}${bv('tr-places')?'\n방문 장소/코스: '+bv('tr-places'):''}${bv('tr-tips')?'\n팁/주의사항: '+bv('tr-tips'):''}${bv('tr-ep')?'\n에피소드/감정: '+bv('tr-ep'):''}`;
+  }else if(curBlogCat==='webtoon'){
+    topic=bv('wt-title');if(!topic){alert('작품명을 입력해주세요! 🌸');return;}
+    catBlock=`카테고리: 웹툰 리뷰\n작품명: ${topic} (${bv('wt-status-sel')})${bv('wt-url')?'\n참고 URL: '+bv('wt-url'):''}${bv('wt-info')?'\n작품 정보: '+bv('wt-info'):''}${bv('wt-ep')?'\n직접 읽은 소감: '+bv('wt-ep'):''}`;
+  }else if(curBlogCat==='drama'){
+    topic=bv('dr-title');if(!topic){alert('드라마 제목을 입력해주세요! 🌸');return;}
+    catBlock=`카테고리: 드라마 리뷰\n드라마명: ${topic}${bv('dr-url')?'\n참고 URL: '+bv('dr-url'):''}${bv('dr-info')?'\n드라마 정보: '+bv('dr-info'):''}${bv('dr-ep')?'\n직접 본 소감: '+bv('dr-ep'):''}`;
+  }else if(curBlogCat==='movie'){
+    topic=bv('mv-title');if(!topic){alert('영화 제목을 입력해주세요! 🌸');return;}
+    catBlock=`카테고리: 영화 리뷰\n영화명: ${topic}${bv('mv-url')?'\n참고 URL: '+bv('mv-url'):''}${bv('mv-info')?'\n영화 정보: '+bv('mv-info'):''}${bv('mv-ep')?'\n직접 본 소감: '+bv('mv-ep'):''}`;
+  }else if(curBlogCat==='actor'){
+    topic=bv('ac-name');if(!topic){alert('배우명을 입력해주세요! 🌸');return;}
+    catBlock=`카테고리: 배우 소개\n배우명: ${topic}${bv('ac-trigger')?'\n입덕 계기: '+bv('ac-trigger'):''}${bv('ac-url')?'\n참고 URL: '+bv('ac-url'):''}${bv('ac-info')?'\n배우 정보: '+bv('ac-info'):''}${bv('ac-ep')?'\n팬으로서 느낀 점: '+bv('ac-ep'):''}`;
+  }
+  const imgSec=opts.includes('images')?'\n- 글 흐름에 맞게 이미지 삽입 위치를 [📷 이미지: 설명 | 팁] 형식으로 3~6개 표시':'';
+  const seoSec=opts.includes('seo_titles')?'\n- 글 마지막에 --- 후 [SEO 제목 후보] 형식으로 제목 3개 제안':'';
+  const tagSec=opts.includes('tags')?'\n- --- 후 [추천 태그] 형식으로 네이버 블로그 태그 10~15개 (#태그 형식)':'';
+  const prompt=`아래 정보를 바탕으로 네이버 블로그 포스팅을 완성해줘.\n\n━━━ 글쓰기 정보 ━━━\n${catBlock}\n${seo?'SEO 키워드: '+seo:''}\n글 길이: ${len}\n\n━━━ 말투 & 스타일 규칙 (꼭 지켜줘!) ━━━\n- 친근한 구어체로, 독자를 "잇님들"로 호칭\n- 존댓말 기본 (~요, ~네요, ~답니다 자연스럽게 혼용)\n- 중요한 정보엔 느낌표 3~5개 연속 (예: 꼭 가보세요!!!!!)\n- "존맛!!!!", "국뽕 올라요", "대박이에요?!?!" 같은 생동감 있는 감탄 표현 사용\n- 짧은 문장 끊어쓰기로 리듬감 살리기\n- ㅠㅠ, ㅋㅋ, ~♡ 이모티콘 적당히 사용\n- 솔직한 단점/아쉬운 점도 숨기지 않기\n- 에피소드/감정은 직접 경험한 것처럼 자연스럽게 녹이기\n- 내가 입력한 에피소드가 없는 부분은 [[여기에 직접 경험 추가]] 표시해줘${imgSec}${opts.includes('tips')?'\n- 실용 팁/주의사항은 본문 안에 "잇님들 꼭 알아두세요!!!!" 식으로 자연스럽게 포함':''}${opts.includes('ending')?'\n- 마지막에 독자에게 말 거는 따뜻한 마무리 문단 추가':''}${seoSec}${tagSec}`;
+  document.getElementById('blogPromptText').textContent=prompt;
+  const card=document.getElementById('bresult');card.classList.add('show');card.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function copyBlogPrompt(){
+  navigator.clipboard.writeText(document.getElementById('blogPromptText').textContent).then(()=>{
+    const btn=document.getElementById('bcopyBtn');btn.textContent='✅ 복사됐어요!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='📋 복사하기';btn.classList.remove('done');},2000);
+  });
+}
+</script>
+</body>
+</html>
