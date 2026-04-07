@@ -159,7 +159,7 @@ textarea.binp{min-height:120px}
 <div class="app-header">
   <h1>🎬 통합 제작 툴</h1>
   <p>MKV 추출 · SMI 번역/리라이팅 · 블로그 · 이웃분석</p>
-  <p style="font-size:10px;color:#444;margin-top:2px">v2.5.0 · 2026.04.07 · gemini-2.5-flash-exp</p>
+  <p style="font-size:10px;color:#444;margin-top:2px">v2.5.2 · 2026.04.07 · gemini-2.5-flash-preview-04-17</p>
 </div>
 
 <div class="main-tabs">
@@ -649,7 +649,7 @@ async function callGemini(prompt,images){
   var parts=[];
   (images||[]).filter(Boolean).forEach(function(img){parts.push({inlineData:{mimeType:img.type,data:img.b64}});});
   parts.push({text:prompt});
-  var res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-exp:generateContent?key='+key,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:parts}],generationConfig:{temperature:0.3,maxOutputTokens:8192}})});
+  var res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-04-17:generateContent?key='+key,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:parts}],generationConfig:{temperature:0.3,maxOutputTokens:8192}})});
   if(!res.ok){var e=await res.json();throw new Error((e.error&&e.error.message)||res.status);}
   var d=await res.json();
   return(d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts&&d.candidates[0].content.parts[0]&&d.candidates[0].content.parts[0].text)||'';
@@ -852,7 +852,7 @@ async function generateBlogPrompt(){
 function buildBlogPrompt(info,seoKw,len,imgSec,seoSec,tagSec,tipSec,endSec,hasImg){
   var imgNote=hasImg?'\n- 첨부된 이미지를 참고해 분위기와 내용을 파악해줘':'';
   var kwNote=seoKw?'\nSEO 키워드 (자동 추출): '+seoKw:'\n- SEO 키워드는 내용을 분석해서 직접 선정해줘';
-  var smiNote=isSmiReview()?'\n\n━━━ 자막 기반 리뷰 작성 규칙 ━━━\n- 첨부된 자막 내용을 분석해서 등장인물, 줄거리, 주요 장면, 분위기를 파악해줘\n- 해당 화의 내용만 다루고 이후 내용 스포일러 없이 작성\n- 직접 본 것처럼 자연스럽게 리뷰로 작성해줘\n- 자막은 대화체 위주라 장면 묘사가 부족할 수 있으니 상상력으로 자연스럽게 보완해줘\n- 인상적인 대사나 장면은 구체적으로 언급해서 생동감 있게 써줘':'';
+  var smiNote=isSmiReview()&&smiReviewText?'\n\n━━━ 자막 기반 리뷰 작성 규칙 ━━━\n- 첨부된 자막 내용을 분석해서 등장인물, 줄거리, 주요 장면, 분위기를 파악해줘\n- 해당 화의 내용만 다루고 이후 내용 스포일러 없이 작성\n- 직접 본 것처럼 자연스럽게 리뷰로 작성해줘\n- 자막은 대화체 위주라 장면 묘사가 부족할 수 있으니 상상력으로 자연스럽게 보완해줘\n- 인상적인 대사나 장면은 구체적으로 언급해서 생동감 있게 써줘':'';
   return '아래 정보를 바탕으로 네이버 블로그 포스팅을 완성해줘.\n\n━━━ 글쓰기 정보 ━━━\n'+info+kwNote+'\n글 길이: '+len+smiNote+'\n\n━━━ 말투 & 스타일 규칙 ━━━\n- 친근한 구어체, 독자를 "잇님들"로 호칭\n- 존댓말 기본 (~요, ~네요 자연스럽게 혼용)\n- 중요한 정보엔 느낌표 연속 (예: 꼭 보세요!!!!!)\n- "존잼!!!!", "미쳤어요?!?!" 같은 생동감 있는 감탄 표현\n- 짧은 문장 끊어쓰기로 리듬감\n- ㅠㅠ, ㅋㅋ, ~♡ 이모티콘 적당히\n- 솔직한 단점도 숨기지 않기\n- 내가 입력한 에피소드가 없는 부분은 [[여기에 직접 경험 추가]] 표시'+imgNote+imgSec+tipSec+endSec+seoSec+tagSec;
 }
 
@@ -880,9 +880,10 @@ async function extractNeighborFromImg(input){
     var imgs=[];
     for(var i=0;i<files.length;i++){
       await new Promise(function(res){
+        var f=files[i];
         var r=new FileReader();
-        r.onload=function(e){imgs.push({b64:e.target.result.split(',')[1],type:files[i].type});res();};
-        r.readAsDataURL(files[i]);
+        r.onload=function(e){imgs.push({b64:e.target.result.split(',')[1],type:f.type});res();};
+        r.readAsDataURL(f);
       });
     }
     var prompt='이 이미지는 네이버 블로그 이웃 목록 화면 캡처입니다.\n이미지에서 블로그 닉네임(이름)만 추출해서 한 줄에 하나씩 출력해줘.\n닉네임 외에 다른 텍스트(버튼, 메뉴 등)는 제외하고 순수하게 닉네임만 출력해줘.';
