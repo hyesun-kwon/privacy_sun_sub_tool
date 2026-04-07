@@ -159,7 +159,7 @@ textarea.binp{min-height:120px}
 <div class="app-header">
   <h1>🎬 통합 제작 툴</h1>
   <p>MKV 추출 · SMI 번역/리라이팅 · 블로그 · 이웃분석</p>
-  <p style="font-size:10px;color:#444;margin-top:2px">v2.5.3 · 2026.04.07 · gemini-2.5-flash</p>
+  <p style="font-size:10px;color:#444;margin-top:2px">v1.0.0 · 2026.04.07 · gemini-2.5-flash</p>
 </div>
 
 <div class="main-tabs">
@@ -284,6 +284,7 @@ textarea.binp{min-height:120px}
     </div>
   </div>
   <button class="btn btn-main" id="btn-translate" onclick="startTranslate()" disabled>🚀 Gemini 번역 시작</button>
+  <button class="btn" id="btn-claude-direct" onclick="sendToClaudeDirect()" disabled style="background:linear-gradient(135deg,#92400e,#d97706);color:#fff">🧡 Claude로 바로 번역</button>
   <div class="card prog-wrap" id="prog-trans">
     <div class="prog-hd"><span id="tlbl">준비 중...</span><span style="color:var(--mut)" id="tpct">0%</span></div>
     <div class="pbg"><div class="pfill" id="tfill"></div></div>
@@ -294,6 +295,7 @@ textarea.binp{min-height:120px}
     <div class="result-preview" id="result-preview"></div>
     <button class="btn btn-dl" onclick="downloadResult()">💾 SMI 다운로드</button>
     <button class="btn btn-blog" style="margin-top:8px" onclick="sendToBlog()">📝 이 화 블로그 리뷰 만들기</button>
+    <button class="btn" style="margin-top:8px;background:linear-gradient(135deg,#92400e,#d97706);color:#fff" onclick="sendToClaude()">🧡 Claude로 재번역/리라이팅</button>
   </div>
 </div>
 
@@ -671,7 +673,7 @@ function buildTransPrompt(lines,ci,total,refSection){
   if(transMode==='rewrite'){
     return '당신은 드라마 자막 리라이팅 전문가입니다.\n\n## 규칙\n- 한국어 자막을 더 자연스럽고 세련된 한국어로 리라이팅\n- 번역 아님! 원문 뉘앙스와 감정을 유지하면서 어색한 표현 교정\n- 말투와 호칭을 일관되게 통일\n- 자막 특성상 간결하게 유지\n- 각 줄 번호 [N] 유지\n- JSON만 출력: {"0":"리라이팅","1":"리라이팅",...}'+(extra?'\n- 추가 지시: '+extra:'')+refNote+'\n\n## 리라이팅할 자막 ('+(ci+1)+'/'+total+' 청크)\n'+txt+'\n\n## 출력 (JSON만):';
   }
-  return '당신은 '+(gm[genre]||'드라마')+' 자막 번역 전문가입니다.\n\n## 규칙\n- 원본 언어: '+(lm[srcLang]||'자동 감지')+'\n- 각 줄 번호 [N] 유지\n- JSON만 출력: {"0":"번역","1":"번역",...}\n- 자막 특성상 간결하고 자연스러운 한국어로'+imgNote+'\n- 인물 이름/호칭/말투를 참고 자료와 일치'+(extra?'\n- 추가 지시: '+extra:'')+refNote+'\n\n## 번역할 자막 ('+(ci+1)+'/'+total+' 청크)\n'+txt+'\n\n## 출력 (JSON만):';
+  return '당신은 '+(gm[genre]||'드라마')+' 자막 번역 전문가입니다.\n\n## 규칙\n- 원본 언어: '+(lm[srcLang]||'자동 감지')+'\n- 각 줄 번호 [N] 유지\n- JSON만 출력: {"0":"번역","1":"번역",...}\n- 자막 특성상 간결하고 자연스러운 한국어로'+imgNote+'\n- 인물 이름/호칭/말투를 참고 자료와 일치\n- 영어나 외국어가 남아있으면 반드시 한국어로 번역할 것'+(extra?'\n- 추가 지시: '+extra:'')+refNote+'\n\n## 번역할 자막 ('+(ci+1)+'/'+total+' 청크)\n'+txt+'\n\n## 출력 (JSON만):';
 }
 
 async function startTranslate(){
@@ -713,6 +715,31 @@ async function startTranslate(){
 function applyTranslations(orig,lines,trans){var r=orig;r=r.replace(/(Class=)(\w+)/gi,'$1KRCC');r=r.replace(/Name:[^;"\n]+/gi,'Name:Korean');r=r.replace(/lang:[^;"\n]+/gi,'lang:ko-KR');var i=0;r=r.replace(/<SYNC\s+Start=(\d+)[^>]*>\s*<P[^>]*>([\s\S]*?)<\/SYNC>/gi,function(full,ms,inner){var raw=inner.replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').replace(/&nbsp;/gi,'').trim();if(!raw)return full;var translated=trans[i]||raw;i++;return '<SYNC Start='+ms+'><P Class=KRCC>'+translated.replace(/\n/g,'<br>')+'</P></SYNC>';});return r;}
 function downloadResult(){if(!resultSMI||!mainFile)return;var fname=mainFile.name.replace(/\.smi$/i,(transMode==='rewrite'?'_RW':'_KO')+'.smi');var blob=new Blob(['\uFEFF'+resultSMI],{type:'text/sami;charset=utf-8'});var url=URL.createObjectURL(blob);var a=Object.assign(document.createElement('a'),{href:url,download:fname});document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},1000);}
 
+function sendToClaude(){
+  if(!mainSMI||!mainFile)return;
+  var lines=parseSMILines(mainSMI).filter(function(l){return l.text;});
+  var smiText=lines.map(function(l){return l.text;}).join('\n');
+  var fname=mainFile.name.replace(/_KO\.smi$/i,'').replace(/_RW\.smi$/i,'').replace(/\.smi$/i,'').replace(/_track\d+$/i,'');
+  var epInfo=detectEp(mainFile.name);
+  var epLabel=epInfo?' '+epInfo.label:'';
+  var gm={drama:'드라마',romance:'로맨스 드라마',action:'액션/범죄 드라마',historical:'사극/시대극',comedy:'코미디',thriller:'스릴러/미스터리'};
+  var genre=document.getElementById('genre').value;
+  var extra=document.getElementById('extra-prompt').value.trim();
+  var isRewrite=transMode==='rewrite';
+  var prompt='아래 자막을 '+(isRewrite?'자연스러운 한국어로 리라이팅':'한국어로 번역')+'해줘.\n\n';
+  prompt+='드라마: '+fname+epLabel+'\n';
+  prompt+='장르: '+(gm[genre]||'드라마')+'\n';
+  if(extra)prompt+='추가 지시: '+extra+'\n';
+  prompt+=isRewrite
+    ?'\n규칙:\n- 한국어→한국어 리라이팅 (번역 아님)\n- 원문 뉘앙스/감정 유지하면서 어색한 표현 교정\n- 말투와 호칭 일관되게 통일\n- 자막 특성상 간결하게 유지\n'
+    :'\n규칙:\n- 자연스럽고 간결한 한국어로 번역\n- 자막 특성상 짧고 명확하게\n- 인물 호칭/말투 일관되게\n';
+  prompt+='\n자막 내용:\n'+smiText;
+  navigator.clipboard.writeText(prompt).then(function(){
+    window.open('https://claude.ai','_blank');
+    alert('✅ 프롬프트가 복사됐어요!\nClaude 창에 붙여넣기 하세요.\n\n💡 SMI 파일도 함께 올리면 더 좋아요!');
+  });
+}
+
 function sendToBlog(){
   if(!resultSMI||!mainFile)return;
   var lines=parseSMILines(resultSMI).filter(function(l){return l.text;});
@@ -740,7 +767,42 @@ function toggleSmiReview(){
 
 function readFile(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(e){res(e.target.result);};r.onerror=function(){rej(new Error('읽기 실패'));};r.readAsText(f,'utf-8');});}
 async function loadSMIFile(f){mainFile=f;mainSMI=await readFile(f);updateFileInfo(f.name,mainSMI);}
-function checkReady(){document.getElementById('btn-translate').disabled=!(mainFile&&getAPIKey());}
+function checkReady(){
+  var ok=!!(mainFile&&getAPIKey());
+  document.getElementById('btn-translate').disabled=!ok;
+  document.getElementById('btn-claude-direct').disabled=!mainFile;
+}
+
+function sendToClaudeDirect(){
+  if(!mainFile||!mainSMI)return;
+  var lines=parseSMILines(mainSMI).filter(function(l){return l.text;});
+  var smiText=lines.map(function(l){return l.text;}).join('\n');
+  var fname=mainFile.name.replace(/_track\d+$/i,'').replace(/\.smi$/i,'');
+  var epInfo=detectEp(mainFile.name);
+  var epLabel=epInfo?' '+epInfo.label:'';
+  var gm={drama:'드라마',romance:'로맨스 드라마',action:'액션/범죄 드라마',historical:'사극/시대극',comedy:'코미디',thriller:'스릴러/미스터리'};
+  var lm={auto:'자동 감지',zh:'중국어(보통화)','zh-yue':'광둥어',th:'태국어',ja:'일본어',en:'영어'};
+  var genre=document.getElementById('genre').value;
+  var srcLang=document.getElementById('src-lang').value;
+  var extra=document.getElementById('extra-prompt').value.trim();
+  var isRewrite=transMode==='rewrite';
+  var prompt='아래 드라마 자막을 '+(isRewrite?'자연스러운 한국어로 리라이팅':'한국어로 번역')+'해줘.\n\n';
+  prompt+='드라마: '+fname+epLabel+'\n';
+  prompt+='장르: '+(gm[genre]||'드라마')+'\n';
+  if(!isRewrite)prompt+='원본 언어: '+(lm[srcLang]||'자동 감지')+'\n';
+  if(extra)prompt+='추가 지시: '+extra+'\n';
+  prompt+=isRewrite
+    ?'\n## 규칙\n- 한국어→한국어 리라이팅 (번역 아님)\n- 원문 뉘앙스/감정 유지하면서 어색한 표현 교정\n- 말투와 호칭 일관되게 통일\n- 자막 특성상 간결하게 유지\n- 영어나 외국어가 남아있으면 반드시 한국어로\n'
+    :'\n## 규칙\n- 자연스럽고 생동감 있는 구어체 한국어로 번역\n- 자막 특성상 짧고 명확하게\n- 인물 호칭/말투 일관되게\n- 영어나 외국어가 남아있으면 반드시 한국어로 번역\n- 감정 표현과 욕설도 자연스럽게 처리\n';
+  prompt+='\n## 자막 내용\n'+smiText;
+  prompt+='\n\n## 출력 형식\n원본 자막 순서 그대로, 번역된 텍스트만 줄바꿈으로 구분해서 출력해줘.';
+  navigator.clipboard.writeText(prompt).then(function(){
+    window.open('https://claude.ai','_blank');
+    setTimeout(function(){
+      alert('✅ 프롬프트 복사 완료!\n\nClaude 창에서:\n1. 프롬프트 붙여넣기\n2. SMI 파일도 첨부하면 더 좋아요!');
+    },500);
+  });
+}
 
 function setupDrop(dzId,fiId,onFile){
   var dz=document.getElementById(dzId),fi=document.getElementById(fiId);
