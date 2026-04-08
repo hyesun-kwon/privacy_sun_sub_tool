@@ -3,44 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>통합 툴 v1.6.0</title>
+<title>통합 툴 v1.6.2</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#0c0c18;--card:#14142a;--bd:#2a2a45;--ac:#7c6aff;--ac2:#a855f7;--txt:#e0e0f5;--mut:#6a6a8a;--ok:#34d399;--er:#f87171;--warn:#fbbf24;--groq:#f55036;--groq2:#ff8c00}
 body{background:var(--bg);color:var(--txt);font-family:-apple-system,'Noto Sans KR',sans-serif;min-height:100vh;font-size:14px}
 .wrap{max-width:480px;margin:0 auto;padding:0 0 40px}
-/* 헤더 */
 .hd{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 5px}
 .hd-title{font-size:15px;font-weight:900;background:linear-gradient(135deg,var(--ac),var(--ac2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hd-sub{font-size:10px;color:var(--mut);margin-top:1px}
 .hd-r{display:flex;gap:5px;align-items:center}
 .ver{font-size:10px;color:var(--ok);font-weight:700;background:#0a2a0a;border:1px solid #1a5a1a;padding:2px 6px;border-radius:18px}
 .save-btn{padding:4px 9px;border:none;border-radius:6px;background:linear-gradient(135deg,#059669,#34d399);color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
-/* 탭 */
 .tabs{display:flex;padding:5px 14px 0}
 .tab{flex:1;padding:6px 2px;border:none;background:var(--card);color:var(--mut);font-size:10px;font-weight:700;cursor:pointer;text-align:center;line-height:1.3;border-bottom:2px solid transparent;transition:.2s}
 .tab:first-child{border-radius:7px 0 0 0}.tab:last-child{border-radius:0 7px 0 0}
 .tab.on{color:var(--txt);border-bottom-color:var(--ac);background:#1a1a30}
 .tab .ti{font-size:13px;display:block;margin-bottom:1px}
-/* 페이지 */
 .pg{display:none;padding:9px 14px}.pg.on{display:block}
-/* 카드 */
 .card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:11px;margin-bottom:8px}
 .ct{font-size:11px;font-weight:700;color:#b080ff;margin-bottom:8px}
-/* 인풋 */
 .inp{background:#0a0a1a;border:1px solid var(--bd);border-radius:6px;color:var(--txt);padding:6px 8px;font-size:12px}
 .inp:focus{outline:none;border-color:var(--ac)}
 .inp-w{width:100%;font-family:'Noto Sans KR',sans-serif}
 select.inp{padding:5px 6px;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
 textarea.inp{resize:vertical;line-height:1.5;font-family:'Noto Sans KR',sans-serif}
-/* 드롭존 */
 .drop{border:2px dashed #333355;border-radius:8px;padding:12px 10px;text-align:center;cursor:pointer;transition:.2s}
 .drop:hover,.drop.ov{border-color:var(--ac);background:#18183a}
 .di{font-size:20px;display:block;margin-bottom:3px}
 .dh{color:var(--mut);font-size:11px;line-height:1.5}
 .dh strong{color:var(--txt);display:block;font-size:12px;font-weight:700}
-/* 버튼 */
 .btn-row{display:flex;gap:6px;margin-bottom:8px}
 .btn-row>.btn{margin-bottom:0;flex:1}
 .btn{padding:9px 8px;border:none;border-radius:7px;font-size:12px;font-weight:800;cursor:pointer;transition:.2s;font-family:inherit;width:100%;display:block}
@@ -53,27 +46,20 @@ textarea.inp{resize:vertical;line-height:1.5;font-family:'Noto Sans KR',sans-ser
 .b-dark{background:#1a1a30;color:var(--mut)}
 .b-danger{background:linear-gradient(135deg,#991b1b,#f87171);color:#fff}
 .b-sgkey{background:linear-gradient(135deg,#1a5276,#2e86c1);color:#fff}
-.b-gmkey{background:linear-gradient(135deg,#1a73e8,#4285f4);color:#fff}
 .b-sm{padding:5px 9px!important;font-size:11px;border-radius:6px;width:auto}
-/* 토글 */
 .toggle{display:flex;background:#0a0a1a;border-radius:6px;padding:2px;border:1px solid var(--bd);margin-bottom:8px}
 .tg{flex:1;padding:5px;border:none;border-radius:4px;background:transparent;color:var(--mut);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
 .tg.on{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
-/* API키 한줄 */
 .key-row{display:flex;gap:6px;align-items:center}
 .key-row .inp{flex:1;min-width:0}
-/* 진행바 */
 .prog-hd{display:flex;justify-content:space-between;font-size:11px;font-weight:600;margin-bottom:4px}
 .pbg{background:#1e1e35;border-radius:99px;height:3px;overflow:hidden;margin-bottom:6px}
 .pfill{height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:99px;width:0%;transition:width .3s}
 .logbox{background:#060610;border-radius:6px;padding:6px 8px;font-family:monospace;font-size:10px;max-height:80px;overflow-y:auto;border:1px solid #1a1a30}
 .ll{padding:1px 0}.li{color:var(--ac)}.lok{color:var(--ok)}.ler{color:var(--er)}.lwarn{color:var(--warn)}
-/* 배너 */
 .banner{background:#0d1f3a;border:1px solid #1a3a6a;border-radius:7px;padding:7px 10px;margin-bottom:8px;font-size:11px;display:none}
 .banner strong{color:#60a5fa;display:block;margin-bottom:2px}
-/* API저장됨 */
 .api-saved{background:#0a1f0a;border:1px solid #1a5a1a;border-radius:6px;padding:6px 9px;font-size:11px;color:var(--ok);cursor:pointer;margin-bottom:6px}
-/* 파일행 */
 .file-rows{margin-bottom:6px}
 .file-row{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #1e1e35}
 .file-row:last-child{border-bottom:none}
@@ -84,26 +70,20 @@ textarea.inp{resize:vertical;line-height:1.5;font-family:'Noto Sans KR',sans-ser
 .fr-loaded{flex:1;background:#0a1a2a;border:1px solid #1a3a5a;border-radius:6px;padding:5px 8px;cursor:pointer;display:flex;align-items:center;gap:5px;min-height:30px}
 .fr-ep{font-size:12px;font-weight:900;color:var(--ac);flex-shrink:0}
 .fr-short{font-size:10px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
-/* 파일 인포 */
 .finfo{display:none;gap:8px;flex-wrap:wrap;padding:5px 2px;font-size:11px}
 .finfo.on{display:flex}
 .fc{color:var(--mut)}.fc b{color:var(--txt);font-weight:700}
-/* 설정 그리드 */
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
-/* 트랙 */
 .track-row{background:#1c1c35;border-radius:7px;padding:8px 10px;margin-bottom:5px;display:flex;align-items:center;gap:7px}
 .tr-info{flex:1;min-width:0}
 .tr-name{font-weight:700;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tr-meta{font-size:10px;color:var(--mut);margin-top:1px}
 .tr-btns{display:flex;gap:4px;flex-shrink:0}
-/* 결과 */
 .res-prev{background:#060610;border-radius:6px;padding:7px;font-size:10px;max-height:100px;overflow-y:auto;border:1px solid #1a1a30;font-family:monospace;white-space:pre-wrap;word-break:break-all;color:#a0a0c0;margin-bottom:6px}
-/* 요약카드 */
 .sum-card{background:linear-gradient(135deg,#0d0d25,#1a1035);border:2px solid var(--ac);border-radius:10px;padding:11px;margin-bottom:8px;display:none}
 .sum-title{font-size:11px;font-weight:700;color:var(--ac);margin-bottom:7px}
 .sum-box{background:#060610;border-radius:6px;padding:9px;font-size:12px;line-height:1.7;white-space:pre-wrap;margin-bottom:6px;max-height:180px;overflow-y:auto}
 .quote-box{background:#1a1030;border-left:3px solid var(--ac2);border-radius:0 5px 5px 0;padding:6px 10px;margin-bottom:4px;font-size:12px;color:#d0c0ff;font-style:italic;line-height:1.6}
-/* 블로그 */
 label.fl{display:block;font-size:11px;font-weight:700;margin-bottom:3px;color:var(--mut)}
 .binp{width:100%;padding:7px 10px;border:1px solid var(--bd);border-radius:8px;font-size:13px;font-family:'Noto Sans KR',sans-serif;color:var(--txt);background:#0a0a1a;outline:none;transition:border .2s;resize:vertical}
 .binp:focus{border-color:var(--ac);background:#14142a}
@@ -121,7 +101,6 @@ textarea.binp{min-height:90px;line-height:1.6}
 .pr-body{padding:13px;background:#0a0a1a;font-size:12px;line-height:1.8;white-space:pre-wrap;max-height:360px;overflow-y:auto}
 .groq-load{display:none;text-align:center;padding:10px;color:var(--groq);font-size:12px}
 .groq-load.on{display:block}
-/* 이웃분석 */
 .nb-locked{background:#0a1a0a;border:1px solid var(--ok);border-radius:8px;padding:7px 10px;margin-bottom:8px;font-size:11px;color:var(--ok);display:flex;align-items:center;gap:6px}
 .nb-tabs{display:flex;margin-bottom:8px}
 .nb-tab{flex:1;padding:6px;border:1px solid var(--bd);background:#0a0a1a;color:var(--mut);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;transition:.2s}
@@ -130,7 +109,7 @@ textarea.binp{min-height:90px;line-height:1.6}
 .nb-tab:nth-child(2){border-left:none}
 .nb-tab.on{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border-color:var(--ac)}
 .nb-panel{display:none}.nb-panel.on{display:block}
-.gemini-badge{display:inline-block;background:#e8f0fe;color:#4285f4;font-size:10px;font-weight:700;padding:1px 5px;border-radius:12px;margin-left:3px}
+.groq-badge{display:inline-block;background:#fff3e0;color:var(--groq);font-size:10px;font-weight:700;padding:1px 5px;border-radius:12px;margin-left:3px}
 .stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;margin-bottom:8px}
 .stat-box{border-radius:7px;padding:8px}
 .stat-num{font-size:18px;font-weight:900}
@@ -169,7 +148,7 @@ textarea.binp{min-height:90px;line-height:1.6}
     <div class="hd-sub">MKV · 번역 · 블로그 · 이웃분석</div>
   </div>
   <div class="hd-r">
-    <span class="ver">v1.6.0</span>
+    <span class="ver">v1.6.2</span>
     <button class="save-btn" onclick="G.downloadSelf()">💾 저장</button>
   </div>
 </div>
@@ -206,29 +185,14 @@ textarea.binp{min-height:90px;line-height:1.6}
   <div class="banner" id="transfer-banner">
     <strong>✅ SMI 자동 로드됨</strong><span id="transfer-info"></span>
   </div>
-  <!-- API 키 -->
   <div class="card">
-    <div class="ct">⚙️ API 키</div>
-    <div class="toggle">
-      <button class="tg on" id="api-btn-groq" onclick="G.setApiTab('groq')">⚡ Groq</button>
-      <button class="tg" id="api-btn-gemini" onclick="G.setApiTab('gemini')">✨ Gemini</button>
-    </div>
-    <div id="api-tab-groq">
-      <div class="api-saved" id="saved-groq" style="display:none">✅ Groq 저장됨 (탭→수정)</div>
-      <div id="input-groq" class="key-row">
-        <input class="inp" type="password" id="key-groq" placeholder="gsk_...">
-        <button class="btn b-sgkey b-sm" onclick="G.saveGroqKey()">💾</button>
-      </div>
-    </div>
-    <div id="api-tab-gemini" style="display:none">
-      <div class="api-saved" id="saved-gemini" style="display:none">✅ Gemini 저장됨 (탭→수정)</div>
-      <div id="input-gemini" class="key-row">
-        <input class="inp" type="password" id="key-gemini" placeholder="AIza...">
-        <button class="btn b-gmkey b-sm" onclick="G.saveGeminiKey()">💾</button>
-      </div>
+    <div class="ct">⚙️ Groq API 키</div>
+    <div class="api-saved" id="saved-groq" style="display:none">✅ Groq 저장됨 (탭→수정)</div>
+    <div id="input-groq" class="key-row">
+      <input class="inp" type="password" id="key-groq" placeholder="gsk_...">
+      <button class="btn b-sgkey b-sm" onclick="G.saveGroqKey()">💾</button>
     </div>
   </div>
-  <!-- 파일 -->
   <div class="card">
     <div class="ct">📁 파일</div>
     <div class="file-rows">
@@ -266,7 +230,6 @@ textarea.binp{min-height:90px;line-height:1.6}
       <span class="fc">언어 <b id="fi-lang">-</b></span>
     </div>
   </div>
-  <!-- 번역 설정 -->
   <div class="card">
     <div class="ct">🎛️ 번역 설정</div>
     <div class="toggle">
@@ -406,7 +369,7 @@ textarea.binp{min-height:90px;line-height:1.6}
     </div>
     <div id="nb-input-area">
       <div class="nb-tabs">
-        <button class="nb-tab on" onclick="G.setNbTab('ocr',this)">📸 OCR<span class="gemini-badge">Gemini</span></button>
+        <button class="nb-tab on" onclick="G.setNbTab('ocr',this)">📸 OCR<span class="groq-badge">Groq</span></button>
         <button class="nb-tab" onclick="G.setNbTab('paste',this)">📋 붙여넣기</button>
         <button class="nb-tab" onclick="G.setNbTab('direct',this)">✏️ 직접입력</button>
       </div>
@@ -414,7 +377,7 @@ textarea.binp{min-height:90px;line-height:1.6}
         <div style="position:relative;border:1px dashed #4285f4;border-radius:8px;padding:10px;text-align:center;cursor:pointer;background:#0a0a1a;margin-bottom:5px">
           <span style="font-size:16px">📸</span>
           <div style="font-size:11px;color:var(--mut);margin-top:2px">캡처 이미지 업로드 (복수 가능)</div>
-          <input type="file" id="fi-nb-img" multiple accept="image/*" onchange="G.extractNeighborFromImg(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
+          <input type="file" id="fi-nb-img" multiple onchange="G.extractNeighborFromImg(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
         </div>
         <div id="nb-img-status" style="font-size:11px;display:none"></div>
       </div>
@@ -425,7 +388,6 @@ textarea.binp{min-height:90px;line-height:1.6}
       <div class="nb-panel" id="nb-panel-direct">
         <textarea class="inp inp-w" id="nb-direct" style="min-height:70px" placeholder="벚꽃송송이&#10;하늘여행자&#10;..."></textarea>
       </div>
-      <!-- 공통 목록 (항상 hidden, 내부 저장용) -->
       <textarea id="nb-list" style="display:none"></textarea>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
         <span style="font-size:11px;color:var(--mut)" id="nb-count"></span>
@@ -489,14 +451,12 @@ textarea.binp{min-height:90px;line-height:1.6}
 var G=(function(){
 'use strict';
 
-/* ── 유틸 ── */
 function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
 function copyText(t){return navigator.clipboard.writeText(t).catch(function(){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');document.body.removeChild(a);});}
 function dlBlob(c,t,n){var b=new Blob([c],{type:t}),u=URL.createObjectURL(b),a=Object.assign(document.createElement('a'),{href:u,download:n});document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(u);},1000);}
 function el(id){return document.getElementById(id);}
 function readFileText(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(e){res(e.target.result);};r.onerror=function(){rej(new Error('읽기 실패'));};r.readAsText(f,'utf-8');});}
 
-/* ── 탭 ── */
 function setMain(p){
   ['extract','translate','blog','neighbor'].forEach(function(k){
     var t=el('mtab-'+k),pg=el('page-'+k);
@@ -504,15 +464,8 @@ function setMain(p){
     if(pg)pg.classList.toggle('on',k===p);
   });
 }
-function setApiTab(t){
-  el('api-btn-groq').classList.toggle('on',t==='groq');
-  el('api-btn-gemini').classList.toggle('on',t==='gemini');
-  el('api-tab-groq').style.display=t==='groq'?'':'none';
-  el('api-tab-gemini').style.display=t==='gemini'?'':'none';
-}
 
-/* ── Groq ── */
-var GROQ_HEAVY='llama-3.3-70b-versatile',GROQ_LIGHT='llama-3.1-8b-instant';
+var GROQ_LIGHT='llama-3.1-8b-instant';
 function saveGroqKey(){
   var k=el('key-groq').value.trim();
   if(!k.startsWith('gsk_')){alert('gsk_ 로 시작해야 해요');return;}
@@ -525,7 +478,7 @@ function getGroqKey(){return localStorage.getItem('groq_key')||el('key-groq').va
 async function callGroq(prompt,sys,model){
   var key=getGroqKey();
   if(!key)throw new Error('Groq API 키 필요');
-  model=model||GROQ_HEAVY;
+  model=model||GROQ_LIGHT;
   var msgs=sys?[{role:'system',content:sys},{role:'user',content:prompt}]:[{role:'user',content:prompt}];
   for(var a=0;a<3;a++){
     var res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
@@ -536,8 +489,6 @@ async function callGroq(prompt,sys,model){
     if(res.status===429){
       var w=25;
       try{var ej=await res.json();var m=ej.error&&ej.error.message&&ej.error.message.match(/try again in ([\d.]+)s/);if(m)w=Math.ceil(parseFloat(m[1]))+2;}catch(e){}
-      // 70b → 8b 자동 폴백
-      if(model===GROQ_HEAVY&&a===0){model=GROQ_LIGHT;continue;}
       if(a<2){await sleep(w*1000);continue;}
       throw new Error('Groq 한도 초과. 잠시 후 다시 시도해주세요.');
     }
@@ -547,33 +498,22 @@ async function callGroq(prompt,sys,model){
   }
   return '';
 }
-
-/* ── Gemini ── */
-function saveGeminiKey(){
-  var k=el('key-gemini').value.trim();
-  if(!k.startsWith('AIza')){alert('AIza 로 시작해야 해요');return;}
-  localStorage.setItem('gemini_key',k);
-  el('saved-gemini').style.display='block';
-  el('input-gemini').style.display='none';
-  alert('✅ 저장!');
-}
-function getGeminiKey(){return localStorage.getItem('gemini_key')||el('key-gemini').value.trim();}
-async function callGemini(prompt,images){
-  var key=getGeminiKey();
-  if(!key)throw new Error('Gemini API 키 필요');
-  var parts=[];
-  (images||[]).forEach(function(img){if(img)parts.push({inlineData:{mimeType:img.type,data:img.b64}});});
-  parts.push({text:prompt});
-  var models=['gemini-2.0-flash','gemini-2.0-flash-lite'];
-  for(var i=0;i<models.length;i++){
-    var res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+models[i]+':generateContent?key='+key,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({contents:[{parts:parts}],generationConfig:{temperature:0.2,maxOutputTokens:2048}})
-    });
-    if(res.ok){var d=await res.json();return(d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts[0]&&d.candidates[0].content.parts[0].text)||'';}
-    if(i===models.length-1){var e=await res.json();throw new Error((e.error&&e.error.message)||'Gemini 오류 '+res.status);}
-  }
-  return '';
+async function callGroqVision(prompt,images){
+  var key=getGroqKey();
+  if(!key)throw new Error('Groq API 키 필요');
+  var content=[];
+  (images||[]).forEach(function(img){
+    if(img)content.push({type:'image_url',image_url:{url:'data:'+img.type+';base64,'+img.b64}});
+  });
+  content.push({type:'text',text:prompt});
+  var res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+    body:JSON.stringify({model:'meta-llama/llama-4-scout-17b-16e-instruct',messages:[{role:'user',content:content}],max_tokens:1000,temperature:0.2})
+  });
+  if(!res.ok){var e=await res.json();throw new Error((e.error&&e.error.message)||'Groq Vision 오류');}
+  var d=await res.json();
+  return(d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||'';
 }
 function safeJSON(raw){
   try{return JSON.parse(raw.replace(/```json|```/g,'').trim());}catch(e){}
@@ -582,7 +522,6 @@ function safeJSON(raw){
   return {};
 }
 
-/* ── 번역 모드 ── */
 var transMode='translate';
 function setTransMode(mode){
   transMode=mode;
@@ -591,7 +530,6 @@ function setTransMode(mode){
   el('lang-genre-row').style.display=mode==='rewrite'?'none':'grid';
 }
 
-/* ── EBML/MKV ── */
 var EID={Info:0x1549A966,TimestampScale:0x2AD7B1,Tracks:0x1654AE6B,TrackEntry:0xAE,TrackNumber:0xD7,TrackType:0x83,CodecID:0x86,TrackName:0x536E,Language:0x22B59C,Cluster:0x1F43B675,Timestamp:0xE7,BlockGroup:0xA0,Block:0xA1,BlockDuration:0x9B,SimpleBlock:0xA3};
 var SUB_CODECS=new Set(['S_TEXT/UTF8','S_TEXT/ASS','S_TEXT/SSA']);
 function eID(b,p){var v=b[p],n=v>=0x80?1:v>=0x40?2:v>=0x20?3:4,id=0;for(var i=0;i<n;i++)id=id*256+b[p+i];return[id,n];}
@@ -626,7 +564,7 @@ function toSMI(blocks,codec,name,lang){
   return o+'</BODY>\n</SAMI>';
 }
 function mkLog(boxId){return function(msg,t){var b=el(boxId),d=document.createElement('div');d.className='ll'+(t?' l'+t:'');d.textContent=msg;b.appendChild(d);b.scrollTop=b.scrollHeight;};}
-function mkProg(fillId,pctId,lblId){return function(pct,lbl){el(fillId).style.width=pct+'%';el(pctId).textContent=pct+'%';if(lbl&&lblId)el(lblId).textContent=lbl;};}
+function mkProg(fillId,pctId,lblId){return function(pct,lbl){el(fillId).style.width=pct+'%';el(pctId).textContent=pct+'%';if(lbl)el(lblId).textContent=lbl;};}
 var EL=mkLog('elb'),EP=mkProg('efill','epct','elbl');
 async function readChunk(file,s,len){return new Uint8Array(await file.slice(s,s+len).arrayBuffer());}
 async function extractMKV(file){
@@ -638,7 +576,7 @@ async function extractMKV(file){
   var tsScale=1000000,tracks=[];
   try{
     var pos=0;
-    var r1=eID(hdr,pos);pos+=r1[1];var r2=vint(hdr,pos);pos+=r2[1];if(r2[0]>0)pos+=r2[0]; // EBML header
+    var r1=eID(hdr,pos);pos+=r1[1];var r2=vint(hdr,pos);pos+=r2[1];if(r2[0]>0)pos+=r2[0];
     var r3=eID(hdr,pos);pos+=r3[1];var r4=vint(hdr,pos),ssz=r4[0];pos+=r4[1];
     var sEnd=ssz<0?hdr.length:Math.min(pos+ssz,hdr.length);
     while(pos<sEnd-2){
@@ -694,7 +632,6 @@ async function extractMKV(file){
   el('track-section').style.display='block';
 }
 
-/* ── 번역 ── */
 var mainFile=null,mainSMI='',resultSMI='',refOrig={},refDone={},lastSummary='',lastQuotes=[];
 function transferToTranslate(smiText,fname){
   mainFile=new File([smiText],fname,{type:'text/plain'});
@@ -739,8 +676,8 @@ function updateFileInfo(fname,smiText){
   el('fi-lang').textContent=lang;
   el('finfo').classList.add('on');
   el('summary-trigger-card').style.display='block';
-  if(lang==='한국어'){setTransMode('rewrite');el('fi-lang').style.color='var(--warn)';}
-  else{setTransMode('translate');el('fi-lang').style.color='';}
+  setTransMode(lang==='한국어'?'rewrite':'translate');
+  el('fi-lang').style.color=lang==='한국어'?'var(--warn)':'';
 }
 function buildRefSection(){
   var ep=mainFile?detectEp(mainFile.name):null,sections=[];
@@ -795,7 +732,7 @@ async function generateSummary(){
   if(!smi){alert('SMI 파일을 먼저 로드해주세요!');btn.disabled=false;btn.textContent='🎬 요약 + 명대사';return;}
   try{
     var lines=parseSMILines(smi).filter(function(l){return l.text;});
-    var txt=lines.slice(0,250).map(function(l){return l.text;}).join('\n');
+    var txt=lines.slice(0,100).map(function(l){return l.text;}).join('\n');
     var fname=mainFile?mainFile.name.replace(/\.[^.]+$/,''):'';
     var ep=mainFile?detectEp(mainFile.name):null;
     var raw=await callGroq(
@@ -818,7 +755,6 @@ function sendSummaryToBlog(){
   var fname=mainFile?mainFile.name.replace(/\.[^.]+$/,'').replace(/_track\d+$/i,''):'';
   var ep=mainFile?detectEp(mainFile.name):null,epLabel=ep?' '+ep.label:'';
   setMain('blog');
-  // setBlogCat을 skipClear=true로 호출 후 값 주입
   setBlogCat('drama',true);
   el('b-title').value=fname;
   var info='드라마: '+fname+epLabel+'\n\n줄거리:\n'+lastSummary;
@@ -837,7 +773,7 @@ function deleteDramaSettings(){
   if(!localStorage.getItem('drama_settings')){alert('없음');return;}
   if(!confirm('삭제?'))return;localStorage.removeItem('drama_settings');alert('🗑!');
 }
-// 파일 드롭/인풋 연결
+
 el('dz-mkv').addEventListener('click',function(){el('fi-mkv').click();});
 el('dz-mkv').addEventListener('dragover',function(e){e.preventDefault();this.classList.add('ov');});
 el('dz-mkv').addEventListener('dragleave',function(){this.classList.remove('ov');});
@@ -845,19 +781,18 @@ el('dz-mkv').addEventListener('drop',function(e){e.preventDefault();this.classLi
 el('fi-mkv').addEventListener('change',function(){if(this.files[0])extractMKV(this.files[0]);});
 el('fi-smi').addEventListener('change',function(){if(this.files[0]){var f=this.files[0];readFileText(f).then(function(t){mainFile=f;mainSMI=t;updateFileInfo(f.name,t);});}});
 el('fr-main-loaded').addEventListener('click',function(){el('fi-smi').click();});
-async function loadRefFiles(input,store,txtId){
-  store={};var count=0;
+async function loadRefFiles(input,txtId){
+  var store={},count=0;
   for(var i=0;i<input.files.length;i++){var f=input.files[i],ep=detectEp(f.name);if(!ep)continue;try{var c=await readFileText(f);store[ep.s+'_'+ep.e]={name:f.name,content:c};count++;}catch(e){}}
   el(txtId).textContent=count?'✅ '+count+'개':'선택';
   return store;
 }
-el('fi-ref-orig').addEventListener('change',async function(){refOrig=await loadRefFiles(this,refOrig,'ref-orig-txt');});
-el('fi-ref-done').addEventListener('change',async function(){refDone=await loadRefFiles(this,refDone,'ref-done-txt');});
+el('fi-ref-orig').addEventListener('change',async function(){refOrig=await loadRefFiles(this,'ref-orig-txt');});
+el('fi-ref-done').addEventListener('change',async function(){refDone=await loadRefFiles(this,'ref-done-txt');});
 
-/* ── 블로그 ── */
 var curCat='travel',blogImgs=[];
 var CAT={
-  travel:{title:false,info:'방문 장소, 코스, 에피소드, 팁 등',img:false,prompt:'여행 후기. 장소명+교통+비용 실용 정보. 검색 키워드: 장소명+여행.'},
+  travel:{title:false,info:'방문 장소, 코스, 에피소드, 팁 등',img:false,prompt:'여행 후기. 장소명+교통+비용 실용 정보. 검색 키워드: 장소명+여행. 장소마다 [📷 사진: 장소명] 표시.'},
   webtoon:{title:true,titlePh:'웹툰 제목',info:'플랫폼, 장르, 줄거리, 소감 등',img:true,imgLabel:'표지/컷',imgIcon:'📚',prompt:'웹툰 리뷰. 작품명+웹툰+리뷰 키워드. 스포 주의 문구 포함.'},
   drama:{title:true,titlePh:'드라마 제목 + 회차',info:'방송사, 장르, 출연진, 줄거리, 소감 등',img:true,imgLabel:'포스터/스틸컷',imgIcon:'🎬',prompt:'드라마 리뷰. 드라마명+회차+리뷰 키워드. 명대사 있으면 인용.'},
   movie:{title:true,titlePh:'영화 제목',info:'개봉연도, 장르, 감독, 소감 등',img:true,imgLabel:'포스터',imgIcon:'🎥',prompt:'영화 리뷰. 영화명+리뷰+평점 키워드. 결말 스포 금지.'},
@@ -865,7 +800,6 @@ var CAT={
 };
 function setBlogCat(cat,skipClear){
   curCat=cat;
-  // select 동기화 (change 이벤트 재귀 방지)
   var sel=el('blog-cat');if(sel.value!==cat)sel.value=cat;
   var cfg=CAT[cat];
   el('b-title-row').style.display=cfg.title?'':'none';
@@ -880,7 +814,6 @@ function setBlogCat(cat,skipClear){
     el('bresult').classList.remove('on');
   }
 }
-// change 이벤트는 setBlogCat(value) — skipClear 없음(새 카테고리 선택)
 el('blog-cat').addEventListener('change',function(){setBlogCat(this.value);});
 function handleBlogImgs(input){
   Array.from(input.files).forEach(function(f){
@@ -941,7 +874,7 @@ function loadBlogDraft(){
   var raw=localStorage.getItem('blog_draft');if(!raw){alert('없음');return;}
   try{
     var d=JSON.parse(raw);
-    setBlogCat(d.cat||'travel',true); // skipClear=true로 값 유지 후 직접 주입
+    setBlogCat(d.cat||'travel',true);
     el('b-title').value=d.title||'';
     el('b-info').value=d.info||'';
     el('b-tone').value=d.tone||'';
@@ -951,9 +884,7 @@ function loadBlogDraft(){
 }
 function deleteBlogDraft(){if(!localStorage.getItem('blog_draft')){alert('없음');return;}if(!confirm('삭제?'))return;localStorage.removeItem('blog_draft');alert('🗑!');}
 
-/* ── 이웃분석 ── */
 var nbNames=[],nbLocked=false,pdfQueue=[],cumCounts={},procCount=0;
-// 내부 공통 목록 (nb-list hidden textarea에 저장)
 function getNbList(){return el('nb-list').value.split('\n').map(function(n){return n.trim();}).filter(Boolean);}
 function setNbList(arr){el('nb-list').value=arr.join('\n');}
 function updateNbCount(){var n=getNbList().length;el('nb-count').textContent=n>0?'✅ '+n+'명':'';el('btn-lock').disabled=n===0;}
@@ -961,7 +892,6 @@ function mergeNbNames(newNames){
   var existing=getNbList(),merged=existing.slice();
   newNames.forEach(function(n){if(merged.indexOf(n)<0)merged.push(n);});
   setNbList(merged);
-  // 직접입력 탭도 동기화
   el('nb-direct').value=merged.join('\n');
   updateNbCount();
   return merged.length;
@@ -988,18 +918,17 @@ function parseNeighborRaw(){
 async function extractNeighborFromImg(input){
   var statusEl=el('nb-img-status'),files=Array.from(input.files);
   if(!files.length)return;
-  if(!getGeminiKey()){alert('Gemini API 키 필요');return;}
+  if(!getGroqKey()){alert('Groq API 키 필요');return;}
   statusEl.style.display='block';statusEl.textContent='🔍 추출 중...';statusEl.style.color='var(--warn)';
   try{
     var imgs=[];
     for(var i=0;i<files.length;i++){await new Promise(function(res){var f=files[i];var r=new FileReader();r.onload=function(e){imgs.push({b64:e.target.result.split(',')[1],type:f.type});res();};r.readAsDataURL(f);});}
-    var result=await callGemini('네이버 블로그 이웃 목록 화면 캡처. 블로그 닉네임만 한 줄에 하나씩. 버튼/날짜/메뉴 제외.',imgs);
+    var result=await callGroqVision('네이버 블로그 이웃 목록 화면 캡처. 블로그 닉네임만 한 줄에 하나씩. 버튼/날짜/메뉴 제외.',imgs);
     var names=result.split('\n').map(function(n){return n.trim().replace(/^[-•*\d.]+\s*/,'');}).filter(Boolean);
     var total=mergeNbNames(names);
     statusEl.textContent='✅ '+names.length+'명 추출! (총 '+total+'명)';statusEl.style.color='var(--ok)';
   }catch(e){statusEl.textContent='❌ '+e.message;statusEl.style.color='var(--er)';}
 }
-// 직접입력 패널 동기화
 el('nb-direct').addEventListener('input',function(){
   var lines=this.value.split('\n').map(function(n){return n.trim();}).filter(Boolean);
   setNbList(lines);updateNbCount();
@@ -1074,8 +1003,10 @@ async function runPendingPdfs(){
   }catch(e){NL('❌ '+e.message,'er');}
   el('btn-run-pdfs').disabled=false;
 }
-function normName(n){return String(n).replace(/\s/g,'').toLowerCase();}
-function countActivity(text,name){var norm=normName(name),t=normName(text),c=0,i=0;while((i=t.indexOf(norm,i))>=0){c++;i+=norm.length;}return c;}
+function countActivity(text,name){
+  var norm=String(name).replace(/\s/g,'').toLowerCase(),t=String(text).replace(/\s/g,'').toLowerCase(),c=0,i=0;
+  while((i=t.indexOf(norm,i))>=0){c++;i+=norm.length;}return c;
+}
 function updateLiveboard(){
   el('live-board').style.display='block';
   var sorted=nbNames.map(function(n){return{name:n,count:cumCounts[n]||0};}).sort(function(a,b){return b.count-a.count;});
@@ -1118,26 +1049,18 @@ async function extractPdfText(file){
   return text;
 }
 
-/* ── 저장 ── */
-function downloadSelf(){dlBlob(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.6.0.html');}
+function downloadSelf(){dlBlob(document.documentElement.outerHTML,'text/html;charset=utf-8','tool.html');}
 
-/* ── 초기화 ── */
 (function init(){
-  // API 키 복원
   var sg=localStorage.getItem('groq_key');
   if(sg){el('key-groq').value=sg;el('saved-groq').style.display='block';el('input-groq').style.display='none';}
   el('saved-groq').addEventListener('click',function(){el('saved-groq').style.display='none';el('input-groq').style.display='flex';});
-  var gm=localStorage.getItem('gemini_key');
-  if(gm){el('key-gemini').value=gm;el('saved-gemini').style.display='block';el('input-gemini').style.display='none';}
-  el('saved-gemini').addEventListener('click',function(){el('saved-gemini').style.display='none';el('input-gemini').style.display='flex';});
-  // 블로그 초기 카테고리
   setBlogCat('travel',true);
 })();
 
-/* ── 전역 노출 ── */
 return{
-  setMain:setMain,setApiTab:setApiTab,setNbTab:setNbTab,
-  saveGroqKey:saveGroqKey,saveGeminiKey:saveGeminiKey,
+  setMain:setMain,setNbTab:setNbTab,
+  saveGroqKey:saveGroqKey,
   setTransMode:setTransMode,
   sendToClaudeDirect:sendToClaudeDirect,sendToClaudeRefine:sendToClaudeRefine,
   downloadResult:downloadResult,generateSummary:generateSummary,sendSummaryToBlog:sendSummaryToBlog,
