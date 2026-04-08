@@ -305,16 +305,17 @@ textarea.binp{min-height:120px}
     <div class="pbg"><div class="pfill" id="tfill"></div></div>
     <div class="logbox" id="tlb"></div>
   </div>
-  <div class="result-section" id="result-section">
+  <div class="card" id="summary-trigger-card" style="display:none">
+      <div class="card-title">🎬 자막 요약</div>
+      <button class="btn btn-groq" onclick="generateSummary()" id="btn-summary">🎬 요약 + 명대사 추출</button>
+    </div>
+  </div>
+  <div class="result-section" id="result-section" style="display:none">
     <div class="card">
       <div class="card-title">✅ 완료</div>
       <div class="result-preview" id="result-preview"></div>
       <button class="btn btn-dl" onclick="downloadResult()">💾 SMI 다운로드</button>
       <button class="btn btn-claude" style="margin-top:8px" onclick="sendToClaudeRefine()">✨ Claude로 다듬기</button>
-    </div>
-    <div class="card">
-      <div class="card-title">🎬 자막 요약</div>
-      <button class="btn btn-groq" onclick="generateSummary()" id="btn-summary">🎬 요약 + 명대사 추출</button>
     </div>
   </div>
   <div class="summary-card" id="summary-card">
@@ -495,7 +496,7 @@ textarea.binp{min-height:120px}
   </div>
 </div>
 
-<div class="footer-note">v1.3.3</div>
+
 </div>
 
 <script>
@@ -642,14 +643,45 @@ function detectEp(fn){var f=fn.replace(/\.[^.]+$/,''),m;m=f.match(/[Ss](\d{1,2})
 function detectLang(t){var cls=(t.match(/Class=(\w+)/i)||[])[1]||'';if(/KR|KO/i.test(cls))return'한국어';if(/ZH|CN|CH|TC|SC/i.test(cls))return'중국어';if(/TH/i.test(cls))return'태국어';if(/EN/i.test(cls))return'영어';if(/JP|JA/i.test(cls))return'일본어';var s=t.slice(0,2000);if(/[\u0E00-\u0E7F]/.test(s))return'태국어';if(/[\u4E00-\u9FFF]/.test(s))return'중국어';if(/[\uAC00-\uD7A3]/.test(s))return'한국어';if(/[\u3040-\u30FF]/.test(s))return'일본어';return'영어/기타';}
 function parseSMILines(t){var lines=[],re=/<SYNC\s+Start=(\d+)[^>]*>\s*<P[^>]*>([\s\S]*?)<\/SYNC>/gi,m;while((m=re.exec(t))!==null){var ms=parseInt(m[1]),raw=m[2].replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').replace(/&nbsp;/gi,'').trim();lines.push({ms:ms,text:raw});}return lines;}
 function chunkLines(lines,max){max=max||60;var f=lines.filter(function(l){return l.text;}),c=[];for(var i=0;i<f.length;i+=max)c.push(f.slice(i,i+max));return c;}
-function updateFileInfo(fname,smiText){var ep=detectEp(fname),lang=detectLang(smiText),lc=parseSMILines(smiText).filter(function(l){return l.text;}).length;document.getElementById('fi-name').textContent=fname;document.getElementById('fi-ep').textContent=ep?ep.label:'감지 실패';document.getElementById('fi-ep').className='fval '+(ep?'ok':'warn');document.getElementById('fi-lines').textContent=lc+'줄';document.getElementById('fi-lang').textContent=lang;document.getElementById('finfo').style.display='block';if(lang==='한국어'){setTransMode('rewrite');document.getElementById('fi-lang').style.color='var(--warn)';}else{setTransMode('translate');document.getElementById('fi-lang').style.color='';}}
-function buildRefSection(){var ep=mainFile?detectEp(mainFile.name):null,sections=[];var keys=Object.keys(refOrigFiles).sort(function(a,b){return parseInt(a.split('_')[1])-parseInt(b.split('_')[1]);});if(keys.length>0){var ep1Key=keys.find(function(k){return k.endsWith('_1');})||keys[0];if(refOrigFiles[ep1Key]&&refDoneFiles[ep1Key]){var origLines=parseSMILines(refOrigFiles[ep1Key].content).filter(function(l){return l.text;});var doneLines=parseSMILines(refDoneFiles[ep1Key].content).filter(function(l){return l.text;});var pairs=[],minLen=Math.min(origLines.length,doneLines.length,60);for(var i=0;i<minLen;i++){if(origLines[i].text&&doneLines[i].text)pairs.push(origLines[i].text+' → '+doneLines[i].text);}if(pairs.length)sections.push('## 1화 원문↔번역 대조\n'+pairs.join('\n'));}if(ep&&ep.ep>1){var prevKey=ep.season+'_'+(ep.ep-1);if(refDoneFiles[prevKey]){var prevLines=parseSMILines(refDoneFiles[prevKey].content).filter(function(l){return l.text;}).slice(-20);if(prevLines.length)sections.push('## 직전 편 마지막 20줄\n'+prevLines.map(function(l){return l.text;}).join('\n'));}}}return sections.join('\n\n');}
+function updateFileInfo(fname,smiText){
+  var ep=detectEp(fname),lang=detectLang(smiText),lc=parseSMILines(smiText).filter(function(l){return l.text;}).length;
+  document.getElementById('fi-name').textContent=fname;
+  document.getElementById('fi-ep').textContent=ep?ep.label:'감지 실패';
+  document.getElementById('fi-ep').className='fval '+(ep?'ok':'warn');
+  document.getElementById('fi-lines').textContent=lc+'줄';
+  document.getElementById('fi-lang').textContent=lang;
+  document.getElementById('finfo').style.display='block';
+  // SMI 로드되면 요약 카드 바로 표시
+  document.getElementById('summary-trigger-card').style.display='block';
+  if(lang==='한국어'){setTransMode('rewrite');document.getElementById('fi-lang').style.color='var(--warn)';}
+  else{setTransMode('translate');document.getElementById('fi-lang').style.color='';}
+}function buildRefSection(){var ep=mainFile?detectEp(mainFile.name):null,sections=[];var keys=Object.keys(refOrigFiles).sort(function(a,b){return parseInt(a.split('_')[1])-parseInt(b.split('_')[1]);});if(keys.length>0){var ep1Key=keys.find(function(k){return k.endsWith('_1');})||keys[0];if(refOrigFiles[ep1Key]&&refDoneFiles[ep1Key]){var origLines=parseSMILines(refOrigFiles[ep1Key].content).filter(function(l){return l.text;});var doneLines=parseSMILines(refDoneFiles[ep1Key].content).filter(function(l){return l.text;});var pairs=[],minLen=Math.min(origLines.length,doneLines.length,60);for(var i=0;i<minLen;i++){if(origLines[i].text&&doneLines[i].text)pairs.push(origLines[i].text+' → '+doneLines[i].text);}if(pairs.length)sections.push('## 1화 원문↔번역 대조\n'+pairs.join('\n'));}if(ep&&ep.ep>1){var prevKey=ep.season+'_'+(ep.ep-1);if(refDoneFiles[prevKey]){var prevLines=parseSMILines(refDoneFiles[prevKey].content).filter(function(l){return l.text;}).slice(-20);if(prevLines.length)sections.push('## 직전 편 마지막 20줄\n'+prevLines.map(function(l){return l.text;}).join('\n'));}}}return sections.join('\n\n');}
 function TL(msg,t){var b=document.getElementById('tlb'),d=document.createElement('div');d.className='ll'+(t?' l'+t:'');d.textContent=msg;b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function TP(pct,lbl){document.getElementById('tfill').style.width=pct+'%';document.getElementById('tpct').textContent=pct+'%';if(lbl)document.getElementById('tlbl').textContent=lbl;}
 function applyTranslations(orig,trans){var r=orig;r=r.replace(/(Class=)(\w+)/gi,'$1KRCC');r=r.replace(/Name:[^;"\n]+/gi,'Name:Korean');r=r.replace(/lang:[^;"\n]+/gi,'lang:ko-KR');var i=0;r=r.replace(/<SYNC\s+Start=(\d+)[^>]*>\s*<P[^>]*>([\s\S]*?)<\/SYNC>/gi,function(full,ms,inner){var raw=inner.replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').replace(/&nbsp;/gi,'').trim();if(!raw)return full;var translated=trans[i]||raw;i++;return '<SYNC Start='+ms+'><P Class=KRCC>'+translated.replace(/\n/g,'<br>')+'</P></SYNC>';});return r;}
 function downloadResult(){if(!resultSMI||!mainFile)return;var fname=mainFile.name.replace(/\.smi$/i,(transMode==='rewrite'?'_RW':'_KO')+'.smi');var blob=new Blob(['\uFEFF'+resultSMI],{type:'text/sami;charset=utf-8'});var url=URL.createObjectURL(blob);var a=Object.assign(document.createElement('a'),{href:url,download:fname});document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},1000);}
 function buildClaudePrompt(mode){var fname=mainFile?mainFile.name.replace(/_track\d+$/i,'').replace(/\.smi$/i,''):'';var epInfo=mainFile?detectEp(mainFile.name):null,epLabel=epInfo?' '+epInfo.label:'';var gm={drama:'드라마',romance:'로맨스',action:'액션/범죄',historical:'사극',comedy:'코미디',thriller:'스릴러'};var lm={auto:'자동 감지',zh:'중국어','zh-yue':'광둥어',th:'태국어',ja:'일본어',en:'영어'};var genre=document.getElementById('genre').value,srcLang=document.getElementById('src-lang').value;var extra=document.getElementById('extra-prompt').value.trim(),isRewrite=transMode==='rewrite';var prompt=mode==='refine'?'아래 드라마 자막을 더 자연스러운 한국어로 다듬어줘.\n\n':'아래 드라마 자막을 '+(isRewrite?'자연스러운 한국어로 리라이팅':'한국어로 번역')+'해줘.\n\n';if(fname)prompt+='드라마: '+fname+epLabel+'\n';prompt+='장르: '+(gm[genre]||'드라마')+'\n';if(!isRewrite&&mode==='direct')prompt+='원본 언어: '+(lm[srcLang]||'자동 감지')+'\n';if(extra)prompt+='추가 지시: '+extra+'\n';prompt+='\n## 규칙\n- 자연스럽고 생동감 있는 구어체 한국어\n- 문장 끝 마침표(.) 절대 사용 금지\n- 자막 특성상 짧고 명확하게\n- 인물 호칭/말투 일관되게\n- 영어/외국어는 반드시 한국어로\n';var refSection=buildRefSection();if(refSection)prompt+='\n'+refSection+'\n';if(mainSMI){var origLines=parseSMILines(mainSMI).filter(function(l){return l.text;});prompt+='\n## 원본 자막\n'+origLines.map(function(l,idx){return '['+idx+'] '+l.text.replace(/\n/g,' | ');}).join('\n')+'\n';}if(mode==='refine'&&resultSMI){var draftLines=parseSMILines(resultSMI).filter(function(l){return l.text;});prompt+='\n## 참고 번역본\n'+draftLines.map(function(l,idx){return '['+idx+'] '+l.text.replace(/\n/g,' | ');}).join('\n')+'\n';}prompt+='\n## 출력 형식\n[번호] 번역문 형식으로 순서대로 출력해줘';return prompt;}
-function sendToClaudeDirect(){if(!mainFile||!mainSMI){window.open('https://claude.ai','_blank');return;}navigator.clipboard.writeText(buildClaudePrompt('direct')).then(function(){window.open('https://claude.ai','_blank');setTimeout(function(){alert('✅ 프롬프트 복사 완료!');},500);});}
+function sendToClaudeDirect(){
+  if(!mainFile||!mainSMI){
+    window.open('https://claude.ai','_blank');
+    return;
+  }
+  var prompt=buildClaudePrompt('direct');
+  navigator.clipboard.writeText(prompt).then(function(){
+    window.open('https://claude.ai','_blank');
+    setTimeout(function(){alert('✅ 프롬프트 복사 완료!\nClaude에 붙여넣기 하세요!\n\nSMI 파일도 함께 첨부하면 더 좋아요 😊');},500);
+  }).catch(function(){
+    // 클립보드 실패 시 텍스트 영역으로 대체
+    var ta=document.createElement('textarea');
+    ta.value=prompt;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    window.open('https://claude.ai','_blank');
+    setTimeout(function(){alert('✅ 프롬프트 복사 완료!\nClaude에 붙여넣기 하세요!');},500);
+  });
+}
 function sendToClaudeRefine(){if(!resultSMI){alert('먼저 번역을 완료해주세요!');return;}navigator.clipboard.writeText(buildClaudePrompt('refine')).then(function(){window.open('https://claude.ai','_blank');setTimeout(function(){alert('✅ 복사 완료!');},500);});}
 async function generateSummary(){var btn=document.getElementById('btn-summary');btn.disabled=true;btn.textContent='⏳ 요약 중...';var smiToUse=resultSMI||mainSMI;if(!smiToUse){alert('SMI 파일을 먼저 로드해주세요!');btn.disabled=false;btn.textContent='🎬 요약 + 명대사 추출';return;}try{var lines=parseSMILines(smiToUse).filter(function(l){return l.text;});var txt=lines.slice(0,250).map(function(l){return l.text;}).join('\n');var fname=mainFile?mainFile.name.replace(/\.[^.]+$/,''):'';var epInfo=mainFile?detectEp(mainFile.name):null;var sys='당신은 드라마 자막 분석 전문가입니다. JSON만 출력합니다.';var user='아래는 드라마 자막이야.\n드라마: '+fname+(epInfo?' '+epInfo.label:'')+'\n\n자막:\n'+txt+'\n\n아래 JSON 형식으로만 출력:\n{"summary":"3~5줄 줄거리 요약","highlight":"이번 화 핵심 1~2줄","quotes":[{"quote":"명대사1","speaker":"발화자"},{"quote":"명대사2","speaker":""},{"quote":"명대사3","speaker":""}]}';var raw=await callGroq(user,sys);var parsed=safeJSON(raw);lastSummary=(parsed.summary||'')+(parsed.highlight?'\n\n'+parsed.highlight:'');lastQuotes=parsed.quotes||[];document.getElementById('summary-box').textContent=lastSummary;var qBox=document.getElementById('quotes-box');qBox.innerHTML='';lastQuotes.forEach(function(q){var div=document.createElement('div');div.className='quote-box';div.textContent='"'+q.quote+'"'+(q.speaker?' — '+q.speaker:'');qBox.appendChild(div);});document.getElementById('summary-card').classList.add('show');document.getElementById('summary-card').scrollIntoView({behavior:'smooth',block:'start'});}catch(e){alert('요약 실패: '+e.message);}btn.disabled=false;btn.textContent='🎬 요약 + 명대사 추출';}
 function sendSummaryToBlog(){var fname=mainFile?mainFile.name.replace(/\.[^.]+$/,'').replace(/_track\d+$/i,''):'';var epInfo=mainFile?detectEp(mainFile.name):null,epLabel=epInfo?' '+epInfo.label:'';setMain('blog');document.querySelectorAll('.radio-pill').forEach(function(p){p.classList.remove('active');});var dp=document.getElementById('rpill-drama');dp.classList.add('active');setBlogCat('drama',dp);document.getElementById('b-title').value=fname;var infoText='[드라마: '+fname+epLabel+']\n\n## 줄거리\n'+lastSummary;if(lastQuotes.length){infoText+='\n\n## 명대사\n';lastQuotes.forEach(function(q){infoText+='"'+q.quote+'"'+(q.speaker?' — '+q.speaker:'')+'\n';});}document.getElementById('b-info').value=infoText;}
