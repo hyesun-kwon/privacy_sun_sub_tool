@@ -8,8 +8,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Gowun+Dodum&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0c0c18;--card:#14142a;--bd:#2a2a45;--ac:#7c6aff;--ac2:#a855f7;--txt:#e0e0f5;--mut:#6a6a8a;--ok:#34d399;--er:#f87171;--warn:#fbbf24;
-  --pink:#ff6b9d;--cherry:#d63870;--pborder:#f0c8d8;--ptxt:#2d2d2d;--gray:#888;--shadow:rgba(255,107,157,0.15);
+  --bg:#0c0c18;--card:#14142a;--bd:#2a2a45;--ac:#7c6aff;--ac2:#a855f7;
+  --txt:#e0e0f5;--mut:#6a6a8a;--ok:#34d399;--er:#f87171;--warn:#fbbf24;
   --groq:#f55036;--groq2:#ff8c00;
 }
 body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR',system-ui,sans-serif;min-height:100vh;font-size:14px}
@@ -23,7 +23,8 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .main-tab:last-child{border-radius:0 10px 0 0}
 .main-tab.active{color:var(--txt);border-bottom-color:var(--ac);background:#1a1a30}
 .main-tab .ti{font-size:15px;display:block;margin-bottom:2px}
-.page{display:none;padding:16px}.page.show{display:block}
+.page{display:none;padding:16px}
+.page.show{display:block}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px}
 .card-title{font-size:13px;font-weight:700;color:#b080ff;margin-bottom:12px}
 .api-saved{background:#0a1f0a;border:1px solid #1a5a1a;border-radius:8px;padding:10px 12px;font-size:12px;color:var(--ok);margin-bottom:10px;cursor:pointer}
@@ -82,62 +83,63 @@ textarea.inp{resize:vertical;min-height:70px;font-family:'Noto Sans KR',sans-ser
 .transfer-banner strong{color:#60a5fa;display:block;margin-bottom:4px}
 .pair-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .gemini-badge{display:inline-block;background:#e8f0fe;color:#4285f4;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:6px}
+/* 요약 카드 - 번역 탭 안에서만 보임 */
 .summary-card{background:linear-gradient(135deg,#0d0d25,#1a1035);border:2px solid var(--ac);border-radius:14px;padding:16px;margin-bottom:14px;display:none}
-.summary-card.show{display:block}
-#page-translate .summary-card{display:none}
 #page-translate.show .summary-card.show{display:block}
 .summary-title{font-size:13px;font-weight:700;color:var(--ac);margin-bottom:12px}
 .summary-box{background:#060610;border-radius:10px;padding:14px;font-size:13px;line-height:1.8;color:var(--txt);white-space:pre-wrap;margin-bottom:10px;max-height:300px;overflow-y:auto}
 .quote-box{background:#1a1030;border-left:3px solid var(--ac2);border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:8px;font-size:13px;color:#d0c0ff;font-style:italic;line-height:1.7}
-.blog-wrap{background:linear-gradient(160deg,#fff0f6 0%,#fdf6f9 60%,#f9f0ff 100%);border-radius:14px;padding:20px 16px;color:var(--ptxt)}
+/* 블로그 - 다크 테마 통일 */
+.blog-wrap{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:20px 16px;color:var(--txt)}
 .blog-header{text-align:center;padding-bottom:16px}
 .petals{font-size:22px;letter-spacing:4px;margin-bottom:8px;animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.blog-header h2{font-size:20px;font-weight:900;color:var(--cherry);line-height:1.3}
-.blog-header p{margin-top:6px;font-size:12px;color:var(--gray);font-family:'Gowun Dodum',sans-serif}
-.bcard{background:white;border-radius:16px;padding:20px;box-shadow:0 4px 24px var(--shadow);border:1px solid var(--pborder);margin-bottom:14px}
-.bcard-label{font-size:11px;font-weight:700;color:var(--pink);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px}
+.blog-header h2{font-size:20px;font-weight:900;color:var(--ac);line-height:1.3}
+.blog-header p{margin-top:6px;font-size:12px;color:var(--mut);font-family:'Gowun Dodum',sans-serif}
+.bcard{background:#1a1a30;border-radius:16px;padding:20px;border:1px solid var(--bd);margin-bottom:14px}
+.bcard-label{font-size:11px;font-weight:700;color:var(--ac);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px}
 .bform-row{margin-bottom:12px}
-label.fl{display:block;font-size:13px;font-weight:700;margin-bottom:5px;color:var(--ptxt)}
-.binp{width:100%;padding:9px 13px;border:2px solid var(--pborder);border-radius:10px;font-size:13px;font-family:'Noto Sans KR',sans-serif;color:var(--ptxt);background:#fff5f9;outline:none;transition:border .2s;resize:vertical}
-.binp:focus{border-color:var(--pink);background:white}
+label.fl{display:block;font-size:13px;font-weight:700;margin-bottom:5px;color:var(--txt)}
+.binp{width:100%;padding:9px 13px;border:1px solid var(--bd);border-radius:10px;font-size:13px;font-family:'Noto Sans KR',sans-serif;color:var(--txt);background:#0a0a1a;outline:none;transition:border .2s;resize:vertical}
+.binp:focus{border-color:var(--ac);background:#14142a}
 textarea.binp{min-height:120px}
 .radio-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.radio-pill{padding:7px 14px;border-radius:24px;border:2px solid var(--pborder);background:white;color:var(--gray);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Noto Sans KR',sans-serif;user-select:none}
-.radio-pill.active{background:var(--pink);border-color:var(--pink);color:white;box-shadow:0 4px 14px var(--shadow)}
+.radio-pill{padding:7px 14px;border-radius:24px;border:1px solid var(--bd);background:#0a0a1a;color:var(--mut);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Noto Sans KR',sans-serif;user-select:none}
+.radio-pill.active{background:linear-gradient(135deg,var(--ac),var(--ac2));border-color:var(--ac);color:white}
 .check-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.check-pill{display:flex;align-items:center;gap:5px;padding:6px 12px;border:2px solid var(--pborder);border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;color:var(--gray);background:white;transition:all .15s;user-select:none}
+.check-pill{display:flex;align-items:center;gap:5px;padding:6px 12px;border:1px solid var(--bd);border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;color:var(--mut);background:#0a0a1a;transition:all .15s;user-select:none}
 .check-pill input{display:none}
-.check-pill.on{border-color:var(--pink);color:var(--cherry);background:#ffe0ed}
-.bimg-wrap{position:relative;border:2px dashed var(--pborder);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:.2s;background:#fff5f9}
-.bimg-wrap:hover{border-color:var(--pink);background:#ffe0ed}
+.check-pill.on{border-color:var(--ac);color:var(--ac);background:#1a1a35}
+.bimg-wrap{position:relative;border:2px dashed var(--bd);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:.2s;background:#0a0a1a}
+.bimg-wrap:hover{border-color:var(--ac);background:#14142a}
 .bimg-wrap input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .bimg-thumb-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.bimg-thumb{position:relative;width:72px;height:72px;border-radius:8px;overflow:hidden;border:2px solid var(--pborder)}
+.bimg-thumb{position:relative;width:72px;height:72px;border-radius:8px;overflow:hidden;border:2px solid var(--bd)}
 .bimg-thumb img{width:100%;height:100%;object-fit:cover}
-.bimg-thumb-del{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.5);color:white;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.gen-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--pink),var(--cherry));color:white;border:none;border-radius:14px;font-size:14px;font-weight:900;font-family:'Noto Sans KR',sans-serif;cursor:pointer;box-shadow:0 6px 22px rgba(214,56,112,.3);transition:transform .15s;margin-bottom:10px}
+.bimg-thumb-del{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.6);color:white;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.gen-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:white;border:none;border-radius:14px;font-size:14px;font-weight:900;font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:transform .15s;margin-bottom:10px}
 .gen-btn:hover{transform:translateY(-2px)}
 .gen-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.groq-gen-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--groq),var(--groq2));color:white;border:none;border-radius:14px;font-size:14px;font-weight:900;font-family:'Noto Sans KR',sans-serif;cursor:pointer;box-shadow:0 6px 22px rgba(245,80,54,.3);transition:transform .15s;margin-bottom:10px}
+.groq-gen-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--groq),var(--groq2));color:white;border:none;border-radius:14px;font-size:14px;font-weight:900;font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:transform .15s;margin-bottom:10px}
 .groq-gen-btn:hover{transform:translateY(-2px)}
 .groq-gen-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.bresult{display:none;background:white;border-radius:16px;box-shadow:0 4px 28px var(--shadow);border:2px solid #ffe0ed;overflow:hidden;margin-bottom:14px}
+.bresult{display:none;background:#1a1a30;border-radius:16px;border:1px solid var(--bd);overflow:hidden;margin-bottom:14px}
 .bresult.show{display:block}
-.bresult-top{background:linear-gradient(135deg,#fff5f9,#fff);padding:14px 18px;border-bottom:1px solid var(--pborder);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-.bresult-label{font-size:13px;font-weight:700;color:var(--cherry)}
-.bcopy-btn{padding:7px 14px;border-radius:20px;border:none;background:#ffe0ed;color:var(--cherry);font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
-.bcopy-btn.done{background:#d4edda;color:#27ae60}
-.guide-banner{background:#fffde7;border-bottom:1px solid #ffe082;padding:10px 18px;font-size:12px;color:#a07800;font-family:'Gowun Dodum',sans-serif;line-height:1.7}
-.prompt-output{padding:18px;background:#fff5f9;font-family:'Gowun Dodum',sans-serif;font-size:13px;line-height:1.9;color:var(--ptxt);white-space:pre-wrap;max-height:500px;overflow-y:auto}
-.blog-completed{display:none;background:white;border-radius:16px;box-shadow:0 4px 28px var(--shadow);border:2px solid #ffe0d0;overflow:hidden;margin-bottom:14px}
+.bresult-top{background:#14142a;padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.bresult-label{font-size:13px;font-weight:700;color:var(--ac)}
+.bcopy-btn{padding:7px 14px;border-radius:20px;border:none;background:#2a2a45;color:var(--txt);font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+.bcopy-btn.done{background:var(--ok);color:#000}
+.guide-banner{background:#1a1a00;border-bottom:1px solid #333300;padding:10px 18px;font-size:12px;color:var(--warn);font-family:'Gowun Dodum',sans-serif;line-height:1.7}
+.prompt-output{padding:18px;background:#0a0a1a;font-family:'Gowun Dodum',sans-serif;font-size:13px;line-height:1.9;color:var(--txt);white-space:pre-wrap;max-height:500px;overflow-y:auto}
+.blog-completed{display:none;background:#1a1a30;border-radius:16px;border:1px solid var(--bd);overflow:hidden;margin-bottom:14px}
 .blog-completed.show{display:block}
-.blog-completed-top{background:linear-gradient(135deg,#fff5f0,#fff);padding:14px 18px;border-bottom:1px solid #ffe0d0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.blog-completed-top{background:#14142a;padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .blog-completed-label{font-size:13px;font-weight:700;color:var(--groq)}
-.blog-content-area{padding:18px;background:#fffaf8;font-family:'Noto Sans KR',sans-serif;font-size:13px;line-height:2;color:var(--ptxt);white-space:pre-wrap;max-height:600px;overflow-y:auto}
-.blog-regen-row{display:flex;gap:8px;padding:14px 18px;background:#fff5f0;border-top:1px solid #ffe0d0;flex-wrap:wrap}
+.blog-content-area{padding:18px;background:#0a0a1a;font-family:'Noto Sans KR',sans-serif;font-size:13px;line-height:2;color:var(--txt);white-space:pre-wrap;max-height:600px;overflow-y:auto}
+.blog-regen-row{display:flex;gap:8px;padding:14px 18px;background:#14142a;border-top:1px solid var(--bd);flex-wrap:wrap}
 .groq-loading{display:none;text-align:center;padding:20px;color:var(--groq);font-family:'Gowun Dodum',sans-serif;font-size:14px}
 .groq-loading.show{display:block}
+/* 이웃분석 */
 .stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center}
 .stat-box{border-radius:10px;padding:12px}
 .stat-num{font-size:22px;font-weight:900}
@@ -165,18 +167,21 @@ textarea.binp{min-height:120px}
 .live-name{font-weight:700}.live-cnt{font-size:11px;font-weight:700}
 .progress-files{font-size:11px;color:var(--mut);margin-top:8px;text-align:center}
 .neighbor-locked{background:#0a1a0a;border:1px solid var(--ok);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--ok);display:flex;align-items:center;gap:8px}
-.footer-note{text-align:center;font-size:10px;color:var(--mut);margin-top:16px}
 @media(max-width:480px){.pair-row{grid-template-columns:1fr}.live-cols{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="app-wrap">
+
+<!-- 헤더 -->
 <div class="app-header">
   <h1>🎬 통합 제작 툴</h1>
   <p>MKV 추출 · SMI 번역 · 블로그 · 이웃분석</p>
-  <p style="font-size:10px;color:#34d399;margin-top:2px">v1.3.4 · 요약버그수정 · 말투학습 · 임시저장</p>
+  <p style="font-size:10px;color:var(--ok);margin-top:2px">v1.4.0</p>
   <button onclick="downloadSelf()" style="margin-top:8px;padding:6px 16px;border:none;border-radius:8px;background:linear-gradient(135deg,#059669,#34d399);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif">💾 HTML 파일로 저장</button>
 </div>
+
+<!-- 탭 -->
 <div class="main-tabs">
   <button class="main-tab active" id="mtab-extract" onclick="setMain('extract')"><span class="ti">🎞️</span>MKV</button>
   <button class="main-tab" id="mtab-translate" onclick="setMain('translate')"><span class="ti">🌐</span>번역</button>
@@ -205,10 +210,12 @@ textarea.binp{min-height:120px}
 </div>
 
 <!-- 번역 -->
-<div id="page-translate" class="page">  <div class="transfer-banner" id="transfer-banner">
+<div id="page-translate" class="page">
+  <div class="transfer-banner" id="transfer-banner">
     <strong>✅ 추출된 SMI 자동 로드됨</strong>
     <span id="transfer-info"></span>
   </div>
+  <!-- API 키 -->
   <div class="card">
     <div class="card-title">⚙️ API 키 설정</div>
     <div class="mode-toggle" style="margin-bottom:10px">
@@ -230,6 +237,7 @@ textarea.binp{min-height:120px}
       </div>
     </div>
   </div>
+  <!-- SMI -->
   <div class="card">
     <div class="card-title">📄 번역할 SMI 파일</div>
     <div class="drop" id="dz-smi">
@@ -244,6 +252,7 @@ textarea.binp{min-height:120px}
       <div class="finfo-row"><span class="fkey">언어</span><span class="fval" id="fi-lang">-</span></div>
     </div>
   </div>
+  <!-- 앞 회차 -->
   <div class="card">
     <div class="card-title">📚 앞 회차 참고 파일 <span style="color:var(--mut);font-weight:400;font-size:11px">(선택)</span></div>
     <div class="pair-row">
@@ -267,13 +276,12 @@ textarea.binp{min-height:120px}
       </div>
     </div>
   </div>
+  <!-- 번역 설정 -->
   <div class="card">
     <div class="card-title">🎛️ 번역 설정</div>
-    <div style="margin-bottom:12px">
-      <div class="mode-toggle">
-        <button class="mode-toggle-btn active" id="mode-btn-trans" onclick="setTransMode('translate')">🌐 번역</button>
-        <button class="mode-toggle-btn" id="mode-btn-rewrite" onclick="setTransMode('rewrite')">✏️ 리라이팅</button>
-      </div>
+    <div class="mode-toggle">
+      <button class="mode-toggle-btn active" id="mode-btn-trans" onclick="setTransMode('translate')">🌐 번역</button>
+      <button class="mode-toggle-btn" id="mode-btn-rewrite" onclick="setTransMode('rewrite')">✏️ 리라이팅</button>
     </div>
     <div id="lang-setting">
       <div class="setting-row"><div class="setting-label">원본 언어</div>
@@ -295,7 +303,7 @@ textarea.binp{min-height:120px}
       <div class="setting-label">추가 지시사항 <span style="color:var(--mut);font-weight:400">(선택)</span></div>
       <textarea class="inp inp-full" id="extra-prompt" placeholder="예: 주인공 이름은 '이준'으로 통일..."></textarea>
     </div>
-    <div style="display:flex;gap:8px;margin-top:4px">
+    <div style="display:flex;gap:8px;margin-top:8px">
       <button class="btn btn-main btn-sm" onclick="saveDramaSettings()">💾 설정 저장</button>
       <button class="btn btn-sm" style="background:#1a1a30;color:var(--mut)" onclick="loadDramaSettings()">📂 불러오기</button>
       <button class="btn btn-sm btn-danger" onclick="deleteDramaSettings()">🗑 삭제</button>
@@ -307,12 +315,8 @@ textarea.binp{min-height:120px}
     <div class="pbg"><div class="pfill" id="tfill"></div></div>
     <div class="logbox" id="tlb"></div>
   </div>
-  <div class="card" id="summary-trigger-card" style="display:none">
-      <div class="card-title">🎬 자막 요약</div>
-      <button class="btn btn-groq" onclick="generateSummary()" id="btn-summary">🎬 요약 + 명대사 추출</button>
-    </div>
-  </div>
-  <div class="result-section" id="result-section" style="display:none">
+  <!-- 번역 결과 -->
+  <div class="result-section" id="result-section">
     <div class="card">
       <div class="card-title">✅ 완료</div>
       <div class="result-preview" id="result-preview"></div>
@@ -320,6 +324,12 @@ textarea.binp{min-height:120px}
       <button class="btn btn-claude" style="margin-top:8px" onclick="sendToClaudeRefine()">✨ Claude로 다듬기</button>
     </div>
   </div>
+  <!-- 자막 요약 (SMI 로드되면 표시) -->
+  <div class="card" id="summary-trigger-card" style="display:none">
+    <div class="card-title">🎬 자막 요약</div>
+    <button class="btn btn-groq" onclick="generateSummary()" id="btn-summary">🎬 요약 + 명대사 추출</button>
+  </div>
+  <!-- 요약 결과 -->
   <div class="summary-card" id="summary-card">
     <div class="summary-title">📋 이번 화 요약</div>
     <div class="summary-box" id="summary-box"></div>
@@ -327,8 +337,7 @@ textarea.binp{min-height:120px}
     <div id="quotes-box"></div>
     <button class="btn btn-main" style="margin-top:12px" onclick="sendSummaryToBlog()">📝 블로그 글 바로 작성!</button>
   </div>
-</div>
-</div>
+</div><!-- /page-translate -->
 
 <!-- 블로그 -->
 <div id="page-blog" class="page">
@@ -336,12 +345,12 @@ textarea.binp{min-height:120px}
   <div class="blog-header">
     <div class="petals">🌸🌸🌸</div>
     <h2>벚꽃송송이 블로그<br>AI 글쓰기</h2>
-    <p style="margin-top:6px;font-size:12px;color:var(--gray);font-family:'Gowun Dodum',sans-serif">Groq 자동완성 · Claude 프롬프트</p>
+    <p>Groq 자동완성 · Claude 프롬프트</p>
   </div>
   <div class="bcard">
     <div class="bcard-label">✏️ 글쓰기 정보</div>
     <div class="bform-row">
-      <label class="fl">카테고리 <span style="color:var(--pink)">*</span></label>
+      <label class="fl">카테고리 *</label>
       <div class="radio-wrap">
         <label class="radio-pill active" id="rpill-travel" onclick="setBlogCat('travel',this)">✈️ 여행기</label>
         <label class="radio-pill" id="rpill-webtoon" onclick="setBlogCat('webtoon',this)">📚 웹툰</label>
@@ -359,10 +368,10 @@ textarea.binp{min-height:120px}
       <textarea class="binp" id="b-info" placeholder="[참고 말투 - 내 블로그 글]&#10;평소 내가 쓰는 문장 2~3개를 여기에 붙여넣어요&#10;&#10;[이번 화 내용]&#10;드라마 정보, 줄거리, 소감 등 자유롭게!"></textarea>
     </div>
     <div class="bform-row" id="b-img-row" style="display:none">
-      <label class="fl" id="b-img-label">이미지 <span style="color:var(--gray);font-weight:400;font-size:11px">(선택)</span></label>
+      <label class="fl" id="b-img-label">이미지 <span style="color:var(--mut);font-weight:400;font-size:11px">(선택)</span></label>
       <div class="bimg-wrap">
         <span style="font-size:22px" id="b-img-icon">🖼️</span>
-        <div style="font-size:12px;color:var(--gray);margin-top:4px">이미지 업로드</div>
+        <div style="font-size:12px;color:var(--mut);margin-top:4px">이미지 업로드</div>
         <input type="file" id="b-imgs" multiple onchange="handleBlogImgs(this)">
       </div>
       <div class="bimg-thumb-wrap" id="b-preview"></div>
@@ -386,18 +395,18 @@ textarea.binp{min-height:120px}
   </div>
   <button id="groq-blog-btn" class="groq-gen-btn" onclick="generateBlogWithGroq()">⚡ Groq으로 블로그 글 완성!</button>
   <button class="gen-btn" onclick="generateBlogPrompt()">📋 Claude용 프롬프트 복사</button>
-  <div class="groq-loading" id="groq-loading">⚡ 블로그 글 작성 중... 🌸</div>
   <div style="display:flex;gap:8px;margin-bottom:10px">
     <button class="btn btn-main btn-sm" onclick="saveBlogDraft()" style="flex:1">💾 임시저장</button>
     <button class="btn btn-sm" style="flex:1;background:#1a1a30;color:var(--mut)" onclick="loadBlogDraft()">📂 불러오기</button>
     <button class="btn btn-sm btn-danger" style="flex:1" onclick="deleteBlogDraft()">🗑 삭제</button>
   </div>
+  <div class="groq-loading" id="groq-loading">⚡ 블로그 글 작성 중... 🌸</div>
   <div class="blog-completed" id="blog-completed">
     <div class="blog-completed-top">
       <div class="blog-completed-label">⚡ 완성 블로그 글</div>
       <div style="display:flex;gap:6px">
         <button class="bcopy-btn" id="blog-copy-btn" onclick="copyBlogContent()">📋 복사</button>
-        <button class="bcopy-btn" style="background:#ede0ff;color:#6d28d9" onclick="sendBlogToClaude()">🧡 Claude로 다듬기</button>
+        <button class="bcopy-btn" style="background:#2a1a45;color:var(--ac)" onclick="sendBlogToClaude()">🧡 Claude로 다듬기</button>
       </div>
     </div>
     <div class="blog-content-area" id="blog-content-area"></div>
@@ -415,7 +424,7 @@ textarea.binp{min-height:120px}
     <div class="prompt-output" id="blogPromptText"></div>
   </div>
 </div>
-</div>
+</div><!-- /page-blog -->
 
 <!-- 이웃분석 -->
 <div id="page-neighbor" class="page">
@@ -497,17 +506,23 @@ textarea.binp{min-height:120px}
       </div>
     </div>
   </div>
-</div>
+</div><!-- /page-neighbor -->
 
-None
-</div>
+</div><!-- /app-wrap -->
 
 <script>
 (function(){
 'use strict';
 
 // ══ 탭 ══
-function setMain(p){['extract','translate','blog','neighbor'].forEach(function(k){var t=document.getElementById('mtab-'+k),pg=document.getElementById('page-'+k);if(t)t.classList.toggle('active',k===p);if(pg)pg.classList.toggle('show',k===p);});}
+function setMain(p){
+  ['extract','translate','blog','neighbor'].forEach(function(k){
+    var t=document.getElementById('mtab-'+k);
+    var pg=document.getElementById('page-'+k);
+    if(t)t.classList.toggle('active',k===p);
+    if(pg)pg.classList.toggle('show',k===p);
+  });
+}
 
 function setApiTab(t){
   document.getElementById('api-btn-groq').classList.toggle('active',t==='groq');
@@ -527,6 +542,7 @@ function saveGroqKey(){
   alert('✅ Groq 키 저장됐어요!');
 }
 function getGroqKey(){return localStorage.getItem('groq_api_key')||document.getElementById('key-groq').value.trim();}
+
 async function callGroq(prompt,sys){
   var key=getGroqKey();
   if(!key)throw new Error('Groq API 키를 먼저 입력해주세요!');
@@ -535,14 +551,15 @@ async function callGroq(prompt,sys){
   msgs.push({role:'user',content:prompt});
   var maxRetry=3;
   for(var attempt=0;attempt<maxRetry;attempt++){
-    var res=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:msgs,temperature:0.3,max_tokens:6000})});
+    var res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+      body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:msgs,temperature:0.3,max_tokens:6000})
+    });
     if(res.status===429){
       var waitSec=25;
       try{var ej=await res.json();var m=ej.error&&ej.error.message&&ej.error.message.match(/try again in ([\d.]+)s/);if(m)waitSec=Math.ceil(parseFloat(m[1]))+2;}catch(e){}
-      if(attempt<maxRetry-1){
-        await new Promise(function(r){setTimeout(r,waitSec*1000);});
-        continue;
-      }
+      if(attempt<maxRetry-1){await new Promise(function(r){setTimeout(r,waitSec*1000);});continue;}
       throw new Error('Groq 요청 한도 초과 — 잠시 후 다시 시도해주세요');
     }
     if(!res.ok){var e=await res.json();throw new Error((e.error&&e.error.message)||'Groq 오류: '+res.status);}
@@ -562,19 +579,28 @@ function saveGeminiKey(){
   alert('✅ Gemini 키 저장됐어요!');
 }
 function getGeminiKey(){return localStorage.getItem('gemini_api_key')||document.getElementById('key-gemini').value.trim();}
+
 async function callGemini(prompt,images){
   var key=getGeminiKey();
   if(!key)throw new Error('Gemini API 키를 입력해주세요');
   var parts=[];
   (images||[]).filter(Boolean).forEach(function(img){parts.push({inlineData:{mimeType:img.type,data:img.b64}});});
   parts.push({text:prompt});
-  var res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+key,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:parts}],generationConfig:{temperature:0.3,maxOutputTokens:4096}})});
+  var res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+key,{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({contents:[{parts:parts}],generationConfig:{temperature:0.3,maxOutputTokens:4096}})
+  });
   if(!res.ok){var e=await res.json();throw new Error((e.error&&e.error.message)||'Gemini 오류: '+res.status);}
   var d=await res.json();
   return(d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts&&d.candidates[0].content.parts[0]&&d.candidates[0].content.parts[0].text)||'';
 }
 
-function safeJSON(raw){try{return JSON.parse(raw.replace(/```json|```/g,'').trim());}catch(e){}var m=raw.match(/\{[\s\S]+\}/);if(m){try{return JSON.parse(m[0]);}catch(e){}}return{};}
+function safeJSON(raw){
+  try{return JSON.parse(raw.replace(/```json|```/g,'').trim());}catch(e){}
+  var m=raw.match(/\{[\s\S]+\}/);
+  if(m){try{return JSON.parse(m[0]);}catch(e){}}
+  return{};
+}
 
 // ══ 번역 모드 ══
 var transMode='translate';
@@ -627,7 +653,7 @@ async function extractMKV(file){
     var toRead=Math.min(CHUNK,file.size-off),chunk=await readChunk(file,off,toRead);off+=toRead;
     var buf=new Uint8Array(carry.length+chunk.length);buf.set(carry);buf.set(chunk,carry.length);
     var sp=0;
-    while(sp<=buf.length-4){var ni=buf.indexOf(0x1F,sp);if(ni===-1||ni>buf.length-4)break;sp=ni;if(buf[sp+1]===0x43&&buf[sp+2]===0xB6&&buf[sp+3]===0x75){var cp=sp+4;if(cp+2>buf.length){sp++;continue;}var rc=vint(buf,cp),clSz=rc[0];cp+=rc[1];if(clSz>0&&clSz>80*1024*1024){sp++;continue;}var clEnd=clSz<0?buf.length:Math.min(cp+clSz,buf.length);parseCluster(buf,cp,clEnd,subNums,allBlocks);sp=clEnd;}else sp++;}
+    while(sp<=buf.length-4){var ni=buf.indexOf(0x1F,sp);if(ni===-1||ni>buf.length-4)break;sp=ni;if(buf[sp+1]===0x43&&buf[sp+2]===0xB6&&buf[sp+3]===0x75){var cp=sp+4;if(cp+2>buf.length){sp++;continue;}var rc2=vint(buf,cp),clSz=rc2[0];cp+=rc2[1];if(clSz>0&&clSz>80*1024*1024){sp++;continue;}var clEnd=clSz<0?buf.length:Math.min(cp+clSz,buf.length);parseCluster(buf,cp,clEnd,subNums,allBlocks);sp=clEnd;}else sp++;}
     carry=buf.slice(Math.max(0,buf.length-CARRY));
     EP(Math.min(99,Math.round(off/file.size*100)),'스캔 중... '+Math.min(99,Math.round(off/file.size*100))+'%');
     await new Promise(function(r){setTimeout(r,0);});
@@ -666,146 +692,105 @@ function updateFileInfo(fname,smiText){
   document.getElementById('fi-lines').textContent=lc+'줄';
   document.getElementById('fi-lang').textContent=lang;
   document.getElementById('finfo').style.display='block';
-  // SMI 로드되면 요약 카드 바로 표시
   document.getElementById('summary-trigger-card').style.display='block';
   if(lang==='한국어'){setTransMode('rewrite');document.getElementById('fi-lang').style.color='var(--warn)';}
   else{setTransMode('translate');document.getElementById('fi-lang').style.color='';}
-}function buildRefSection(){var ep=mainFile?detectEp(mainFile.name):null,sections=[];var keys=Object.keys(refOrigFiles).sort(function(a,b){return parseInt(a.split('_')[1])-parseInt(b.split('_')[1]);});if(keys.length>0){var ep1Key=keys.find(function(k){return k.endsWith('_1');})||keys[0];if(refOrigFiles[ep1Key]&&refDoneFiles[ep1Key]){var origLines=parseSMILines(refOrigFiles[ep1Key].content).filter(function(l){return l.text;});var doneLines=parseSMILines(refDoneFiles[ep1Key].content).filter(function(l){return l.text;});var pairs=[],minLen=Math.min(origLines.length,doneLines.length,60);for(var i=0;i<minLen;i++){if(origLines[i].text&&doneLines[i].text)pairs.push(origLines[i].text+' → '+doneLines[i].text);}if(pairs.length)sections.push('## 1화 원문↔번역 대조\n'+pairs.join('\n'));}if(ep&&ep.ep>1){var prevKey=ep.season+'_'+(ep.ep-1);if(refDoneFiles[prevKey]){var prevLines=parseSMILines(refDoneFiles[prevKey].content).filter(function(l){return l.text;}).slice(-20);if(prevLines.length)sections.push('## 직전 편 마지막 20줄\n'+prevLines.map(function(l){return l.text;}).join('\n'));}}}return sections.join('\n\n');}
+}
+function buildRefSection(){
+  var ep=mainFile?detectEp(mainFile.name):null,sections=[];
+  var keys=Object.keys(refOrigFiles).sort(function(a,b){return parseInt(a.split('_')[1])-parseInt(b.split('_')[1]);});
+  if(keys.length>0){
+    var ep1Key=keys.find(function(k){return k.endsWith('_1');})||keys[0];
+    if(refOrigFiles[ep1Key]&&refDoneFiles[ep1Key]){
+      var origLines=parseSMILines(refOrigFiles[ep1Key].content).filter(function(l){return l.text;});
+      var doneLines=parseSMILines(refDoneFiles[ep1Key].content).filter(function(l){return l.text;});
+      var pairs=[],minLen=Math.min(origLines.length,doneLines.length,60);
+      for(var i=0;i<minLen;i++){if(origLines[i].text&&doneLines[i].text)pairs.push(origLines[i].text+' → '+doneLines[i].text);}
+      if(pairs.length)sections.push('## 1화 원문↔번역 대조\n'+pairs.join('\n'));
+    }
+    if(ep&&ep.ep>1){var prevKey=ep.season+'_'+(ep.ep-1);if(refDoneFiles[prevKey]){var prevLines=parseSMILines(refDoneFiles[prevKey].content).filter(function(l){return l.text;}).slice(-20);if(prevLines.length)sections.push('## 직전 편 마지막 20줄\n'+prevLines.map(function(l){return l.text;}).join('\n'));}}
+  }
+  return sections.join('\n\n');
+}
 function TL(msg,t){var b=document.getElementById('tlb'),d=document.createElement('div');d.className='ll'+(t?' l'+t:'');d.textContent=msg;b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function TP(pct,lbl){document.getElementById('tfill').style.width=pct+'%';document.getElementById('tpct').textContent=pct+'%';if(lbl)document.getElementById('tlbl').textContent=lbl;}
 function applyTranslations(orig,trans){var r=orig;r=r.replace(/(Class=)(\w+)/gi,'$1KRCC');r=r.replace(/Name:[^;"\n]+/gi,'Name:Korean');r=r.replace(/lang:[^;"\n]+/gi,'lang:ko-KR');var i=0;r=r.replace(/<SYNC\s+Start=(\d+)[^>]*>\s*<P[^>]*>([\s\S]*?)<\/SYNC>/gi,function(full,ms,inner){var raw=inner.replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').replace(/&nbsp;/gi,'').trim();if(!raw)return full;var translated=trans[i]||raw;i++;return '<SYNC Start='+ms+'><P Class=KRCC>'+translated.replace(/\n/g,'<br>')+'</P></SYNC>';});return r;}
 function downloadResult(){if(!resultSMI||!mainFile)return;var fname=mainFile.name.replace(/\.smi$/i,(transMode==='rewrite'?'_RW':'_KO')+'.smi');var blob=new Blob(['\uFEFF'+resultSMI],{type:'text/sami;charset=utf-8'});var url=URL.createObjectURL(blob);var a=Object.assign(document.createElement('a'),{href:url,download:fname});document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},1000);}
-function buildClaudePrompt(mode){var fname=mainFile?mainFile.name.replace(/_track\d+$/i,'').replace(/\.smi$/i,''):'';var epInfo=mainFile?detectEp(mainFile.name):null,epLabel=epInfo?' '+epInfo.label:'';var gm={drama:'드라마',romance:'로맨스',action:'액션/범죄',historical:'사극',comedy:'코미디',thriller:'스릴러'};var lm={auto:'자동 감지',zh:'중국어','zh-yue':'광둥어',th:'태국어',ja:'일본어',en:'영어'};var genre=document.getElementById('genre').value,srcLang=document.getElementById('src-lang').value;var extra=document.getElementById('extra-prompt').value.trim(),isRewrite=transMode==='rewrite';var prompt=mode==='refine'?'아래 드라마 자막을 더 자연스러운 한국어로 다듬어줘.\n\n':'아래 드라마 자막을 '+(isRewrite?'자연스러운 한국어로 리라이팅':'한국어로 번역')+'해줘.\n\n';if(fname)prompt+='드라마: '+fname+epLabel+'\n';prompt+='장르: '+(gm[genre]||'드라마')+'\n';if(!isRewrite&&mode==='direct')prompt+='원본 언어: '+(lm[srcLang]||'자동 감지')+'\n';if(extra)prompt+='추가 지시: '+extra+'\n';prompt+='\n## 규칙\n- 자연스럽고 생동감 있는 구어체 한국어\n- 문장 끝 마침표(.) 절대 사용 금지\n- 자막 특성상 짧고 명확하게\n- 인물 호칭/말투 일관되게\n- 영어/외국어는 반드시 한국어로\n';var refSection=buildRefSection();if(refSection)prompt+='\n'+refSection+'\n';if(mainSMI){var origLines=parseSMILines(mainSMI).filter(function(l){return l.text;});prompt+='\n## 원본 자막\n'+origLines.map(function(l,idx){return '['+idx+'] '+l.text.replace(/\n/g,' | ');}).join('\n')+'\n';}if(mode==='refine'&&resultSMI){var draftLines=parseSMILines(resultSMI).filter(function(l){return l.text;});prompt+='\n## 참고 번역본\n'+draftLines.map(function(l,idx){return '['+idx+'] '+l.text.replace(/\n/g,' | ');}).join('\n')+'\n';}prompt+='\n## 출력 형식\n[번호] 번역문 형식으로 순서대로 출력해줘';return prompt;}
+
+function buildClaudePrompt(mode){
+  var fname=mainFile?mainFile.name.replace(/_track\d+$/i,'').replace(/\.smi$/i,''):'';
+  var epInfo=mainFile?detectEp(mainFile.name):null,epLabel=epInfo?' '+epInfo.label:'';
+  var gm={drama:'드라마',romance:'로맨스',action:'액션/범죄',historical:'사극',comedy:'코미디',thriller:'스릴러'};
+  var lm={auto:'자동 감지',zh:'중국어','zh-yue':'광둥어',th:'태국어',ja:'일본어',en:'영어'};
+  var genre=document.getElementById('genre').value,srcLang=document.getElementById('src-lang').value;
+  var extra=document.getElementById('extra-prompt').value.trim(),isRewrite=transMode==='rewrite';
+  var prompt=mode==='refine'?'아래 드라마 자막을 더 자연스러운 한국어로 다듬어줘.\n\n':'아래 드라마 자막을 '+(isRewrite?'자연스러운 한국어로 리라이팅':'한국어로 번역')+'해줘.\n\n';
+  if(fname)prompt+='드라마: '+fname+epLabel+'\n';
+  prompt+='장르: '+(gm[genre]||'드라마')+'\n';
+  if(!isRewrite&&mode==='direct')prompt+='원본 언어: '+(lm[srcLang]||'자동 감지')+'\n';
+  if(extra)prompt+='추가 지시: '+extra+'\n';
+  prompt+='\n## 규칙\n- 자연스럽고 생동감 있는 구어체 한국어\n- 문장 끝 마침표(.) 절대 사용 금지\n- 자막 특성상 짧고 명확하게\n- 인물 호칭/말투 일관되게\n- 영어/외국어는 반드시 한국어로\n';
+  var refSection=buildRefSection();
+  if(refSection)prompt+='\n'+refSection+'\n';
+  if(mainSMI){var origLines=parseSMILines(mainSMI).filter(function(l){return l.text;});prompt+='\n## 원본 자막\n'+origLines.map(function(l,idx){return '['+idx+'] '+l.text.replace(/\n/g,' | ');}).join('\n')+'\n';}
+  if(mode==='refine'&&resultSMI){var draftLines=parseSMILines(resultSMI).filter(function(l){return l.text;});prompt+='\n## 참고 번역본\n'+draftLines.map(function(l,idx){return '['+idx+'] '+l.text.replace(/\n/g,' | ');}).join('\n')+'\n';}
+  prompt+='\n## 출력 형식\n[번호] 번역문 형식으로 순서대로 출력해줘';
+  return prompt;
+}
+
 function sendToClaudeDirect(){
-  if(!mainFile||!mainSMI){
-    window.open('https://claude.ai','_blank');
-    return;
-  }
+  if(!mainFile||!mainSMI){window.open('https://claude.ai','_blank');return;}
   var prompt=buildClaudePrompt('direct');
   navigator.clipboard.writeText(prompt).then(function(){
     window.open('https://claude.ai','_blank');
-    setTimeout(function(){alert('✅ 프롬프트 복사 완료!\nClaude에 붙여넣기 하세요!\n\nSMI 파일도 함께 첨부하면 더 좋아요 😊');},500);
+    setTimeout(function(){alert('✅ 프롬프트 복사 완료!\nClaude에 붙여넣기 하세요!\nSMI 파일도 함께 첨부하면 더 좋아요 😊');},500);
   }).catch(function(){
-    // 클립보드 실패 시 텍스트 영역으로 대체
-    var ta=document.createElement('textarea');
-    ta.value=prompt;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
+    var ta=document.createElement('textarea');ta.value=prompt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
     window.open('https://claude.ai','_blank');
-    setTimeout(function(){alert('✅ 프롬프트 복사 완료!\nClaude에 붙여넣기 하세요!');},500);
+    setTimeout(function(){alert('✅ 프롬프트 복사 완료!');},500);
   });
 }
-function sendToClaudeRefine(){if(!resultSMI){alert('먼저 번역을 완료해주세요!');return;}navigator.clipboard.writeText(buildClaudePrompt('refine')).then(function(){window.open('https://claude.ai','_blank');setTimeout(function(){alert('✅ 복사 완료!');},500);});}
-async function generateSummary(){var btn=document.getElementById('btn-summary');btn.disabled=true;btn.textContent='⏳ 요약 중...';var smiToUse=resultSMI||mainSMI;if(!smiToUse){alert('SMI 파일을 먼저 로드해주세요!');btn.disabled=false;btn.textContent='🎬 요약 + 명대사 추출';return;}try{var lines=parseSMILines(smiToUse).filter(function(l){return l.text;});var txt=lines.slice(0,250).map(function(l){return l.text;}).join('\n');var fname=mainFile?mainFile.name.replace(/\.[^.]+$/,''):'';var epInfo=mainFile?detectEp(mainFile.name):null;var sys='당신은 드라마 자막 분석 전문가입니다. JSON만 출력합니다.';var user='아래는 드라마 자막이야.\n드라마: '+fname+(epInfo?' '+epInfo.label:'')+'\n\n자막:\n'+txt+'\n\n아래 JSON 형식으로만 출력:\n{"summary":"3~5줄 줄거리 요약","highlight":"이번 화 핵심 1~2줄","quotes":[{"quote":"명대사1","speaker":"발화자"},{"quote":"명대사2","speaker":""},{"quote":"명대사3","speaker":""}]}';var raw=await callGroq(user,sys);var parsed=safeJSON(raw);lastSummary=(parsed.summary||'')+(parsed.highlight?'\n\n'+parsed.highlight:'');lastQuotes=parsed.quotes||[];document.getElementById('summary-box').textContent=lastSummary;var qBox=document.getElementById('quotes-box');qBox.innerHTML='';lastQuotes.forEach(function(q){var div=document.createElement('div');div.className='quote-box';div.textContent='"'+q.quote+'"'+(q.speaker?' — '+q.speaker:'');qBox.appendChild(div);});document.getElementById('summary-card').classList.add('show');document.getElementById('summary-card').scrollIntoView({behavior:'smooth',block:'start'});}catch(e){alert('요약 실패: '+e.message);}btn.disabled=false;btn.textContent='🎬 요약 + 명대사 추출';}
-function sendSummaryToBlog(){var fname=mainFile?mainFile.name.replace(/\.[^.]+$/,'').replace(/_track\d+$/i,''):'';var epInfo=mainFile?detectEp(mainFile.name):null,epLabel=epInfo?' '+epInfo.label:'';setMain('blog');document.querySelectorAll('.radio-pill').forEach(function(p){p.classList.remove('active');});var dp=document.getElementById('rpill-drama');dp.classList.add('active');setBlogCat('drama',dp);document.getElementById('b-title').value=fname;var infoText='[드라마: '+fname+epLabel+']\n\n## 줄거리\n'+lastSummary;if(lastQuotes.length){infoText+='\n\n## 명대사\n';lastQuotes.forEach(function(q){infoText+='"'+q.quote+'"'+(q.speaker?' — '+q.speaker:'')+'\n';});}document.getElementById('b-info').value=infoText;}
-function readFile(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(e){res(e.target.result);};r.onerror=function(){rej(new Error('읽기 실패'));};r.readAsText(f,'utf-8');});}
-async function loadSMIFile(f){mainFile=f;mainSMI=await readFile(f);updateFileInfo(f.name,mainSMI);}
-function setupDrop(dzId,fiId,onFile){var dz=document.getElementById(dzId),fi=document.getElementById(fiId);dz.addEventListener('click',function(){fi.click();});fi.addEventListener('change',function(){if(fi.files[0])onFile(fi.files[0]);});dz.addEventListener('dragover',function(e){e.preventDefault();dz.classList.add('over');});dz.addEventListener('dragleave',function(){dz.classList.remove('over');});dz.addEventListener('drop',function(e){e.preventDefault();dz.classList.remove('over');if(e.dataTransfer.files[0])onFile(e.dataTransfer.files[0]);});}
-setupDrop('dz-mkv','fi-mkv',extractMKV);
-setupDrop('dz-smi','fi-smi',loadSMIFile);
-async function loadRefFiles(inputEl,store,listId){store={};var list=document.getElementById(listId);list.innerHTML='';for(var i=0;i<inputEl.files.length;i++){var f=inputEl.files[i],ep=detectEp(f.name);if(!ep)continue;var content=await readFile(f);store[ep.season+'_'+ep.ep]={name:f.name,content:content};var div=document.createElement('div');div.className='prev-item ok';div.textContent=ep.label+' · '+f.name;list.appendChild(div);}return store;}
-document.getElementById('dz-ref-orig').addEventListener('click',function(){document.getElementById('fi-ref-orig').click();});
-document.getElementById('dz-ref-done').addEventListener('click',function(){document.getElementById('fi-ref-done').click();});
-document.getElementById('fi-ref-orig').addEventListener('change',async function(){refOrigFiles=await loadRefFiles(this,refOrigFiles,'ref-orig-list');});
-document.getElementById('fi-ref-done').addEventListener('change',async function(){refDoneFiles=await loadRefFiles(this,refDoneFiles,'ref-done-list');});
+function sendToClaudeRefine(){if(!resultSMI){alert('먼저 번역을 완료해주세요!');return;}var prompt=buildClaudePrompt('refine');navigator.clipboard.writeText(prompt).then(function(){window.open('https://claude.ai','_blank');setTimeout(function(){alert('✅ 복사 완료!');},500);});}
 
-// ══ 블로그 ══
-var curBlogCat='travel',blogImgList=[];
-var catConfig={travel:{title:null,infoLabel:'주제 / 핵심 내용',infoPlaceholder:'방문 장소, 코스, 팁, 에피소드 등!',imgIcon:null},webtoon:{title:'작품명',infoLabel:'작품 정보 + 소감',infoPlaceholder:'장르, 줄거리, 소감 등!',imgIcon:'📚',imgLabel:'표지/컷'},drama:{title:'드라마 제목',infoLabel:'드라마 정보 + 소감',infoPlaceholder:'방송사, 장르, 출연진, 줄거리, 소감 등!',imgIcon:'🎬',imgLabel:'포스터/스틸컷'},movie:{title:'영화 제목',infoLabel:'영화 정보 + 소감',infoPlaceholder:'개봉연도, 장르, 감독, 소감 등!',imgIcon:'🎥',imgLabel:'포스터'},actor:{title:'배우명',infoLabel:'배우 정보 + 소감',infoPlaceholder:'국적, 대표작, 입덕 계기 등!',imgIcon:'🌟',imgLabel:'배우 이미지'}};
-function setBlogCat(cat,el){curBlogCat=cat;document.querySelectorAll('.radio-pill').forEach(function(p){p.classList.remove('active');});el.classList.add('active');var cfg=catConfig[cat];var tr=document.getElementById('b-title-row');if(cfg.title){tr.style.display='';document.getElementById('b-title-label').textContent=cfg.title+' *';}else tr.style.display='none';document.getElementById('b-info-label').textContent=cfg.infoLabel+' *';document.getElementById('b-info').placeholder=cfg.infoPlaceholder;var ir=document.getElementById('b-img-row');if(cfg.imgIcon){ir.style.display='';document.getElementById('b-img-icon').textContent=cfg.imgIcon;document.getElementById('b-img-label').textContent=cfg.imgLabel+' (선택)';}else ir.style.display='none';blogImgList.length=0;document.getElementById('b-preview').innerHTML='';document.getElementById('b-title').value='';document.getElementById('b-info').value='';document.getElementById('blog-completed').classList.remove('show');document.getElementById('bresult').classList.remove('show');}
-function handleBlogImgs(input){Array.from(input.files).forEach(function(f){var r=new FileReader();r.onload=function(e){var idx=blogImgList.length;blogImgList.push({name:f.name});var wrap=document.getElementById('b-preview'),thumb=document.createElement('div');thumb.className='bimg-thumb';thumb.innerHTML='<img src="'+e.target.result+'"><button class="bimg-thumb-del" onclick="removeBlogImg('+idx+',this.parentNode)">✕</button>';wrap.appendChild(thumb);};r.readAsDataURL(f);});}
-function removeBlogImg(idx,el){blogImgList[idx]=null;el.remove();}
-function togglePill(el){el.classList.toggle('on');el.querySelector('input').checked=el.classList.contains('on');}
-function bv(id){var e=document.getElementById(id);return e?e.value.trim():'';}
-function getBlogOpts(){return Array.from(document.querySelectorAll('#checkWrap .check-pill.on input')).map(function(i){return i.value;});}
-function getBlogInfo(){var infoVal=bv('b-info');if(!infoVal){alert('내용을 입력해주세요! 🌸');return null;}var catLabel={travel:'여행기',webtoon:'웹툰 리뷰',drama:'드라마 리뷰',movie:'영화 리뷰',actor:'배우 소개'}[curBlogCat];var lenMap={normal:'800~1200자',short:'500~800자',long:'1500자 이상'};return{catLabel:catLabel,titleVal:bv('b-title'),infoVal:infoVal,len:lenMap[bv('blength')],opts:getBlogOpts()};}
-function buildBlogPromptText(info,forGroq){var opts=info.opts;var imgSec=opts.indexOf('images')>=0?'\n- 이미지 삽입 위치를 [📷 이미지: 설명] 형식으로 3~6개 표시':'';var seoSec=opts.indexOf('seo_titles')>=0?'\n- 글 마지막에 [SEO 제목 후보] 제목 3개 제안':'';var tagSec=opts.indexOf('tags')>=0?'\n- [추천 태그] 네이버 블로그 태그 10~15개 (#태그)':'';var tipSec=opts.indexOf('tips')>=0?'\n- 실용 팁은 본문에 자연스럽게 포함':'';var endSec=opts.indexOf('ending')>=0?'\n- 마지막에 따뜻한 마무리 문단 추가':'';var infoStr='카테고리: '+info.catLabel+'\n';if(info.titleVal)infoStr+='제목: '+info.titleVal+'\n';infoStr+=info.infoVal;return(forGroq?'아래 정보로 네이버 블로그 포스팅을 작성해줘. 결과물만 출력.\n\n':'아래 정보로 네이버 블로그 포스팅을 완성해줘.\n\n')+'━━━ 글쓰기 정보 ━━━\n'+infoStr+'\n글 길이: '+info.len+'\n\n━━━ 말투 & 스타일 ━━━\n- 친근한 구어체, 독자를 "잇님들"로 호칭\n- 존댓말 기본\n- 중요한 정보엔 느낌표 연속 (꼭 보세요!!!!!)\n- "존잼!!!!", "미쳤어요?!?!" 같은 감탄 표현\n- 짧은 문장 끊어쓰기\n- ㅠㅠ, ㅋㅋ, ~♡ 이모티콘 적당히\n- 솔직한 단점도 숨기지 않기\n- 에피소드 없는 부분은 [[여기에 직접 경험 추가]] 표시'+imgSec+tipSec+endSec+seoSec+tagSec;}
-async function generateBlogWithGroq(){
-  var info=getBlogInfo();if(!info)return;
-  var genBtn=document.getElementById('groq-blog-btn');
-  var loading=document.getElementById('groq-loading');
-  genBtn.disabled=true;loading.classList.add('show');
-  document.getElementById('blog-completed').classList.remove('show');
+async function generateSummary(){
+  var btn=document.getElementById('btn-summary');btn.disabled=true;btn.textContent='⏳ 요약 중...';
+  var smiToUse=resultSMI||mainSMI;
+  if(!smiToUse){alert('SMI 파일을 먼저 로드해주세요!');btn.disabled=false;btn.textContent='🎬 요약 + 명대사 추출';return;}
   try{
-    var result=await callGroq(buildBlogPromptText(info,true),'당신은 네이버 블로그 작가입니다. 입력된 내용에 [참고 말투] 섹션이 있으면 그 말투와 문체를 최대한 그대로 따라서 글을 작성합니다. 말투가 없으면 자연스러운 구어체로 작성합니다. 과장되거나 오글거리는 표현은 피합니다.');
-    document.getElementById('blog-content-area').textContent=result;
-    document.getElementById('blog-completed').classList.add('show');
-    document.getElementById('blog-completed').scrollIntoView({behavior:'smooth',block:'start'});
-  }catch(e){alert('블로그 생성 실패: '+e.message);}
-  genBtn.disabled=false;loading.classList.remove('show');
+    var lines=parseSMILines(smiToUse).filter(function(l){return l.text;});
+    var txt=lines.slice(0,250).map(function(l){return l.text;}).join('\n');
+    var fname=mainFile?mainFile.name.replace(/\.[^.]+$/,''):'';
+    var epInfo=mainFile?detectEp(mainFile.name):null;
+    var sys='당신은 드라마 자막 분석 전문가입니다. JSON만 출력합니다.';
+    var user='아래는 드라마 자막이야.\n드라마: '+fname+(epInfo?' '+epInfo.label:'')+'\n\n자막:\n'+txt+'\n\n아래 JSON 형식으로만 출력 (명대사는 반드시 한국어로 번역해서):\n{"summary":"3~5줄 줄거리 요약 (한국어)","highlight":"이번 화 핵심 1~2줄 (한국어)","quotes":[{"quote":"명대사1 (한국어)","speaker":"발화자"},{"quote":"명대사2 (한국어)","speaker":""},{"quote":"명대사3 (한국어)","speaker":""}]}';
+    var raw=await callGroq(user,sys);
+    var parsed=safeJSON(raw);
+    lastSummary=(parsed.summary||'')+(parsed.highlight?'\n\n'+parsed.highlight:'');
+    lastQuotes=parsed.quotes||[];
+    document.getElementById('summary-box').textContent=lastSummary;
+    var qBox=document.getElementById('quotes-box');qBox.innerHTML='';
+    lastQuotes.forEach(function(q){var div=document.createElement('div');div.className='quote-box';div.textContent='"'+q.quote+'"'+(q.speaker?' — '+q.speaker:'');qBox.appendChild(div);});
+    document.getElementById('summary-card').classList.add('show');
+    document.getElementById('summary-card').scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(e){alert('요약 실패: '+e.message);}
+  btn.disabled=false;btn.textContent='🎬 요약 + 명대사 추출';
 }
-async function regenBlogSection(){var feedback=document.getElementById('regen-input').value.trim();if(!feedback){alert('어떤 부분을 바꾸고 싶은지 입력해주세요!');return;}var current=document.getElementById('blog-content-area').textContent;try{document.getElementById('regen-input').value='';document.getElementById('blog-content-area').textContent='⏳ 재생성 중...';document.getElementById('blog-content-area').textContent=await callGroq('아래 블로그 글을 수정해줘.\n요청: '+feedback+'\n\n현재 글:\n'+current+'\n\n수정된 전체 글만 출력.','당신은 네이버 블로그 전문 작가입니다.');}catch(e){alert('재생성 실패: '+e.message);}}
-function copyBlogContent(){navigator.clipboard.writeText(document.getElementById('blog-content-area').textContent).then(function(){var btn=document.getElementById('blog-copy-btn');btn.textContent='✅ 복사됐어요!';btn.classList.add('done');setTimeout(function(){btn.textContent='📋 복사';btn.classList.remove('done');},2000);});}
-function sendBlogToClaude(){navigator.clipboard.writeText('아래 블로그 글을 더 자연스럽고 생동감 있게 다듬어줘.\n\n'+document.getElementById('blog-content-area').textContent).then(function(){window.open('https://claude.ai','_blank');setTimeout(function(){alert('✅ 복사 완료!');},500);});}
-async function generateBlogPrompt(){var info=getBlogInfo();if(!info)return;document.getElementById('blogPromptText').textContent=buildBlogPromptText(info,false);var card=document.getElementById('bresult');card.classList.add('show');card.scrollIntoView({behavior:'smooth',block:'start'});}
-function copyBlogPrompt(){navigator.clipboard.writeText(document.getElementById('blogPromptText').textContent).then(function(){window.open('https://claude.ai','_blank');var btn=document.getElementById('bcopyBtn');btn.textContent='✅ 복사됐어요!';btn.classList.add('done');setTimeout(function(){btn.textContent='📋 복사하기';btn.classList.remove('done');},2000);});}
 
-// ══ 이웃분석 ══
-var neighborNames=[],neighborLocked=false,pdfQueue=[],cumulativeCounts={},processedCount=0;
-function parseNeighborList(text){
-  return text.split(/[\n,，]+/)
-    .map(function(n){return String(n).trim();})
-    .filter(function(n){return n.length>0;});
-}
-function parseNeighborRaw(){var raw=document.getElementById('neighbor-raw').value.trim();if(!raw){alert('텍스트를 붙여넣어주세요!');return;}var names=[];raw.split('\n').forEach(function(line){line=line.trim();if(!line)return;if(line.indexOf('|')>-1){var name=line.split('|')[0].trim();if(name)names.push(name);}else if(/^\d{2}\.\d{2}\.\d{2}/.test(line)){}else{if(line.length>0&&line.length<30)names.push(line);}});names=names.filter(function(n,i){return names.indexOf(n)===i;});if(!names.length){alert('닉네임을 추출하지 못했어요');return;}var current=document.getElementById('neighbor-list').value.trim();var existing=current?parseNeighborList(current):[];var merged=existing.concat(names.filter(function(n){return existing.indexOf(n)===-1;}));document.getElementById('neighbor-list').value=merged.join('\n');document.getElementById('neighbor-raw').value='';document.getElementById('neighbor-count').textContent='✅ '+merged.length+'명 입력됨 ('+names.length+'명 추가됨)';document.getElementById('btn-lock-list').disabled=merged.length===0;alert('✅ '+names.length+'명 닉네임 추출 완료!\n'+names.join(', '));}
-async function extractNeighborFromImg(input){var statusEl=document.getElementById('neighbor-img-status');var files=Array.from(input.files);if(!files.length)return;var geminiKey=getGeminiKey();if(!geminiKey){alert('Gemini API 키를 먼저 입력해주세요!\n(번역 탭 → Gemini 키 저장)');return;}statusEl.style.display='block';statusEl.textContent='🔍 Gemini가 닉네임 추출 중...';statusEl.style.color='var(--warn)';try{var imgs=[];for(var i=0;i<files.length;i++){await new Promise(function(res){var f=files[i];var r=new FileReader();r.onload=function(e){imgs.push({b64:e.target.result.split(',')[1],type:f.type});res();};r.readAsDataURL(f);});}var result=await callGemini('이 이미지는 네이버 블로그 이웃 목록 화면 캡처입니다.\n블로그 닉네임만 한 줄에 하나씩 출력해줘. 버튼, 날짜, 메뉴 등 다른 텍스트는 제외.',imgs);var names=result.split('\n').map(function(n){return n.trim().replace(/^[-•*\d.]+\s*/,'');}).filter(function(n){return n.length>0;});var current=document.getElementById('neighbor-list').value.trim();var existing=current?parseNeighborList(current):[];var merged=existing.concat(names.filter(function(n){return existing.indexOf(n)===-1;}));document.getElementById('neighbor-list').value=merged.join('\n');document.getElementById('neighbor-count').textContent='✅ '+merged.length+'명 입력됨 ('+names.length+'명 추가됨)';document.getElementById('btn-lock-list').disabled=merged.length===0;statusEl.textContent='✅ '+names.length+'명 닉네임 추출 완료!';statusEl.style.color='var(--ok)';}catch(e){statusEl.textContent='❌ 추출 실패: '+e.message;statusEl.style.color='var(--er)';}}
-document.getElementById('neighbor-list').addEventListener('input',function(){var names=parseNeighborList(this.value);document.getElementById('neighbor-count').textContent=names.length>0?'✅ '+names.length+'명 입력됨':'';document.getElementById('btn-lock-list').disabled=names.length===0;});
-function lockNeighborList(){neighborNames=parseNeighborList(document.getElementById('neighbor-list').value);if(!neighborNames.length){alert('이웃 목록을 입력해주세요!');return;}neighborLocked=true;neighborNames.forEach(function(n){if(cumulativeCounts[n]===undefined)cumulativeCounts[n]=0;});document.getElementById('neighbor-input-area').style.display='none';document.getElementById('neighbor-locked-info').style.display='flex';document.getElementById('neighbor-locked-text').textContent='이웃 '+neighborNames.length+'명 확정됨';updateLiveboard();}
-function resetNeighborList(){if(!confirm('초기화할까요?'))return;neighborNames=[];neighborLocked=false;cumulativeCounts={};pdfQueue=[];processedCount=0;document.getElementById('neighbor-input-area').style.display='block';document.getElementById('neighbor-locked-info').style.display='none';document.getElementById('neighbor-list').value='';document.getElementById('neighbor-raw').value='';document.getElementById('neighbor-count').textContent='';document.getElementById('pdf-queue').innerHTML='';document.getElementById('live-board').style.display='none';document.getElementById('neighbor-result').style.display='none';document.getElementById('prog-neighbor').style.display='none';}
-document.getElementById('dz-pdf').addEventListener('click',function(){document.getElementById('fi-pdf').click();});
-document.getElementById('fi-pdf').addEventListener('change',function(){addPdfFiles(this.files);this.value='';});
-document.getElementById('dz-pdf').addEventListener('dragover',function(e){e.preventDefault();this.classList.add('over');});
-document.getElementById('dz-pdf').addEventListener('dragleave',function(){this.classList.remove('over');});
-document.getElementById('dz-pdf').addEventListener('drop',function(e){e.preventDefault();this.classList.remove('over');addPdfFiles(e.dataTransfer.files);});
-function addPdfFiles(files){if(!neighborLocked){alert('먼저 이웃 목록을 확정해주세요!');return;}var added=0;Array.from(files).forEach(function(f){if(!f.name.toLowerCase().endsWith('.pdf'))return;if(pdfQueue.some(function(q){return q.name===f.name;}))return;pdfQueue.push({file:f,name:f.name,status:'wait'});added++;});if(!added){alert('이미 추가된 파일이거나 PDF가 아니에요.');return;}renderPdfQueue();document.getElementById('btn-run-pdfs').disabled=false;}
-function renderPdfQueue(){var queue=document.getElementById('pdf-queue');queue.innerHTML='';pdfQueue.forEach(function(item,idx){var el=document.createElement('div');el.className='pdf-queue-item';var st=item.status==='done'?'<span class="pq-status pq-done">✅ 완료</span>':item.status==='proc'?'<span class="pq-status pq-proc">⏳ 처리중</span>':'<span class="pq-status pq-wait">⏸ 대기</span>';var del=item.status!=='proc'?'<button class="pq-del" onclick="removePdfItem('+idx+')">🗑</button>':'';el.innerHTML='<span class="pq-name">📄 '+item.name+'</span>'+st+del;queue.appendChild(el);});}
-function removePdfItem(idx){if(pdfQueue[idx].status==='proc')return;pdfQueue.splice(idx,1);renderPdfQueue();}
-function clearDonePdfs(){pdfQueue=pdfQueue.filter(function(q){return q.status!=='done';});renderPdfQueue();}
-async function runPendingPdfs(){var pending=pdfQueue.filter(function(q){return q.status==='wait';});if(!pending.length){alert('분석할 파일이 없어요!');return;}document.getElementById('btn-run-pdfs').disabled=true;document.getElementById('prog-neighbor').style.display='block';document.getElementById('nlb').innerHTML='';function NL(msg,t){var b=document.getElementById('nlb'),d=document.createElement('div');d.className='ll'+(t?' l'+t:'');d.textContent=msg;b.appendChild(d);b.scrollTop=b.scrollHeight;}function NP(pct,lbl){document.getElementById('nfill').style.width=pct+'%';document.getElementById('npct').textContent=pct+'%';if(lbl)document.getElementById('nlbl').textContent=lbl;}try{for(var i=0;i<pending.length;i++){var item=pending[i];item.status='proc';renderPdfQueue();NL('📄 ['+(i+1)+'/'+pending.length+'] '+item.name+' 파싱 중...','i');NP(Math.round((i/pending.length)*90)+5,'파싱 중...');var text=await extractPdfText(item.file);neighborNames.forEach(function(name){cumulativeCounts[name]=(cumulativeCounts[name]||0)+countActivity(text,name);});item.status='done';processedCount++;renderPdfQueue();NL('✅ '+item.name+' 완료','ok');updateLiveboard();updateFullResult();}NP(100,'✅ 완료!');NL('📊 총 '+processedCount+'개 PDF 완료','ok');}catch(e){NL('❌ 오류: '+e.message,'er');}document.getElementById('btn-run-pdfs').disabled=false;}
-function normName(n){return n.replace(/\s/g,'').toLowerCase();}
-function countActivity(pdfText,name){var norm=normName(name),normText=normName(pdfText),count=0,idx=0;while((idx=normText.indexOf(norm,idx))!==-1){count++;idx+=norm.length;}return count;}
-function updateLiveboard(){document.getElementById('live-board').style.display='block';var sorted=neighborNames.map(function(n){return{name:n,count:cumulativeCounts[n]||0};}).sort(function(a,b){return b.count-a.count;});var actives=sorted.filter(function(r){return r.count>0;}),ghosts=sorted.filter(function(r){return r.count===0;});document.getElementById('sum-total').textContent=neighborNames.length;document.getElementById('sum-ghost').textContent=ghosts.length;document.getElementById('sum-active').textContent=actives.length;document.getElementById('live-top5').innerHTML=actives.slice(0,5).map(function(r,i){return '<div class="live-item"><span class="live-name">'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'  ')+' '+r.name+'</span><span class="live-cnt" style="color:var(--ok)">'+r.count+'회</span></div>';}).join('')||'<div style="font-size:11px;color:var(--mut)">아직 없어요</div>';var bottom5=actives.length>=2?actives.slice(-5).reverse():[];document.getElementById('live-bottom5').innerHTML=bottom5.map(function(r){return '<div class="live-item"><span class="live-name">'+r.name+'</span><span class="live-cnt" style="color:var(--warn)">'+r.count+'회</span></div>';}).join('')||'<div style="font-size:11px;color:var(--mut)">해당 없음</div>';var doneCount=pdfQueue.filter(function(q){return q.status==='done';}).length;document.getElementById('progress-files-txt').textContent=pdfQueue.length>0?'📁 '+doneCount+' / '+pdfQueue.length+' 파일 완료 · 유령: '+ghosts.length+'명':'';var badge=document.getElementById('live-badge');if(doneCount>0&&doneCount===pdfQueue.length){badge.style.animation='none';badge.textContent='완료';}else{badge.style.animation='';badge.textContent='LIVE';}}
-function updateFullResult(){
-  var sorted=neighborNames.map(function(n){return{name:String(n),count:cumulativeCounts[String(n)]||0};}).sort(function(a,b){return b.count-a.count;});
-  var actives=sorted.filter(function(r){return r.count>0;}),ghosts=sorted.filter(function(r){return r.count===0;});
-  document.getElementById('active-top10').innerHTML=actives.slice(0,10).map(function(r,i){return '<div class="rank-row"><div class="rank-num" style="color:'+(i<3?'var(--warn)':'var(--mut')+');">'+(i+1)+'</div><div class="rank-name">'+r.name+'</div><div class="rank-cnt" style="color:var(--ok)">'+r.count+'회</div></div>';}).join('')||'<div style="color:var(--mut);font-size:12px">활동 이웃 없음</div>';
-  var bottom10=actives.length>1?actives.slice(-Math.min(10,actives.length)).reverse():[];
-  document.getElementById('active-bottom10').innerHTML=bottom10.map(function(r){return '<div class="rank-row"><div class="rank-name">'+r.name+'</div><div class="rank-cnt" style="color:var(--warn)">'+r.count+'회</div></div>';}).join('')||'<div style="color:var(--mut);font-size:12px">해당 없음</div>';
-  document.getElementById('ghost-list').innerHTML=ghosts.map(function(r){return '<span class="ghost-tag">'+r.name+'</span>';}).join('')||'<div style="color:var(--ok);font-size:12px">유령 이웃 없음 🎉</div>';
-  document.getElementById('neighbor-result').style.display='block';
-}
-function copyGhostList(){var ghosts=Array.from(document.querySelectorAll('#ghost-list .ghost-tag')).map(function(s){return s.textContent;});if(!ghosts.length){alert('유령 이웃이 없어요!');return;}navigator.clipboard.writeText(ghosts.join('\n')).then(function(){alert('✅ '+ghosts.length+'명 복사됐어요!');});}
-function exportFullResult(){var sorted=neighborNames.map(function(n){return{name:n,count:cumulativeCounts[n]||0};}).sort(function(a,b){return b.count-a.count;});var lines=['===== 이웃 분석 결과 =====','분석 파일: '+processedCount+'개','전체: '+neighborNames.length+'명 / 활동: '+sorted.filter(function(r){return r.count>0;}).length+'명 / 유령: '+sorted.filter(function(r){return r.count===0;}).length+'명',''];sorted.forEach(function(r,i){lines.push((i+1)+'. '+r.name+' — '+r.count+'회'+(r.count===0?' 👻':''));});navigator.clipboard.writeText(lines.join('\n')).then(function(){alert('✅ 전체 결과 복사됐어요!');});}
-async function extractPdfText(file){if(!window.pdfjsLib){await new Promise(function(res,rej){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';s.onload=res;s.onerror=rej;document.head.appendChild(s);});window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}var ab=await file.arrayBuffer(),pdf=await window.pdfjsLib.getDocument({data:ab}).promise,text='';for(var i=1;i<=pdf.numPages;i++){var page=await pdf.getPage(i),content=await page.getTextContent();text+=content.items.map(function(item){return item.str;}).join(' ')+'\n';}return text;}
-
-// ══ 초기화 ══
-function downloadSelf(){
-  var html=document.documentElement.outerHTML;
-  var blob=new Blob([html],{type:'text/html;charset=utf-8'});
-  var url=URL.createObjectURL(blob);
-  var a=Object.assign(document.createElement('a'),{href:url,download:'tool_v1.3.3.html'});
-  document.body.appendChild(a);a.click();document.body.removeChild(a);
-  setTimeout(function(){URL.revokeObjectURL(url);},1000);
-}
-function loadKeys(){
-  var sg=localStorage.getItem('groq_api_key');
-  if(sg){document.getElementById('key-groq').value=sg;document.getElementById('saved-groq').style.display='block';document.getElementById('input-groq').style.display='none';}
-  document.getElementById('saved-groq').addEventListener('click',function(){document.getElementById('saved-groq').style.display='none';document.getElementById('input-groq').style.display='block';});
-  var gm=localStorage.getItem('gemini_api_key');
-  if(gm){document.getElementById('key-gemini').value=gm;document.getElementById('saved-gemini').style.display='block';document.getElementById('input-gemini').style.display='none';}
-  document.getElementById('saved-gemini').addEventListener('click',function(){document.getElementById('saved-gemini').style.display='none';document.getElementById('input-gemini').style.display='block';});
+function sendSummaryToBlog(){
+  var fname=mainFile?mainFile.name.replace(/\.[^.]+$/,'').replace(/_track\d+$/i,''):'';
+  var epInfo=mainFile?detectEp(mainFile.name):null,epLabel=epInfo?' '+epInfo.label:'';
+  setMain('blog');
+  document.querySelectorAll('.radio-pill').forEach(function(p){p.classList.remove('active');});
+  var dp=document.getElementById('rpill-drama');dp.classList.add('active');setBlogCat('drama',dp);
+  document.getElementById('b-title').value=fname;
+  var infoText='[드라마: '+fname+epLabel+']\n\n## 줄거리\n'+lastSummary;
+  if(lastQuotes.length){infoText+='\n\n## 명대사\n';lastQuotes.forEach(function(q){infoText+='"'+q.quote+'"'+(q.speaker?' — '+q.speaker:'')+'\n';});}
+  document.getElementById('b-info').value=infoText;
 }
 
 // ══ 드라마 설정 저장/불러오기 ══
 function saveDramaSettings(){
-  var data={
-    genre:document.getElementById('genre').value,
-    srcLang:document.getElementById('src-lang').value,
-    extra:document.getElementById('extra-prompt').value.trim(),
-    transMode:transMode
-  };
+  var data={genre:document.getElementById('genre').value,srcLang:document.getElementById('src-lang').value,extra:document.getElementById('extra-prompt').value.trim(),transMode:transMode};
   localStorage.setItem('drama_settings',JSON.stringify(data));
   alert('✅ 드라마 설정 저장됐어요!');
 }
@@ -826,16 +811,99 @@ function deleteDramaSettings(){
   alert('🗑 삭제됐어요!');
 }
 
+function readFile(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(e){res(e.target.result);};r.onerror=function(){rej(new Error('읽기 실패'));};r.readAsText(f,'utf-8');});}
+async function loadSMIFile(f){mainFile=f;mainSMI=await readFile(f);updateFileInfo(f.name,mainSMI);}
+function setupDrop(dzId,fiId,onFile){var dz=document.getElementById(dzId),fi=document.getElementById(fiId);dz.addEventListener('click',function(){fi.click();});fi.addEventListener('change',function(){if(fi.files[0])onFile(fi.files[0]);});dz.addEventListener('dragover',function(e){e.preventDefault();dz.classList.add('over');});dz.addEventListener('dragleave',function(){dz.classList.remove('over');});dz.addEventListener('drop',function(e){e.preventDefault();dz.classList.remove('over');if(e.dataTransfer.files[0])onFile(e.dataTransfer.files[0]);});}
+setupDrop('dz-mkv','fi-mkv',extractMKV);
+setupDrop('dz-smi','fi-smi',loadSMIFile);
+async function loadRefFiles(inputEl,store,listId){store={};var list=document.getElementById(listId);list.innerHTML='';for(var i=0;i<inputEl.files.length;i++){var f=inputEl.files[i],ep=detectEp(f.name);if(!ep)continue;var content=await readFile(f);store[ep.season+'_'+ep.ep]={name:f.name,content:content};var div=document.createElement('div');div.className='prev-item ok';div.textContent=ep.label+' · '+f.name;list.appendChild(div);}return store;}
+document.getElementById('dz-ref-orig').addEventListener('click',function(){document.getElementById('fi-ref-orig').click();});
+document.getElementById('dz-ref-done').addEventListener('click',function(){document.getElementById('fi-ref-done').click();});
+document.getElementById('fi-ref-orig').addEventListener('change',async function(){refOrigFiles=await loadRefFiles(this,refOrigFiles,'ref-orig-list');});
+document.getElementById('fi-ref-done').addEventListener('change',async function(){refDoneFiles=await loadRefFiles(this,refDoneFiles,'ref-done-list');});
+
+// ══ 블로그 ══
+var curBlogCat='travel',blogImgList=[];
+var catConfig={
+  travel:{title:null,infoLabel:'주제 / 핵심 내용',infoPlaceholder:'[참고 말투 - 내 블로그 글]\n평소 내가 쓰는 문장 2~3개를 여기에 붙여넣어요\n\n[이번 내용]\n방문 장소, 코스, 팁, 에피소드 등!',imgIcon:null},
+  webtoon:{title:'작품명',infoLabel:'작품 정보 + 소감',infoPlaceholder:'[참고 말투 - 내 블로그 글]\n평소 내가 쓰는 문장 2~3개를 여기에 붙여넣어요\n\n[이번 내용]\n장르, 줄거리, 소감 등!',imgIcon:'📚',imgLabel:'표지/컷'},
+  drama:{title:'드라마 제목',infoLabel:'드라마 정보 + 소감',infoPlaceholder:'[참고 말투 - 내 블로그 글]\n평소 내가 쓰는 문장 2~3개를 여기에 붙여넣어요\n\n[이번 내용]\n방송사, 장르, 출연진, 줄거리, 소감 등!',imgIcon:'🎬',imgLabel:'포스터/스틸컷'},
+  movie:{title:'영화 제목',infoLabel:'영화 정보 + 소감',infoPlaceholder:'[참고 말투 - 내 블로그 글]\n평소 내가 쓰는 문장 2~3개를 여기에 붙여넣어요\n\n[이번 내용]\n개봉연도, 장르, 감독, 소감 등!',imgIcon:'🎥',imgLabel:'포스터'},
+  actor:{title:'배우명',infoLabel:'배우 정보 + 소감',infoPlaceholder:'[참고 말투 - 내 블로그 글]\n평소 내가 쓰는 문장 2~3개를 여기에 붙여넣어요\n\n[이번 내용]\n국적, 대표작, 입덕 계기 등!',imgIcon:'🌟',imgLabel:'배우 이미지'}
+};
+function setBlogCat(cat,el){
+  curBlogCat=cat;document.querySelectorAll('.radio-pill').forEach(function(p){p.classList.remove('active');});el.classList.add('active');
+  var cfg=catConfig[cat];
+  var tr=document.getElementById('b-title-row');
+  if(cfg.title){tr.style.display='';document.getElementById('b-title-label').textContent=cfg.title+' *';}else tr.style.display='none';
+  document.getElementById('b-info-label').textContent=cfg.infoLabel+' *';
+  document.getElementById('b-info').placeholder=cfg.infoPlaceholder;
+  var ir=document.getElementById('b-img-row');
+  if(cfg.imgIcon){ir.style.display='';document.getElementById('b-img-icon').textContent=cfg.imgIcon;document.getElementById('b-img-label').textContent=cfg.imgLabel+' (선택)';}else ir.style.display='none';
+  blogImgList.length=0;document.getElementById('b-preview').innerHTML='';
+  document.getElementById('b-title').value='';document.getElementById('b-info').value='';
+  document.getElementById('blog-completed').classList.remove('show');
+  document.getElementById('bresult').classList.remove('show');
+}
+function handleBlogImgs(input){Array.from(input.files).forEach(function(f){var r=new FileReader();r.onload=function(e){var idx=blogImgList.length;blogImgList.push({name:f.name});var wrap=document.getElementById('b-preview'),thumb=document.createElement('div');thumb.className='bimg-thumb';thumb.innerHTML='<img src="'+e.target.result+'"><button class="bimg-thumb-del" onclick="removeBlogImg('+idx+',this.parentNode)">✕</button>';wrap.appendChild(thumb);};r.readAsDataURL(f);});}
+function removeBlogImg(idx,el){blogImgList[idx]=null;el.remove();}
+function togglePill(el){el.classList.toggle('on');el.querySelector('input').checked=el.classList.contains('on');}
+function bv(id){var e=document.getElementById(id);return e?e.value.trim():'';}
+function getBlogOpts(){return Array.from(document.querySelectorAll('#checkWrap .check-pill.on input')).map(function(i){return i.value;});}
+function getBlogInfo(){
+  var infoVal=bv('b-info');if(!infoVal){alert('내용을 입력해주세요! 🌸');return null;}
+  var catLabel={travel:'여행기',webtoon:'웹툰 리뷰',drama:'드라마 리뷰',movie:'영화 리뷰',actor:'배우 소개'}[curBlogCat];
+  var lenMap={normal:'800~1200자',short:'500~800자',long:'1500자 이상'};
+  return{catLabel:catLabel,titleVal:bv('b-title'),infoVal:infoVal,len:lenMap[bv('blength')],opts:getBlogOpts()};
+}
+function buildBlogPromptText(info,forGroq){
+  var opts=info.opts;
+  var imgSec=opts.indexOf('images')>=0?'\n- 이미지 삽입 위치를 [📷 이미지: 설명] 형식으로 3~6개 표시':'';
+  var seoSec=opts.indexOf('seo_titles')>=0?'\n- 글 마지막에 [SEO 제목 후보] 제목 3개 제안':'';
+  var tagSec=opts.indexOf('tags')>=0?'\n- [추천 태그] 네이버 블로그 태그 10~15개 (#태그)':'';
+  var tipSec=opts.indexOf('tips')>=0?'\n- 실용 팁은 본문에 자연스럽게 포함':'';
+  var endSec=opts.indexOf('ending')>=0?'\n- 마지막에 따뜻한 마무리 문단 추가':'';
+  var infoStr='카테고리: '+info.catLabel+'\n';
+  if(info.titleVal)infoStr+='제목: '+info.titleVal+'\n';
+  infoStr+=info.infoVal;
+  return(forGroq?'아래 정보로 네이버 블로그 포스팅을 작성해줘. 결과물만 출력.\n\n':'아래 정보로 네이버 블로그 포스팅을 완성해줘.\n\n')
+    +'━━━ 글쓰기 정보 ━━━\n'+infoStr+'\n글 길이: '+info.len
+    +'\n\n━━━ 작성 규칙 ━━━\n- [참고 말투] 섹션이 있으면 그 말투와 문체를 최대한 그대로 따라서 작성\n- 말투가 없으면 자연스러운 구어체로 작성\n- 과장되거나 오글거리는 표현은 피하기\n- 에피소드 없는 부분은 [[여기에 직접 경험 추가]] 표시'
+    +imgSec+tipSec+endSec+seoSec+tagSec;
+}
+async function generateBlogWithGroq(){
+  var info=getBlogInfo();if(!info)return;
+  var btn=document.getElementById('groq-blog-btn'),loading=document.getElementById('groq-loading');
+  btn.disabled=true;loading.classList.add('show');
+  document.getElementById('blog-completed').classList.remove('show');
+  try{
+    var sys='당신은 네이버 블로그 작가입니다. 입력된 [참고 말투] 섹션의 문체를 최대한 따라 작성합니다. 과장되거나 오글거리는 표현은 피합니다.';
+    var result=await callGroq(buildBlogPromptText(info,true),sys);
+    document.getElementById('blog-content-area').textContent=result;
+    document.getElementById('blog-completed').classList.add('show');
+    document.getElementById('blog-completed').scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(e){alert('블로그 생성 실패: '+e.message);}
+  btn.disabled=false;loading.classList.remove('show');
+}
+async function regenBlogSection(){
+  var feedback=document.getElementById('regen-input').value.trim();
+  if(!feedback){alert('어떤 부분을 바꾸고 싶은지 입력해주세요!');return;}
+  var current=document.getElementById('blog-content-area').textContent;
+  try{
+    document.getElementById('regen-input').value='';
+    document.getElementById('blog-content-area').textContent='⏳ 재생성 중...';
+    var result=await callGroq('아래 블로그 글을 수정해줘.\n요청: '+feedback+'\n\n현재 글:\n'+current+'\n\n수정된 전체 글만 출력.','당신은 네이버 블로그 작가입니다. 과장되거나 오글거리는 표현은 피합니다.');
+    document.getElementById('blog-content-area').textContent=result;
+  }catch(e){alert('재생성 실패: '+e.message);}
+}
+function copyBlogContent(){navigator.clipboard.writeText(document.getElementById('blog-content-area').textContent).then(function(){var btn=document.getElementById('blog-copy-btn');btn.textContent='✅ 복사됐어요!';btn.classList.add('done');setTimeout(function(){btn.textContent='📋 복사';btn.classList.remove('done');},2000);});}
+function sendBlogToClaude(){navigator.clipboard.writeText('아래 블로그 글을 더 자연스럽게 다듬어줘. 말투와 스타일은 유지하되 어색한 부분을 개선해줘.\n\n'+document.getElementById('blog-content-area').textContent).then(function(){window.open('https://claude.ai','_blank');setTimeout(function(){alert('✅ 복사 완료!');},500);});}
+async function generateBlogPrompt(){var info=getBlogInfo();if(!info)return;document.getElementById('blogPromptText').textContent=buildBlogPromptText(info,false);var card=document.getElementById('bresult');card.classList.add('show');card.scrollIntoView({behavior:'smooth',block:'start'});}
+function copyBlogPrompt(){navigator.clipboard.writeText(document.getElementById('blogPromptText').textContent).then(function(){window.open('https://claude.ai','_blank');var btn=document.getElementById('bcopyBtn');btn.textContent='✅ 복사됐어요!';btn.classList.add('done');setTimeout(function(){btn.textContent='📋 복사하기';btn.classList.remove('done');},2000);});}
+
 // ══ 블로그 임시저장 ══
 function saveBlogDraft(){
-  var data={
-    cat:curBlogCat,
-    title:document.getElementById('b-title').value,
-    info:document.getElementById('b-info').value,
-    length:document.getElementById('blength').value,
-    opts:getBlogOpts(),
-    savedAt:new Date().toLocaleString()
-  };
+  var data={cat:curBlogCat,title:document.getElementById('b-title').value,info:document.getElementById('b-info').value,length:document.getElementById('blength').value,savedAt:new Date().toLocaleString()};
   localStorage.setItem('blog_draft',JSON.stringify(data));
   alert('✅ 임시저장됐어요!\n저장 시각: '+data.savedAt);
 }
@@ -856,8 +924,212 @@ function deleteBlogDraft(){
   localStorage.removeItem('blog_draft');
   alert('🗑 삭제됐어요!');
 }
-window.downloadSelf=downloadSelf;
-window.downloadSelf=downloadSelf;
+
+// ══ 이웃분석 ══
+var neighborNames=[],neighborLocked=false,pdfQueue=[],cumulativeCounts={},processedCount=0;
+
+function parseNeighborList(text){return text.split(/[\n,，]+/).map(function(n){return String(n).trim();}).filter(function(n){return n.length>0;});}
+
+function parseNeighborRaw(){
+  var raw=document.getElementById('neighbor-raw').value.trim();
+  if(!raw){alert('텍스트를 붙여넣어주세요!');return;}
+  var names=[];
+  raw.split('\n').forEach(function(line){
+    line=line.trim();if(!line)return;
+    if(line.indexOf('|')>-1){var name=line.split('|')[0].trim();if(name)names.push(name);}
+    else if(/^\d{2}\.\d{2}\.\d{2}/.test(line)){}
+    else{if(line.length>0&&line.length<30)names.push(line);}
+  });
+  names=names.filter(function(n,i){return names.indexOf(n)===i;});
+  if(!names.length){alert('닉네임을 추출하지 못했어요');return;}
+  var current=document.getElementById('neighbor-list').value.trim();
+  var existing=current?parseNeighborList(current):[];
+  var merged=existing.concat(names.filter(function(n){return existing.indexOf(n)===-1;}));
+  document.getElementById('neighbor-list').value=merged.join('\n');
+  document.getElementById('neighbor-raw').value='';
+  document.getElementById('neighbor-count').textContent='✅ '+merged.length+'명 입력됨 ('+names.length+'명 추가됨)';
+  document.getElementById('btn-lock-list').disabled=merged.length===0;
+  alert('✅ '+names.length+'명 닉네임 추출 완료!\n'+names.join(', '));
+}
+
+async function extractNeighborFromImg(input){
+  var statusEl=document.getElementById('neighbor-img-status');
+  var files=Array.from(input.files);if(!files.length)return;
+  var geminiKey=getGeminiKey();
+  if(!geminiKey){alert('Gemini API 키를 먼저 입력해주세요!\n(번역 탭 → Gemini 키 저장)');return;}
+  statusEl.style.display='block';statusEl.textContent='🔍 Gemini가 닉네임 추출 중...';statusEl.style.color='var(--warn)';
+  try{
+    var imgs=[];
+    for(var i=0;i<files.length;i++){await new Promise(function(res){var f=files[i];var r=new FileReader();r.onload=function(e){imgs.push({b64:e.target.result.split(',')[1],type:f.type});res();};r.readAsDataURL(f);});}
+    var result=await callGemini('이 이미지는 네이버 블로그 이웃 목록 화면 캡처입니다.\n블로그 닉네임만 한 줄에 하나씩 출력해줘. 버튼, 날짜, 메뉴 등 다른 텍스트는 제외.',imgs);
+    var names=result.split('\n').map(function(n){return n.trim().replace(/^[-•*\d.]+\s*/,'');}).filter(function(n){return n.length>0;});
+    var current=document.getElementById('neighbor-list').value.trim();
+    var existing=current?parseNeighborList(current):[];
+    var merged=existing.concat(names.filter(function(n){return existing.indexOf(n)===-1;}));
+    document.getElementById('neighbor-list').value=merged.join('\n');
+    document.getElementById('neighbor-count').textContent='✅ '+merged.length+'명 입력됨 ('+names.length+'명 추가됨)';
+    document.getElementById('btn-lock-list').disabled=merged.length===0;
+    statusEl.textContent='✅ '+names.length+'명 닉네임 추출 완료!';statusEl.style.color='var(--ok)';
+  }catch(e){statusEl.textContent='❌ 추출 실패: '+e.message;statusEl.style.color='var(--er)';}
+}
+
+document.getElementById('neighbor-list').addEventListener('input',function(){
+  var names=parseNeighborList(this.value);
+  document.getElementById('neighbor-count').textContent=names.length>0?'✅ '+names.length+'명 입력됨':'';
+  document.getElementById('btn-lock-list').disabled=names.length===0;
+});
+
+function lockNeighborList(){
+  neighborNames=parseNeighborList(document.getElementById('neighbor-list').value);
+  if(!neighborNames.length){alert('이웃 목록을 입력해주세요!');return;}
+  neighborLocked=true;
+  neighborNames.forEach(function(n){if(cumulativeCounts[n]===undefined)cumulativeCounts[n]=0;});
+  document.getElementById('neighbor-input-area').style.display='none';
+  document.getElementById('neighbor-locked-info').style.display='flex';
+  document.getElementById('neighbor-locked-text').textContent='이웃 '+neighborNames.length+'명 확정됨';
+  updateLiveboard();
+}
+function resetNeighborList(){
+  if(!confirm('초기화할까요?'))return;
+  neighborNames=[];neighborLocked=false;cumulativeCounts={};pdfQueue=[];processedCount=0;
+  document.getElementById('neighbor-input-area').style.display='block';
+  document.getElementById('neighbor-locked-info').style.display='none';
+  document.getElementById('neighbor-list').value='';
+  document.getElementById('neighbor-raw').value='';
+  document.getElementById('neighbor-count').textContent='';
+  document.getElementById('pdf-queue').innerHTML='';
+  document.getElementById('live-board').style.display='none';
+  document.getElementById('neighbor-result').style.display='none';
+  document.getElementById('prog-neighbor').style.display='none';
+}
+
+document.getElementById('dz-pdf').addEventListener('click',function(){document.getElementById('fi-pdf').click();});
+document.getElementById('fi-pdf').addEventListener('change',function(){addPdfFiles(this.files);this.value='';});
+document.getElementById('dz-pdf').addEventListener('dragover',function(e){e.preventDefault();this.classList.add('over');});
+document.getElementById('dz-pdf').addEventListener('dragleave',function(){this.classList.remove('over');});
+document.getElementById('dz-pdf').addEventListener('drop',function(e){e.preventDefault();this.classList.remove('over');addPdfFiles(e.dataTransfer.files);});
+
+function addPdfFiles(files){
+  if(!neighborLocked){alert('먼저 이웃 목록을 확정해주세요!');return;}
+  var added=0;
+  Array.from(files).forEach(function(f){
+    if(!f.name.toLowerCase().endsWith('.pdf'))return;
+    if(pdfQueue.some(function(q){return q.name===f.name;}))return;
+    pdfQueue.push({file:f,name:f.name,status:'wait'});added++;
+  });
+  if(!added){alert('이미 추가된 파일이거나 PDF가 아니에요.');return;}
+  renderPdfQueue();document.getElementById('btn-run-pdfs').disabled=false;
+}
+function renderPdfQueue(){
+  var queue=document.getElementById('pdf-queue');queue.innerHTML='';
+  pdfQueue.forEach(function(item,idx){
+    var el=document.createElement('div');el.className='pdf-queue-item';
+    var st=item.status==='done'?'<span class="pq-status pq-done">✅ 완료</span>':item.status==='proc'?'<span class="pq-status pq-proc">⏳ 처리중</span>':'<span class="pq-status pq-wait">⏸ 대기</span>';
+    var del=item.status!=='proc'?'<button class="pq-del" onclick="removePdfItem('+idx+')">🗑</button>':'';
+    el.innerHTML='<span class="pq-name">📄 '+item.name+'</span>'+st+del;
+    queue.appendChild(el);
+  });
+}
+function removePdfItem(idx){if(pdfQueue[idx].status==='proc')return;pdfQueue.splice(idx,1);renderPdfQueue();}
+function clearDonePdfs(){pdfQueue=pdfQueue.filter(function(q){return q.status!=='done';});renderPdfQueue();}
+
+async function runPendingPdfs(){
+  var pending=pdfQueue.filter(function(q){return q.status==='wait';});
+  if(!pending.length){alert('분석할 파일이 없어요!');return;}
+  document.getElementById('btn-run-pdfs').disabled=true;
+  document.getElementById('prog-neighbor').style.display='block';
+  document.getElementById('nlb').innerHTML='';
+  function NL(msg,t){var b=document.getElementById('nlb'),d=document.createElement('div');d.className='ll'+(t?' l'+t:'');d.textContent=msg;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+  function NP(pct,lbl){document.getElementById('nfill').style.width=pct+'%';document.getElementById('npct').textContent=pct+'%';if(lbl)document.getElementById('nlbl').textContent=lbl;}
+  try{
+    for(var i=0;i<pending.length;i++){
+      var item=pending[i];item.status='proc';renderPdfQueue();
+      NL('📄 ['+(i+1)+'/'+pending.length+'] '+item.name+' 파싱 중...','i');
+      NP(Math.round((i/pending.length)*90)+5,'파싱 중...');
+      var text=await extractPdfText(item.file);
+      neighborNames.forEach(function(name){cumulativeCounts[name]=(cumulativeCounts[name]||0)+countActivity(text,name);});
+      item.status='done';processedCount++;renderPdfQueue();
+      NL('✅ '+item.name+' 완료','ok');
+      updateLiveboard();updateFullResult();
+    }
+    NP(100,'✅ 완료!');NL('📊 총 '+processedCount+'개 PDF 완료','ok');
+  }catch(e){NL('❌ 오류: '+e.message,'er');}
+  document.getElementById('btn-run-pdfs').disabled=false;
+}
+
+function normName(n){return String(n).replace(/\s/g,'').toLowerCase();}
+function countActivity(pdfText,name){var norm=normName(name),normText=normName(pdfText),count=0,idx=0;while((idx=normText.indexOf(norm,idx))!==-1){count++;idx+=norm.length;}return count;}
+
+function updateLiveboard(){
+  document.getElementById('live-board').style.display='block';
+  var sorted=neighborNames.map(function(n){return{name:String(n),count:cumulativeCounts[String(n)]||0};}).sort(function(a,b){return b.count-a.count;});
+  var actives=sorted.filter(function(r){return r.count>0;}),ghosts=sorted.filter(function(r){return r.count===0;});
+  document.getElementById('sum-total').textContent=neighborNames.length;
+  document.getElementById('sum-ghost').textContent=ghosts.length;
+  document.getElementById('sum-active').textContent=actives.length;
+  document.getElementById('live-top5').innerHTML=actives.slice(0,5).map(function(r,i){return '<div class="live-item"><span class="live-name">'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'  ')+' '+r.name+'</span><span class="live-cnt" style="color:var(--ok)">'+r.count+'회</span></div>';}).join('')||'<div style="font-size:11px;color:var(--mut)">아직 없어요</div>';
+  var bottom5=actives.length>=2?actives.slice(-5).reverse():[];
+  document.getElementById('live-bottom5').innerHTML=bottom5.map(function(r){return '<div class="live-item"><span class="live-name">'+r.name+'</span><span class="live-cnt" style="color:var(--warn)">'+r.count+'회</span></div>';}).join('')||'<div style="font-size:11px;color:var(--mut)">해당 없음</div>';
+  var doneCount=pdfQueue.filter(function(q){return q.status==='done';}).length;
+  document.getElementById('progress-files-txt').textContent=pdfQueue.length>0?'📁 '+doneCount+' / '+pdfQueue.length+' 파일 완료 · 유령: '+ghosts.length+'명':'';
+  var badge=document.getElementById('live-badge');
+  if(doneCount>0&&doneCount===pdfQueue.length){badge.style.animation='none';badge.textContent='완료';}
+  else{badge.style.animation='';badge.textContent='LIVE';}
+}
+
+function updateFullResult(){
+  var sorted=neighborNames.map(function(n){return{name:String(n),count:cumulativeCounts[String(n)]||0};}).sort(function(a,b){return b.count-a.count;});
+  var actives=sorted.filter(function(r){return r.count>0;}),ghosts=sorted.filter(function(r){return r.count===0;});
+  document.getElementById('active-top10').innerHTML=actives.slice(0,10).map(function(r,i){return '<div class="rank-row"><div class="rank-num" style="color:'+(i<3?'var(--warn)':'var(--mut')+');">'+(i+1)+'</div><div class="rank-name">'+r.name+'</div><div class="rank-cnt" style="color:var(--ok)">'+r.count+'회</div></div>';}).join('')||'<div style="color:var(--mut);font-size:12px">활동 이웃 없음</div>';
+  var bottom10=actives.length>1?actives.slice(-Math.min(10,actives.length)).reverse():[];
+  document.getElementById('active-bottom10').innerHTML=bottom10.map(function(r){return '<div class="rank-row"><div class="rank-name">'+r.name+'</div><div class="rank-cnt" style="color:var(--warn)">'+r.count+'회</div></div>';}).join('')||'<div style="color:var(--mut);font-size:12px">해당 없음</div>';
+  document.getElementById('ghost-list').innerHTML=ghosts.map(function(r){return '<span class="ghost-tag">'+r.name+'</span>';}).join('')||'<div style="color:var(--ok);font-size:12px">유령 이웃 없음 🎉</div>';
+  document.getElementById('neighbor-result').style.display='block';
+}
+
+function copyGhostList(){
+  var ghosts=Array.from(document.querySelectorAll('#ghost-list .ghost-tag')).map(function(s){return s.textContent;});
+  if(!ghosts.length){alert('유령 이웃이 없어요!');return;}
+  navigator.clipboard.writeText(ghosts.join('\n')).then(function(){alert('✅ '+ghosts.length+'명 복사됐어요!');});
+}
+function exportFullResult(){
+  var sorted=neighborNames.map(function(n){return{name:String(n),count:cumulativeCounts[String(n)]||0};}).sort(function(a,b){return b.count-a.count;});
+  var lines=['===== 이웃 분석 결과 =====','분석 파일: '+processedCount+'개','전체: '+neighborNames.length+'명 / 활동: '+sorted.filter(function(r){return r.count>0;}).length+'명 / 유령: '+sorted.filter(function(r){return r.count===0;}).length+'명',''];
+  sorted.forEach(function(r,i){lines.push((i+1)+'. '+r.name+' — '+r.count+'회'+(r.count===0?' 👻':''));});
+  navigator.clipboard.writeText(lines.join('\n')).then(function(){alert('✅ 전체 결과 복사됐어요!');});
+}
+
+async function extractPdfText(file){
+  if(!window.pdfjsLib){
+    await new Promise(function(res,rej){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';s.onload=res;s.onerror=rej;document.head.appendChild(s);});
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+  var ab=await file.arrayBuffer(),pdf=await window.pdfjsLib.getDocument({data:ab}).promise,text='';
+  for(var i=1;i<=pdf.numPages;i++){var page=await pdf.getPage(i),content=await page.getTextContent();text+=content.items.map(function(item){return item.str;}).join(' ')+'\n';}
+  return text;
+}
+
+// ══ 파일 저장 ══
+function downloadSelf(){
+  var html=document.documentElement.outerHTML;
+  var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=Object.assign(document.createElement('a'),{href:url,download:'tool_v1.4.0.html'});
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(url);},1000);
+}
+
+// ══ 초기화 ══
+function loadKeys(){
+  var sg=localStorage.getItem('groq_api_key');
+  if(sg){document.getElementById('key-groq').value=sg;document.getElementById('saved-groq').style.display='block';document.getElementById('input-groq').style.display='none';}
+  document.getElementById('saved-groq').addEventListener('click',function(){document.getElementById('saved-groq').style.display='none';document.getElementById('input-groq').style.display='block';});
+  var gm=localStorage.getItem('gemini_api_key');
+  if(gm){document.getElementById('key-gemini').value=gm;document.getElementById('saved-gemini').style.display='block';document.getElementById('input-gemini').style.display='none';}
+  document.getElementById('saved-gemini').addEventListener('click',function(){document.getElementById('saved-gemini').style.display='none';document.getElementById('input-gemini').style.display='block';});
+}
+
+// ══ 전역 노출 ══
 window.setMain=setMain;
 window.setApiTab=setApiTab;
 window.saveGroqKey=saveGroqKey;
@@ -868,6 +1140,9 @@ window.sendToClaudeRefine=sendToClaudeRefine;
 window.downloadResult=downloadResult;
 window.generateSummary=generateSummary;
 window.sendSummaryToBlog=sendSummaryToBlog;
+window.saveDramaSettings=saveDramaSettings;
+window.loadDramaSettings=loadDramaSettings;
+window.deleteDramaSettings=deleteDramaSettings;
 window.setBlogCat=setBlogCat;
 window.handleBlogImgs=handleBlogImgs;
 window.removeBlogImg=removeBlogImg;
@@ -878,6 +1153,9 @@ window.copyBlogContent=copyBlogContent;
 window.sendBlogToClaude=sendBlogToClaude;
 window.generateBlogPrompt=generateBlogPrompt;
 window.copyBlogPrompt=copyBlogPrompt;
+window.saveBlogDraft=saveBlogDraft;
+window.loadBlogDraft=loadBlogDraft;
+window.deleteBlogDraft=deleteBlogDraft;
 window.parseNeighborRaw=parseNeighborRaw;
 window.extractNeighborFromImg=extractNeighborFromImg;
 window.lockNeighborList=lockNeighborList;
@@ -887,9 +1165,10 @@ window.removePdfItem=removePdfItem;
 window.clearDonePdfs=clearDonePdfs;
 window.copyGhostList=copyGhostList;
 window.exportFullResult=exportFullResult;
+window.downloadSelf=downloadSelf;
 
 loadKeys();
 })();
 </script>
 </body>
-</html>
+  </html>
