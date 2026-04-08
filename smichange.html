@@ -173,6 +173,7 @@ textarea.binp{min-height:120px}
   <h1>🎬 통합 제작 툴</h1>
   <p>MKV 추출 · SMI 번역 · 블로그 · 이웃분석</p>
   <p style="font-size:10px;color:#444;margin-top:2px">v1.3.3</p>
+  <button onclick="downloadSelf()" style="margin-top:8px;padding:6px 16px;border:none;border-radius:8px;background:linear-gradient(135deg,#059669,#34d399);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif">💾 HTML 파일로 저장</button>
 </div>
 <div class="main-tabs">
   <button class="main-tab active" id="mtab-extract" onclick="setMain('extract')"><span class="ti">🎞️</span>MKV</button>
@@ -496,7 +497,7 @@ textarea.binp{min-height:120px}
   </div>
 </div>
 
-
+None
 </div>
 
 <script>
@@ -530,10 +531,22 @@ async function callGroq(prompt,sys){
   var msgs=[];
   if(sys)msgs.push({role:'system',content:sys});
   msgs.push({role:'user',content:prompt});
-  var res=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:msgs,temperature:0.3,max_tokens:8000})});
-  if(!res.ok){var e=await res.json();throw new Error((e.error&&e.error.message)||'Groq 오류: '+res.status);}
-  var d=await res.json();
-  return(d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||'';
+  var maxRetry=3;
+  for(var attempt=0;attempt<maxRetry;attempt++){
+    var res=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:msgs,temperature:0.3,max_tokens:6000})});
+    if(res.status===429){
+      var waitSec=25;
+      try{var ej=await res.json();var m=ej.error&&ej.error.message&&ej.error.message.match(/try again in ([\d.]+)s/);if(m)waitSec=Math.ceil(parseFloat(m[1]))+2;}catch(e){}
+      if(attempt<maxRetry-1){
+        await new Promise(function(r){setTimeout(r,waitSec*1000);});
+        continue;
+      }
+      throw new Error('Groq 요청 한도 초과 — 잠시 후 다시 시도해주세요');
+    }
+    if(!res.ok){var e=await res.json();throw new Error((e.error&&e.error.message)||'Groq 오류: '+res.status);}
+    var d=await res.json();
+    return(d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||'';
+  }
 }
 
 // ══ Gemini ══
@@ -729,7 +742,11 @@ function copyBlogPrompt(){navigator.clipboard.writeText(document.getElementById(
 
 // ══ 이웃분석 ══
 var neighborNames=[],neighborLocked=false,pdfQueue=[],cumulativeCounts={},processedCount=0;
-function parseNeighborList(text){return text.split(/[\n,，]+/).map(function(n){return n.trim();}).filter(function(n){return n.length>0;});}
+function parseNeighborList(text){
+  return text.split(/[\n,，]+/)
+    .map(function(n){return String(n).trim();})
+    .filter(function(n){return n.length>0;});
+}
 function parseNeighborRaw(){var raw=document.getElementById('neighbor-raw').value.trim();if(!raw){alert('텍스트를 붙여넣어주세요!');return;}var names=[];raw.split('\n').forEach(function(line){line=line.trim();if(!line)return;if(line.indexOf('|')>-1){var name=line.split('|')[0].trim();if(name)names.push(name);}else if(/^\d{2}\.\d{2}\.\d{2}/.test(line)){}else{if(line.length>0&&line.length<30)names.push(line);}});names=names.filter(function(n,i){return names.indexOf(n)===i;});if(!names.length){alert('닉네임을 추출하지 못했어요');return;}var current=document.getElementById('neighbor-list').value.trim();var existing=current?parseNeighborList(current):[];var merged=existing.concat(names.filter(function(n){return existing.indexOf(n)===-1;}));document.getElementById('neighbor-list').value=merged.join('\n');document.getElementById('neighbor-raw').value='';document.getElementById('neighbor-count').textContent='✅ '+merged.length+'명 입력됨 ('+names.length+'명 추가됨)';document.getElementById('btn-lock-list').disabled=merged.length===0;alert('✅ '+names.length+'명 닉네임 추출 완료!\n'+names.join(', '));}
 async function extractNeighborFromImg(input){var statusEl=document.getElementById('neighbor-img-status');var files=Array.from(input.files);if(!files.length)return;var geminiKey=getGeminiKey();if(!geminiKey){alert('Gemini API 키를 먼저 입력해주세요!\n(번역 탭 → Gemini 키 저장)');return;}statusEl.style.display='block';statusEl.textContent='🔍 Gemini가 닉네임 추출 중...';statusEl.style.color='var(--warn)';try{var imgs=[];for(var i=0;i<files.length;i++){await new Promise(function(res){var f=files[i];var r=new FileReader();r.onload=function(e){imgs.push({b64:e.target.result.split(',')[1],type:f.type});res();};r.readAsDataURL(f);});}var result=await callGemini('이 이미지는 네이버 블로그 이웃 목록 화면 캡처입니다.\n블로그 닉네임만 한 줄에 하나씩 출력해줘. 버튼, 날짜, 메뉴 등 다른 텍스트는 제외.',imgs);var names=result.split('\n').map(function(n){return n.trim().replace(/^[-•*\d.]+\s*/,'');}).filter(function(n){return n.length>0;});var current=document.getElementById('neighbor-list').value.trim();var existing=current?parseNeighborList(current):[];var merged=existing.concat(names.filter(function(n){return existing.indexOf(n)===-1;}));document.getElementById('neighbor-list').value=merged.join('\n');document.getElementById('neighbor-count').textContent='✅ '+merged.length+'명 입력됨 ('+names.length+'명 추가됨)';document.getElementById('btn-lock-list').disabled=merged.length===0;statusEl.textContent='✅ '+names.length+'명 닉네임 추출 완료!';statusEl.style.color='var(--ok)';}catch(e){statusEl.textContent='❌ 추출 실패: '+e.message;statusEl.style.color='var(--er)';}}
 document.getElementById('neighbor-list').addEventListener('input',function(){var names=parseNeighborList(this.value);document.getElementById('neighbor-count').textContent=names.length>0?'✅ '+names.length+'명 입력됨':'';document.getElementById('btn-lock-list').disabled=names.length===0;});
@@ -748,12 +765,28 @@ async function runPendingPdfs(){var pending=pdfQueue.filter(function(q){return q
 function normName(n){return n.replace(/\s/g,'').toLowerCase();}
 function countActivity(pdfText,name){var norm=normName(name),normText=normName(pdfText),count=0,idx=0;while((idx=normText.indexOf(norm,idx))!==-1){count++;idx+=norm.length;}return count;}
 function updateLiveboard(){document.getElementById('live-board').style.display='block';var sorted=neighborNames.map(function(n){return{name:n,count:cumulativeCounts[n]||0};}).sort(function(a,b){return b.count-a.count;});var actives=sorted.filter(function(r){return r.count>0;}),ghosts=sorted.filter(function(r){return r.count===0;});document.getElementById('sum-total').textContent=neighborNames.length;document.getElementById('sum-ghost').textContent=ghosts.length;document.getElementById('sum-active').textContent=actives.length;document.getElementById('live-top5').innerHTML=actives.slice(0,5).map(function(r,i){return '<div class="live-item"><span class="live-name">'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'  ')+' '+r.name+'</span><span class="live-cnt" style="color:var(--ok)">'+r.count+'회</span></div>';}).join('')||'<div style="font-size:11px;color:var(--mut)">아직 없어요</div>';var bottom5=actives.length>=2?actives.slice(-5).reverse():[];document.getElementById('live-bottom5').innerHTML=bottom5.map(function(r){return '<div class="live-item"><span class="live-name">'+r.name+'</span><span class="live-cnt" style="color:var(--warn)">'+r.count+'회</span></div>';}).join('')||'<div style="font-size:11px;color:var(--mut)">해당 없음</div>';var doneCount=pdfQueue.filter(function(q){return q.status==='done';}).length;document.getElementById('progress-files-txt').textContent=pdfQueue.length>0?'📁 '+doneCount+' / '+pdfQueue.length+' 파일 완료 · 유령: '+ghosts.length+'명':'';var badge=document.getElementById('live-badge');if(doneCount>0&&doneCount===pdfQueue.length){badge.style.animation='none';badge.textContent='완료';}else{badge.style.animation='';badge.textContent='LIVE';}}
-function updateFullResult(){var sorted=neighborNames.map(function(n){return{name:n,count:cumulativeCounts[n]||0};}).sort(function(a,b){return b.count-a.count;});var actives=sorted.filter(function(r){return r.count>0;}),ghosts=sorted.filter(function(r){return r.count===0;});document.getElementById('active-top10').innerHTML=actives.slice(0,10).map(function(r,i){return '<div class="rank-row"><div class="rank-num" style="color:'+(i<3?'var(--warn)':'var(--mut')+');">'+(i+1)+'</div><div class="rank-name">'+r.name+'</div><div class="rank-cnt" style="color:var(--ok)">'+r.count+'회</div></div>';}).join('')||'<div style="color:var(--mut);font-size:12px">활동 이웃 없음</div>';var bottom10=actives.length>1?actives.slice(-Math.min(10,actives.length)).reverse():[];document.getElementById('active-bottom10').innerHTML=bottom10.map(function(r){return '<div class="rank-row"><div class="rank-name">'+r.name+'</div><div class="rank-cnt" style="color:var(--warn)">'+r.count+'회</div></div>';}).join('')||'<div style="color:var(--mut);font-size:12px">해당 없음</div>';document.getElementById('ghost-list').innerHTML=ghosts.map(function(n){return '<span class="ghost-tag">'+n+'</span>';}).join('')||'<div style="color:var(--ok);font-size:12px">유령 이웃 없음 🎉</div>';document.getElementById('neighbor-result').style.display='block';}
+function updateFullResult(){
+  var sorted=neighborNames.map(function(n){return{name:String(n),count:cumulativeCounts[String(n)]||0};}).sort(function(a,b){return b.count-a.count;});
+  var actives=sorted.filter(function(r){return r.count>0;}),ghosts=sorted.filter(function(r){return r.count===0;});
+  document.getElementById('active-top10').innerHTML=actives.slice(0,10).map(function(r,i){return '<div class="rank-row"><div class="rank-num" style="color:'+(i<3?'var(--warn)':'var(--mut')+');">'+(i+1)+'</div><div class="rank-name">'+r.name+'</div><div class="rank-cnt" style="color:var(--ok)">'+r.count+'회</div></div>';}).join('')||'<div style="color:var(--mut);font-size:12px">활동 이웃 없음</div>';
+  var bottom10=actives.length>1?actives.slice(-Math.min(10,actives.length)).reverse():[];
+  document.getElementById('active-bottom10').innerHTML=bottom10.map(function(r){return '<div class="rank-row"><div class="rank-name">'+r.name+'</div><div class="rank-cnt" style="color:var(--warn)">'+r.count+'회</div></div>';}).join('')||'<div style="color:var(--mut);font-size:12px">해당 없음</div>';
+  document.getElementById('ghost-list').innerHTML=ghosts.map(function(r){return '<span class="ghost-tag">'+r.name+'</span>';}).join('')||'<div style="color:var(--ok);font-size:12px">유령 이웃 없음 🎉</div>';
+  document.getElementById('neighbor-result').style.display='block';
+}
 function copyGhostList(){var ghosts=Array.from(document.querySelectorAll('#ghost-list .ghost-tag')).map(function(s){return s.textContent;});if(!ghosts.length){alert('유령 이웃이 없어요!');return;}navigator.clipboard.writeText(ghosts.join('\n')).then(function(){alert('✅ '+ghosts.length+'명 복사됐어요!');});}
 function exportFullResult(){var sorted=neighborNames.map(function(n){return{name:n,count:cumulativeCounts[n]||0};}).sort(function(a,b){return b.count-a.count;});var lines=['===== 이웃 분석 결과 =====','분석 파일: '+processedCount+'개','전체: '+neighborNames.length+'명 / 활동: '+sorted.filter(function(r){return r.count>0;}).length+'명 / 유령: '+sorted.filter(function(r){return r.count===0;}).length+'명',''];sorted.forEach(function(r,i){lines.push((i+1)+'. '+r.name+' — '+r.count+'회'+(r.count===0?' 👻':''));});navigator.clipboard.writeText(lines.join('\n')).then(function(){alert('✅ 전체 결과 복사됐어요!');});}
 async function extractPdfText(file){if(!window.pdfjsLib){await new Promise(function(res,rej){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';s.onload=res;s.onerror=rej;document.head.appendChild(s);});window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}var ab=await file.arrayBuffer(),pdf=await window.pdfjsLib.getDocument({data:ab}).promise,text='';for(var i=1;i<=pdf.numPages;i++){var page=await pdf.getPage(i),content=await page.getTextContent();text+=content.items.map(function(item){return item.str;}).join(' ')+'\n';}return text;}
 
 // ══ 초기화 ══
+function downloadSelf(){
+  var html=document.documentElement.outerHTML;
+  var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=Object.assign(document.createElement('a'),{href:url,download:'tool_v1.3.3.html'});
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(url);},1000);
+}
 function loadKeys(){
   var sg=localStorage.getItem('groq_api_key');
   if(sg){document.getElementById('key-groq').value=sg;document.getElementById('saved-groq').style.display='block';document.getElementById('input-groq').style.display='none';}
@@ -821,6 +854,8 @@ function deleteBlogDraft(){
   localStorage.removeItem('blog_draft');
   alert('🗑 삭제됐어요!');
 }
+window.downloadSelf=downloadSelf;
+window.downloadSelf=downloadSelf;
 window.setMain=setMain;
 window.setApiTab=setApiTab;
 window.saveGroqKey=saveGroqKey;
