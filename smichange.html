@@ -309,7 +309,7 @@ textarea.binp{min-height:120px}
     </div>
   </div>
   <button class="btn btn-main" id="btn-translate" onclick="startTranslate()" disabled>🚀 Gemini 번역 시작</button>
-  <button class="btn" id="btn-claude-direct" onclick="sendToClaudeDirect()" disabled style="background:linear-gradient(135deg,#92400e,#d97706);color:#fff">🧡 Claude로 바로 번역</button>
+  <button class="btn" id="btn-claude-direct" onclick="sendToClaudeDirect()" style="background:linear-gradient(135deg,#6d28d9,#a78bfa);color:#fff">🧡 Claude로 바로 번역 (프롬프트 복사 → claude.ai)</button>
   <div class="card prog-wrap" id="prog-trans">
     <div class="prog-hd"><span id="tlbl">준비 중...</span><span style="color:var(--mut)" id="tpct">0%</span></div>
     <div class="pbg"><div class="pfill" id="tfill"></div></div>
@@ -320,7 +320,7 @@ textarea.binp{min-height:120px}
     <div class="result-preview" id="result-preview"></div>
     <button class="btn btn-dl" onclick="downloadResult()">💾 SMI 다운로드</button>
     <button class="btn btn-blog" style="margin-top:8px" onclick="sendToBlog()">📝 이 화 블로그 리뷰 만들기</button>
-    <button class="btn" style="margin-top:8px;background:linear-gradient(135deg,#92400e,#d97706);color:#fff" onclick="sendToClaude()">🧡 Claude로 재번역/리라이팅</button>
+    <button class="btn" style="margin-top:8px;background:linear-gradient(135deg,#6d28d9,#a78bfa);color:#fff" onclick="sendToClaudeRefine()">✨ Gemini 초벌 → Claude로 다듬기 (원본+참고자료 전부 포함)</button>
   </div>
 </div>
 
@@ -762,7 +762,8 @@ function readFile(f){return new Promise(function(res,rej){var r=new FileReader()
 async function loadSMIFile(f){mainFile=f;mainSMI=await readFile(f);updateFileInfo(f.name,mainSMI);}
 function checkReady(){var ok=!!(mainFile&&getAPIKey());document.getElementById('btn-translate').disabled=!ok;document.getElementById('btn-claude-direct').disabled=!mainFile;}
 function sendToClaudeDirect(){
-  if(!mainFile||!mainSMI)return;
+  // SMI 없으면 그냥 claude.ai만 열기
+  if(!mainFile||!mainSMI){window.open('https://claude.ai','_blank');return;}
   var lines=parseSMILines(mainSMI).filter(function(l){return l.text;});
   var smiText=lines.map(function(l){return l.text;}).join('\n');
   var fname=mainFile.name.replace(/_track\d+$/i,'').replace(/\.smi$/i,'');
@@ -952,7 +953,7 @@ async function runPendingPdfs(){
     for(var i=0;i<pending.length;i++){
       var item=pending[i];
       item.status='proc';renderPdfQueue();
-      NL('📄 ['+（i+1)+'/'+pending.length+'] '+item.name+' 파싱 중...','i');
+      NL('📄 ['+(i+1)+'/'+pending.length+'] '+item.name+' 파싱 중...','i');
       NP(Math.round((i/pending.length)*90)+5,'파싱 중... '+(i+1)+'/'+pending.length);
       var text=await extractPdfText(item.file);
       NL('📝 '+text.length.toLocaleString()+'자 추출, 이웃 매칭 중...','i');
