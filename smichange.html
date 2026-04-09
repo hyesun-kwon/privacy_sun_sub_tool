@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>통합 툴 v1.6.7</title>
+<title>통합 툴 v1.6.9</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -148,7 +148,7 @@ textarea.binp{min-height:90px;line-height:1.6}
     <div class="hd-sub">MKV · 번역 · 블로그 · 이웃분석</div>
   </div>
   <div class="hd-r">
-    <span class="ver">v1.6.7</span>
+    <span class="ver">v1.6.9</span>
     <button class="save-btn" onclick="G.downloadSelf()">💾 저장</button>
   </div>
 </div>
@@ -491,8 +491,8 @@ async function callGroq(prompt,sys,model){
       body:JSON.stringify({model:model,messages:msgs,temperature:0.3,max_tokens:6000})
     });
     if(res.status===429){
-      var w=25;
-      try{var ej=await res.json();var m=ej.error&&ej.error.message&&ej.error.message.match(/try again in ([\d.]+)s/);if(m)w=Math.ceil(parseFloat(m[1]))+2;}catch(e){}
+      var w=20;
+      try{var ej=await res.json();var m=ej.error&&ej.error.message&&ej.error.message.match(/try again in ([\d.]+)s/);if(m)w=Math.ceil(parseFloat(m[1]))+3;}catch(e){}
       if(a<2){await sleep(w*1000);continue;}
       throw new Error('Groq 한도 초과. 잠시 후 다시 시도해주세요.');
     }
@@ -510,14 +510,23 @@ async function callGroqVision(prompt,images){
     if(img)content.push({type:'image_url',image_url:{url:'data:'+img.type+';base64,'+img.b64}});
   });
   content.push({type:'text',text:prompt});
-  var res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-    body:JSON.stringify({model:'meta-llama/llama-4-scout-17b-16e-instruct',messages:[{role:'user',content:content}],max_tokens:1000,temperature:0.2})
-  });
-  if(!res.ok){var e=await res.json();throw new Error((e.error&&e.error.message)||'Groq Vision 오류');}
-  var d=await res.json();
-  return(d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||'';
+  for(var a=0;a<3;a++){
+    var res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+      body:JSON.stringify({model:'meta-llama/llama-4-scout-17b-16e-instruct',messages:[{role:'user',content:content}],max_tokens:1000,temperature:0.2})
+    });
+    if(res.status===429){
+      var w=20;
+      try{var ej=await res.json();var m=ej.error&&ej.error.message&&ej.error.message.match(/try again in ([\d.]+)s/);if(m)w=Math.ceil(parseFloat(m[1]))+3;}catch(e){}
+      if(a<2){await sleep(w*1000);continue;}
+      throw new Error('Groq Vision 한도 초과. 잠시 후 다시 시도해주세요.');
+    }
+    if(!res.ok){var e=await res.json();throw new Error((e.error&&e.error.message)||'Groq Vision 오류');}
+    var d=await res.json();
+    return(d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||'';
+  }
+  return '';
 }
 function safeJSON(raw){
   try{return JSON.parse(raw.replace(/```json|```/g,'').trim());}catch(e){}
@@ -942,7 +951,7 @@ async function extractNeighborFromImg(input){
       var result=await callGroqVision('이 이미지는 네이버 블로그 이웃 목록 화면이다. 블로그 닉네임만 추출해서 한 줄에 하나씩 출력하라. 닉네임 외 다른 텍스트(숫자, 날짜, 버튼, 문장, 설명)는 절대 출력하지 마라. 닉네임만.',chunk);
       var names=result.split('\n').map(function(n){return n.trim().replace(/^[\d\s.\-,]+/,'').replace(/,.*$/,'').trim();}).filter(function(n){return n&&n.length>=2&&n.length<=20&&!/^[\d\s]+$/.test(n);});
       allNames=allNames.concat(names);
-      if(c+chunkSize<imgs.length)await sleep(12000);
+      if(c+chunkSize<imgs.length){statusEl.textContent='⏳ 잠시 대기 중...';await sleep(20000);}
     }
     var total=mergeNbNames(allNames);
     statusEl.textContent='✅ '+allNames.length+'명 추출! (총 '+total+'명)';statusEl.style.color='var(--ok)';
@@ -1070,7 +1079,7 @@ async function extractPdfText(file){
   return text;
 }
 
-function downloadSelf(){dlBlob(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.6.7.html');}
+function downloadSelf(){dlBlob(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.6.9.html');}
 
 (function init(){
   var sg=localStorage.getItem('groq_key');
