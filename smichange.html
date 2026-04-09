@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>통합 툴 v1.7.1</title>
+<title>통합 툴 v1.7.2</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -148,7 +148,7 @@ textarea.binp{min-height:90px;line-height:1.6}
     <div class="hd-sub">MKV · 번역 · 블로그 · 이웃분석</div>
   </div>
   <div class="hd-r">
-    <span class="ver">v1.7.1</span>
+    <span class="ver">v1.7.2</span>
     <button class="save-btn" onclick="G.downloadSelf()">💾 저장</button>
   </div>
 </div>
@@ -1102,7 +1102,7 @@ async function extractPdfText(file){
   return text;
 }
 
-function downloadSelf(){dlBlob(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.7.1.html');}
+function downloadSelf(){dlBlob(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.7.2.html');}
 
 (function init(){
   var sg=localStorage.getItem('groq_key');
