@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>통합 툴 v1.6.9</title>
+<title>통합 툴 v1.7.1</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -148,7 +148,7 @@ textarea.binp{min-height:90px;line-height:1.6}
     <div class="hd-sub">MKV · 번역 · 블로그 · 이웃분석</div>
   </div>
   <div class="hd-r">
-    <span class="ver">v1.6.9</span>
+    <span class="ver">v1.7.1</span>
     <button class="save-btn" onclick="G.downloadSelf()">💾 저장</button>
   </div>
 </div>
@@ -374,13 +374,13 @@ textarea.binp{min-height:90px;line-height:1.6}
         <button class="nb-tab" onclick="G.setNbTab('direct',this)">✏️ 직접입력</button>
       </div>
       <div class="nb-panel on" id="nb-panel-ocr">
-        <div style="display:flex;gap:6px">
-          <div style="position:relative;border:1px dashed #4285f4;border-radius:8px;padding:10px;text-align:center;cursor:pointer;background:#0a0a1a;flex:1">
+        <div style="display:flex;gap:6px;align-items:stretch">
+          <div style="position:relative;border:1px dashed #4285f4;border-radius:8px;padding:10px;text-align:center;cursor:pointer;background:#0a0a1a;flex:1;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center">
             <span style="font-size:16px">📸</span>
             <div style="font-size:11px;color:var(--mut);margin-top:2px">캡처 이미지 업로드</div>
             <input type="file" id="fi-nb-img" multiple onchange="G.extractNeighborFromImg(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
           </div>
-          <div id="nb-name-preview" style="flex:1;background:#060610;border:1px solid #1a1a30;border-radius:8px;padding:5px 8px;font-size:11px;color:#a0a0c0;max-height:80px;overflow-y:auto;line-height:1.8;display:none"></div>
+          <textarea id="nb-name-preview" placeholder="추출된 닉네임&#10;(직접 수정 가능)" style="flex:1;min-height:80px;max-height:120px;background:#060610;border:1px solid #1a1a30;border-radius:8px;padding:5px 8px;font-size:11px;color:#e0e0f5;line-height:1.8;resize:none;font-family:'Noto Sans KR',sans-serif;display:none" oninput="G.syncPreviewToList()"></textarea>
         </div>
         <div id="nb-img-status" style="font-size:11px;margin-top:4px;display:none"></div>
       </div>
@@ -900,12 +900,20 @@ function deleteBlogDraft(){if(!localStorage.getItem('blog_draft')){alert('없음
 var nbNames=[],nbLocked=false,pdfQueue=[],cumCounts={},procCount=0;
 function getNbList(){return el('nb-list').value.split('\n').map(function(n){return n.trim();}).filter(Boolean);}
 function setNbList(arr){el('nb-list').value=arr.join('\n');}
+function syncPreviewToList(){
+  var lines=el('nb-name-preview').value.split('\n').map(function(n){return n.trim();}).filter(Boolean);
+  setNbList(lines);
+  el('nb-direct').value=lines.join('\n');
+  var cnt=lines.length;
+  el('nb-count').textContent=cnt>0?'✅ '+cnt+'명':'';
+  el('btn-lock').disabled=cnt===0;
+}
 function updateNbCount(){
   var list=getNbList(),cnt=list.length;
   el('nb-count').textContent=cnt>0?'✅ '+cnt+'명':'';
   el('btn-lock').disabled=cnt===0;
   var prev=el('nb-name-preview');
-  if(cnt>0){prev.style.display='block';prev.innerHTML=list.map(function(nm,i){return(i+1)+'. '+nm;}).join('<br>');prev.scrollTop=prev.scrollHeight;}
+  if(cnt>0){prev.style.display='block';prev.value=list.join('\n');prev.scrollTop=prev.scrollHeight;}
   else{prev.style.display='none';}
 }
 function mergeNbNames(newNames){
@@ -926,8 +934,23 @@ function parseNeighborRaw(){
   var names=[];
   raw.split('\n').forEach(function(line){
     line=line.trim();if(!line)return;
-    if(line.indexOf('|')>-1){var n=line.split('|')[0].trim();if(n)names.push(n);}
-    else if(!/^\d{2}\.\d{2}\.\d{2}/.test(line)&&line.length>0&&line.length<30)names.push(line);
+    // 날짜 줄 제거 (xx.xx.xx 형태)
+    if(/^\d{2}\.\d{2}\.\d{2}/.test(line))return;
+    // 레이블 줄 제거
+    if(/^(서로이웃|이웃|나를 찾는 이웃|현친|맞이웃)(\t.*)?$/.test(line))return;
+    // | 포함: 앞부분이 닉네임
+    if(line.indexOf('|')>-1){
+      var n=line.split('|')[0].trim();
+      if(n&&n.length>=1&&n.length<=20)names.push(n);
+      return;
+    }
+    // 케이스2: "닉네임 날짜날짜" 형태 — 탭/공백 뒤 날짜 제거
+    var noDate=line.replace(/[\t\s]\d{2}\.\d{2}\.\d{2}.*/,'').trim();
+    if(noDate&&noDate.length>=1&&noDate.length<=20&&!/^\d/.test(noDate)){
+      names.push(noDate);return;
+    }
+    // 케이스3: 그냥 짧은 텍스트 (기존 로직)
+    if(line.length>=1&&line.length<=20&&!/^\d/.test(line))names.push(line);
   });
   names=names.filter(function(n,i){return names.indexOf(n)===i;});
   if(!names.length){alert('추출 실패');return;}
@@ -1079,7 +1102,7 @@ async function extractPdfText(file){
   return text;
 }
 
-function downloadSelf(){dlBlob(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.6.9.html');}
+function downloadSelf(){dlBlob(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.7.1.html');}
 
 (function init(){
   var sg=localStorage.getItem('groq_key');
@@ -1102,6 +1125,7 @@ return{
   saveBlogDraft:saveBlogDraft,loadBlogDraft:loadBlogDraft,deleteBlogDraft:deleteBlogDraft,
   parseNeighborRaw:parseNeighborRaw,extractNeighborFromImg:extractNeighborFromImg,
   lockNeighborList:lockNeighborList,resetNeighborList:resetNeighborList,
+  syncPreviewToList:syncPreviewToList,
   runPendingPdfs:runPendingPdfs,removePdfItem:removePdfItem,clearDonePdfs:clearDonePdfs,
   copyGhostList:copyGhostList,exportFullResult:exportFullResult,
   downloadSelf:downloadSelf
