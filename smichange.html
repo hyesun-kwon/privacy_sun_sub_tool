@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>통합 툴 v1.8.1</title>
+<title>통합 툴 v1.8.2</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -41,15 +41,12 @@ textarea.inp{resize:vertical;line-height:1.5;font-family:'Noto Sans KR',sans-ser
 .b-main{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
 .b-dl{background:linear-gradient(135deg,#059669,#34d399);color:#fff}
 .b-blue{background:linear-gradient(135deg,#1d4ed8,#60a5fa);color:#fff}
-.b-claude{background:linear-gradient(135deg,#6d28d9,#a78bfa);color:#fff}
 .b-groq{background:linear-gradient(135deg,var(--groq),var(--groq2));color:#fff}
 .b-dark{background:#1a1a30;color:var(--mut)}
 .b-danger{background:linear-gradient(135deg,#991b1b,#f87171);color:#fff}
+.b-claude{background:linear-gradient(135deg,#6d28d9,#a78bfa);color:#fff}
 .b-sgkey{background:linear-gradient(135deg,#1a5276,#2e86c1);color:#fff}
 .b-sm{padding:5px 9px!important;font-size:11px;border-radius:6px;width:auto}
-.toggle{display:flex;background:#0a0a1a;border-radius:6px;padding:2px;border:1px solid var(--bd);margin-bottom:8px}
-.tg{flex:1;padding:5px;border:none;border-radius:4px;background:transparent;color:var(--mut);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
-.tg.on{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
 .key-row{display:flex;gap:6px;align-items:center}
 .key-row .inp{flex:1;min-width:0}
 .prog-hd{display:flex;justify-content:space-between;font-size:11px;font-weight:600;margin-bottom:4px}
@@ -60,28 +57,24 @@ textarea.inp{resize:vertical;line-height:1.5;font-family:'Noto Sans KR',sans-ser
 .banner{background:#0d1f3a;border:1px solid #1a3a6a;border-radius:7px;padding:7px 10px;margin-bottom:8px;font-size:11px;display:none}
 .banner strong{color:#60a5fa;display:block;margin-bottom:2px}
 .api-saved{background:#0a1f0a;border:1px solid #1a5a1a;border-radius:6px;padding:6px 9px;font-size:11px;color:var(--ok);cursor:pointer;margin-bottom:6px}
-/* 파일 선택 zone - hidden input 위에 커스텀 UI */
 .file-rows{margin-bottom:6px}
 .file-row{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #1e1e35}
 .file-row:last-child{border-bottom:none}
 .fr-label{font-size:10px;font-weight:700;width:54px;flex-shrink:0;line-height:1.3}
 .fr-zone{flex:1;position:relative;border:1px dashed #333355;border-radius:6px;padding:5px 8px;cursor:pointer;display:flex;align-items:center;gap:5px;min-height:30px;transition:.2s;overflow:hidden}
 .fr-zone:hover{border-color:var(--ac);background:#18183a}
-/* file input: 전체 영역 덮기, accept 없음(모든 파일 허용) */
 .fr-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.fr-loaded{flex:1;background:#0a1a2a;border:1px solid #1a3a5a;border-radius:6px;padding:5px 8px;cursor:pointer;display:flex;align-items:center;gap:5px;min-height:30px}
+.fr-loaded{flex:1;position:relative;background:#0a1a2a;border:1px solid #1a3a5a;border-radius:6px;padding:5px 8px;cursor:pointer;display:flex;align-items:center;gap:5px;min-height:30px}
 .fr-ep{font-size:12px;font-weight:900;color:var(--ac);flex-shrink:0}
 .fr-short{font-size:10px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
 .finfo{display:none;gap:8px;flex-wrap:wrap;padding:5px 2px;font-size:11px}
 .finfo.on{display:flex}
 .fc{color:var(--mut)}.fc b{color:var(--txt);font-weight:700}
-.sg{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
 .track-row{background:#1c1c35;border-radius:7px;padding:8px 10px;margin-bottom:5px;display:flex;align-items:center;gap:7px}
 .tr-info{flex:1;min-width:0}
 .tr-name{font-weight:700;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tr-meta{font-size:10px;color:var(--mut);margin-top:1px}
 .tr-btns{display:flex;gap:4px;flex-shrink:0}
-.res-prev{background:#060610;border-radius:6px;padding:7px;font-size:10px;max-height:100px;overflow-y:auto;border:1px solid #1a1a30;font-family:monospace;white-space:pre-wrap;word-break:break-all;color:#a0a0c0;margin-bottom:6px}
 .sum-card{background:linear-gradient(135deg,#0d0d25,#1a1035);border:2px solid var(--ac);border-radius:10px;padding:11px;margin-bottom:8px;display:none}
 .sum-title{font-size:11px;font-weight:700;color:var(--ac);margin-bottom:7px}
 .sum-box{background:#060610;border-radius:6px;padding:9px;font-size:12px;line-height:1.7;white-space:pre-wrap;margin-bottom:6px;max-height:180px;overflow-y:auto}
@@ -139,7 +132,6 @@ textarea.binp{min-height:90px;line-height:1.6}
 .li-name{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px}
 .li-cnt{font-weight:700;flex-shrink:0}
 .pf-txt{font-size:10px;color:var(--mut);margin-top:5px;text-align:center}
-/* SEO 결과 */
 .seo-out{background:#0a1a0a;border:1px solid #1a4a1a;border-radius:7px;padding:8px 10px;margin-top:6px;font-size:11px;line-height:1.7;white-space:pre-wrap;display:none}
 .seo-out.on{display:block}
 </style>
@@ -153,14 +145,14 @@ textarea.binp{min-height:90px;line-height:1.6}
     <div class="hd-sub">MKV · 번역 · 블로그 · 이웃분석</div>
   </div>
   <div class="hd-r">
-    <span class="ver">v1.8.1</span>
+    <span class="ver">v1.8.2</span>
     <button class="save-btn" onclick="G.downloadSelf()">💾 저장</button>
   </div>
 </div>
 
 <div class="tabs">
   <button class="tab on" id="mtab-extract" onclick="G.setMain('extract')"><span class="ti">🎞️</span>MKV</button>
-  <button class="tab" id="mtab-translate" onclick="G.setMain('translate')"><span class="ti">🌐</span>번역</button>
+  <button class="tab" id="mtab-translate" onclick="G.setMain('translate')"><span class="ti">🌐</span>자막</button>
   <button class="tab" id="mtab-blog" onclick="G.setMain('blog')"><span class="ti">✍️</span>블로그</button>
   <button class="tab" id="mtab-neighbor" onclick="G.setMain('neighbor')"><span class="ti">👥</span>이웃분석</button>
 </div>
@@ -185,13 +177,12 @@ textarea.binp{min-height:90px;line-height:1.6}
   </div>
 </div>
 
-<!-- ===== 번역 ===== -->
+<!-- ===== 자막 ===== -->
 <div id="page-translate" class="pg">
   <div class="banner" id="transfer-banner">
     <strong>✅ SMI 자동 로드됨</strong><span id="transfer-info"></span>
   </div>
 
-  <!-- Groq 키 -->
   <div class="card">
     <div class="ct">⚙️ Groq API 키</div>
     <div class="api-saved" id="saved-groq" style="display:none">✅ Groq 저장됨 (탭→수정)</div>
@@ -201,109 +192,36 @@ textarea.binp{min-height:90px;line-height:1.6}
     </div>
   </div>
 
-  <!-- 파일 -->
   <div class="card">
     <div class="ct">📁 자막 파일</div>
     <div class="file-rows">
-      <!-- 번역할 SMI: loaded 상태면 파일명 표시, 탭하면 다시 선택 -->
       <div class="file-row">
-        <span class="fr-label" style="color:var(--ac)">📝 번역할SMI</span>
+        <span class="fr-label" style="color:var(--ac)">📝 SMI</span>
         <div id="fr-main-loaded" class="fr-loaded" style="display:none">
           <span class="fr-ep" id="fr-main-ep"></span>
           <span class="fr-short" id="fr-main-name"></span>
           <span style="font-size:10px;color:var(--mut);flex-shrink:0">탭→변경</span>
-          <!-- hidden input: accept 없음 = 모든 파일 허용 -->
           <input type="file" id="fi-smi-reload" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
         </div>
         <div id="fr-main-zone" class="fr-zone">
           <span style="font-size:13px">📝</span>
           <span style="font-size:11px;color:var(--mut)">탭해서 선택</span>
-          <!-- accept 없음 = 모든 파일 허용 -->
           <input type="file" id="fi-smi">
-        </div>
-      </div>
-      <!-- 원문(들) -->
-      <div class="file-row">
-        <span class="fr-label" style="color:var(--warn)">📄 원문(들)</span>
-        <div class="fr-zone">
-          <span style="font-size:13px">📂</span>
-          <span style="font-size:11px;color:var(--mut)" id="ref-orig-txt">원문 SMI</span>
-          <input type="file" id="fi-ref-orig" multiple>
-        </div>
-      </div>
-      <!-- 완성본(들) -->
-      <div class="file-row">
-        <span class="fr-label" style="color:var(--ok)">✅ 완성본(들)</span>
-        <div class="fr-zone">
-          <span style="font-size:13px">📂</span>
-          <span style="font-size:11px;color:var(--mut)" id="ref-done-txt">완성본 SMI</span>
-          <input type="file" id="fi-ref-done" multiple>
         </div>
       </div>
     </div>
     <div class="finfo" id="finfo">
       <span class="fc">화수 <b id="fi-ep">-</b></span>
       <span class="fc">줄 <b id="fi-lines">-</b></span>
-      <span class="fc">감지언어 <b id="fi-lang">-</b></span>
+      <span class="fc">언어 <b id="fi-lang">-</b></span>
     </div>
   </div>
 
-  <!-- 번역 설정 -->
-  <div class="card">
-    <div class="ct">🎛️ 번역 설정</div>
-    <!-- 번역 모드 -->
-    <div class="toggle">
-      <button class="tg on" id="mode-btn-new" onclick="G.setTransMode('new')">🆕 신규</button>
-      <button class="tg" id="mode-btn-cont" onclick="G.setTransMode('cont')">🔄 이어서</button>
-      <button class="tg" id="mode-btn-rewrite" onclick="G.setTransMode('rewrite')">✏️ 리라이팅</button>
-    </div>
-    <!-- 언어 + 장르 한 줄 -->
-    <div class="sg" id="lang-genre-row">
-      <select class="inp inp-w" id="src-lang">
-        <option value="zh">🇨🇳 중국어</option>
-        <option value="zh-yue">🇭🇰 광둥어</option>
-        <option value="th">🇹🇭 태국어</option>
-        <option value="ja">🇯🇵 일본어</option>
-        <option value="en">🇺🇸 영어</option>
-      </select>
-      <select class="inp inp-w" id="genre">
-        <option value="drama">일반드라마</option>
-        <option value="romance">로맨스</option>
-        <option value="action">액션/범죄</option>
-        <option value="historical">사극</option>
-        <option value="comedy">코미디</option>
-        <option value="thriller">스릴러</option>
-      </select>
-    </div>
-    <textarea class="inp inp-w" id="extra-prompt" style="min-height:40px;margin-bottom:7px" placeholder="추가 지시 (예: 주인공 이름은 이준으로)"></textarea>
-    <div class="btn-row">
-      <button class="btn b-main b-sm" onclick="G.saveDramaSettings()">💾 저장</button>
-      <button class="btn b-dark b-sm" onclick="G.loadDramaSettings()">📂 불러오기</button>
-      <button class="btn b-danger b-sm" onclick="G.deleteDramaSettings()">🗑</button>
-    </div>
-  </div>
-
-  <button class="btn b-claude" style="margin-bottom:8px" onclick="G.sendToClaudeDirect()">🧡 Claude로 번역 → claude.ai</button>
-
-  <div class="card" id="prog-trans" style="display:none">
-    <div class="prog-hd"><span id="tlbl">준비 중...</span><span id="tpct">0%</span></div>
-    <div class="pbg"><div class="pfill" id="tfill"></div></div>
-    <div class="logbox" id="tlb"></div>
-  </div>
-  <div id="result-section" style="display:none">
-    <div class="card">
-      <div class="ct">✅ 번역 완료</div>
-      <div class="res-prev" id="result-preview"></div>
-      <div class="btn-row">
-        <button class="btn b-dl" onclick="G.downloadResult()">💾 SMI 저장</button>
-        <button class="btn b-claude" onclick="G.sendToClaudeRefine()">✨ Claude 다듬기</button>
-      </div>
-    </div>
-  </div>
   <div class="card" id="summary-trigger-card" style="display:none">
     <div class="ct">🎬 자막 요약</div>
     <button class="btn b-groq" id="btn-summary" onclick="G.generateSummary()">🎬 Groq 요약 + 명대사</button>
   </div>
+
   <div class="sum-card" id="summary-card">
     <div class="sum-title">📋 이번 화 요약</div>
     <div class="sum-box" id="summary-box"></div>
@@ -330,7 +248,7 @@ textarea.binp{min-height:90px;line-height:1.6}
       <textarea class="binp" id="b-info" style="min-height:100px"></textarea>
     </div>
     <div class="brow">
-      <label class="fl">내 말투 샘플 (블로그 문장 2~3개)
+      <label class="fl">내 말투 샘플
         <button onclick="G.saveToneSample()" style="margin-left:6px;padding:1px 7px;border:1px solid var(--bd);border-radius:10px;background:transparent;color:var(--ok);font-size:10px;cursor:pointer;font-family:inherit">💾</button>
         <button onclick="G.loadToneSample()" style="margin-left:3px;padding:1px 7px;border:1px solid var(--bd);border-radius:10px;background:transparent;color:var(--ac);font-size:10px;cursor:pointer;font-family:inherit">📂</button>
       </label>
@@ -352,10 +270,8 @@ textarea.binp{min-height:90px;line-height:1.6}
     </select>
   </div>
 
-  <!-- SEO 키워드 추천 (Groq 자동) -->
   <div class="card">
-    <div class="ct">🔍 SEO 키워드 추천 <span style="font-size:10px;color:var(--mut);font-weight:400">Groq 자동 분석</span></div>
-    <div style="font-size:11px;color:var(--mut);margin-bottom:7px">글 내용 입력 후 → Groq이 네이버 검색에 유리한 키워드 & 제목 후보 추천</div>
+    <div class="ct">🔍 SEO 키워드 추천 <span style="font-size:10px;color:var(--mut);font-weight:400">Groq 자동</span></div>
     <button class="btn b-groq b-sm" onclick="G.generateSeoKeywords()" style="width:100%">⚡ 키워드 추천받기</button>
     <div class="seo-out" id="seo-result"></div>
   </div>
@@ -580,253 +496,8 @@ async function callGroqVision(prompt,images){
 
 function safeJSON(raw){
   try{return JSON.parse(raw.replace(/```json|```/g,'').trim());}catch(e){}
-  var m=raw.match(/\{[\s\S]+\}/);
-  if(m){try{return JSON.parse(m[0]);}catch(e){}}
+  var m=raw.match(/\{[\s\S]+\}/);if(m){try{return JSON.parse(m[0]);}catch(e){}}
   return {};
-}
-
-/* ── 번역 탭 ── */
-var transMode='new';
-var mainFile=null,mainSMI='',resultSMI='',refOrig={},refDone={},lastSummary='',lastQuotes=[];
-
-function setTransMode(mode){
-  transMode=mode;
-  el('mode-btn-new').classList.toggle('on',mode==='new');
-  el('mode-btn-cont').classList.toggle('on',mode==='cont');
-  el('mode-btn-rewrite').classList.toggle('on',mode==='rewrite');
-  // 리라이팅이면 언어/장르 숨김 (불필요)
-  el('lang-genre-row').style.display=mode==='rewrite'?'none':'grid';
-}
-
-function detectLangLabel(t){
-  var cls=(t.match(/Class=(\w+)/i)||[])[1]||'';
-  if(/KR|KO/i.test(cls))return'한국어';
-  if(/ZH|CN|CH|TC|SC/i.test(cls))return'중국어';
-  if(/TH/i.test(cls))return'태국어';
-  if(/EN/i.test(cls))return'영어';
-  if(/JP|JA/i.test(cls))return'일본어';
-  var s=t.slice(0,3000);
-  if(/[\u0E00-\u0E7F]/.test(s))return'태국어';
-  if(/[\u3040-\u30FF]/.test(s))return'일본어';
-  if(/[\u4E00-\u9FFF]/.test(s))return'중국어';
-  if(/[\uAC00-\uD7A3]/.test(s))return'한국어';
-  return'영어/기타';
-}
-
-function detectEp(fn){
-  var f=fn.replace(/\.[^.]+$/,''),m;
-  m=f.match(/[Ss](\d{1,2})[Ee](\d{1,3})/);if(m)return{s:+m[1],e:+m[2],label:'S'+m[1].padStart(2,'0')+'E'+m[2].padStart(2,'0')};
-  m=f.match(/(\d{1,3})\s*화/);if(m)return{s:1,e:+m[1],label:m[1]+'화'};
-  m=f.match(/(?:ep|EP|episode)[\s._-]?(\d{1,3})/i);if(m)return{s:1,e:+m[1],label:'E'+m[1].padStart(2,'0')};
-  m=f.match(/[._\s-](\d{1,3})(?:[._\s-]|$)/);if(m)return{s:1,e:+m[1],label:'E'+m[1].padStart(2,'0')};
-  return null;
-}
-
-function parseSMILines(t){
-  var lines=[],re=/<SYNC\s+Start=(\d+)[^>]*>\s*<P[^>]*>([\s\S]*?)<\/SYNC>/gi,m;
-  while((m=re.exec(t))!==null){
-    var raw=m[2].replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').replace(/&nbsp;/gi,'').trim();
-    lines.push({ms:+m[1],text:raw});
-  }
-  return lines;
-}
-
-function updateFileInfo(fname,smiText){
-  var ep=detectEp(fname);
-  var detectedLang=detectLangLabel(smiText);
-  var lc=parseSMILines(smiText).filter(function(l){return l.text;}).length;
-  el('fr-main-ep').textContent=ep?ep.label:'?';
-  var short=fname.replace(/\.[^.]+$/,'').replace(/[._]/g,' ').replace(/\s*(S\d+E\d+|\d+화|\d+ep)[\s\S]*/i,'').trim().slice(0,14)||fname.slice(0,14);
-  el('fr-main-name').textContent=short;
-  el('fr-main-zone').style.display='none';
-  el('fr-main-loaded').style.display='flex';
-  el('fi-ep').textContent=ep?ep.label:'?';
-  el('fi-ep').style.color=ep?'var(--ok)':'var(--warn)';
-  el('fi-lines').textContent=lc+'줄';
-  el('fi-lang').textContent=detectedLang;
-  el('finfo').classList.add('on');
-  el('summary-trigger-card').style.display='block';
-  // 감지 언어 → 원본언어 셀렉트 자동 세팅 (참고용, 사용자가 변경 가능)
-  var lmap={태국어:'th',일본어:'ja',중국어:'zh',영어:'en'};
-  if(lmap[detectedLang])el('src-lang').value=lmap[detectedLang];
-  // 한국어 감지 → 리라이팅 모드 추천
-  if(detectedLang==='한국어')setTransMode('rewrite');
-}
-
-function buildRefSection(){
-  var ep=mainFile?detectEp(mainFile.name):null,sections=[];
-  var keys=Object.keys(refOrig).sort(function(a,b){return +a.split('_')[1]-+b.split('_')[1];});
-  if(keys.length){
-    var k1=keys.find(function(k){return k.endsWith('_1');})||keys[0];
-    if(refOrig[k1]&&refDone[k1]){
-      var oL=parseSMILines(refOrig[k1].content).filter(function(l){return l.text;});
-      var dL=parseSMILines(refDone[k1].content).filter(function(l){return l.text;});
-      var pairs=[];
-      for(var i=0;i<Math.min(oL.length,dL.length,60);i++)if(oL[i].text&&dL[i].text)pairs.push(oL[i].text+' → '+dL[i].text);
-      if(pairs.length)sections.push('## 1화 원문↔번역\n'+pairs.join('\n'));
-    }
-    if(ep&&ep.e>1){
-      var pk=ep.s+'_'+(ep.e-1);
-      if(refDone[pk]){
-        var pL=parseSMILines(refDone[pk].content).filter(function(l){return l.text;}).slice(-20);
-        if(pL.length)sections.push('## 직전 편 마지막 20줄\n'+pL.map(function(l){return l.text;}).join('\n'));
-      }
-    }
-  }
-  return sections.join('\n\n');
-}
-
-/* ── Claude 프롬프트 빌더 ── */
-function buildClaudePrompt(mode){
-  var fname=mainFile?mainFile.name.replace(/_track\d+$/i,'').replace(/\.smi$/i,''):'';
-  var epInfo=mainFile?detectEp(mainFile.name):null;
-  var epLabel=epInfo?epInfo.label:'';
-  var gm={drama:'일반드라마',romance:'로맨스',action:'액션/범죄',historical:'사극',comedy:'코미디',thriller:'스릴러'};
-  var lm={zh:'중국어','zh-yue':'광둥어',th:'태국어',ja:'일본어',en:'영어'};
-  var srcLang=lm[el('src-lang').value]||'중국어';
-  var genre=gm[el('genre').value]||'일반드라마';
-  var extra=el('extra-prompt').value.trim();
-  var prompt='';
-
-  if(transMode==='new'){
-    // 신규 드라마
-    prompt+='【'+(fname||'드라마')+(epLabel?' '+epLabel:'')+'】 '+srcLang+' 자막 번역해줘\n\n';
-    prompt+='파일명 확인하고 내용 먼저 분석해서 드라마 소개 파악해줘. 이미지나 SMI 파일 첨부할게.\n\n';
-    if(srcLang==='영어'){
-      prompt+='- 영어 자막이야. 인물 이름은 영문 그대로 유지해줘\n';
-    } else if(srcLang==='중국어'||srcLang==='광둥어'){
-      prompt+='- '+srcLang+' 자막이야. 인물 이름은 구어체로 자연스러운 한국어 이름처럼 바꿔줘\n';
-    } else {
-      prompt+='- '+srcLang+' 자막이야\n';
-    }
-    prompt+='- 직역 → 리라이팅 순서로 진행해서 완료 시켜줘\n';
-    prompt+='- 완료 후 SMI 파일로 줘\n\n';
-    prompt+='장르: '+genre+'\n';
-    if(extra)prompt+='추가 지시: '+extra+'\n';
-  } else if(transMode==='cont'){
-    // 이어서 번역
-    prompt+='이거 내가 번역해서 최종본 만든 파일이야\n\n';
-    prompt+='다시 한번 확인해보고, 다음 자막 파일 번역 → 리라이팅까지 완료 시켜서 SMI 파일로 줘\n\n';
-    if(fname)prompt+='드라마: '+fname+(epLabel?' '+epLabel:'')+'\n';
-    prompt+='장르: '+genre+'\n';
-    if(extra)prompt+='추가 지시: '+extra+'\n';
-  } else if(transMode==='rewrite'){
-    // 리라이팅
-    prompt+='아래 드라마 자막을 더 자연스러운 한국어로 다듬어줘\n\n';
-    if(fname)prompt+='드라마: '+fname+(epLabel?' '+epLabel:'')+'\n';
-    if(extra)prompt+='추가 지시: '+extra+'\n';
-  } else if(mode==='refine'){
-    prompt+='아래 드라마 자막 번역을 더 자연스럽게 다듬어줘\n\n';
-    if(fname)prompt+='드라마: '+fname+(epLabel?' '+epLabel:'')+'\n';
-    if(extra)prompt+='추가 지시: '+extra+'\n';
-  }
-
-  // 공통 규칙
-  prompt+='\n[번역 규칙]\n- 자연스러운 구어체 한국어\n- 문장 끝 마침표 금지\n- 짧고 명확하게\n- 인물 호칭/말투 일관성 유지\n';
-
-  // 참조
-  var ref=buildRefSection();
-  if(ref)prompt+='\n'+ref+'\n';
-
-  // 원본 자막
-  if(mainSMI&&mode!=='refine'){
-    var ol=parseSMILines(mainSMI).filter(function(l){return l.text;});
-    prompt+='\n[원본 자막]\n'+ol.map(function(l,i){return '['+i+'] '+l.text.replace(/\n/g,' | ');}).join('\n')+'\n';
-  }
-  if(mode==='refine'&&resultSMI){
-    var dl=parseSMILines(resultSMI).filter(function(l){return l.text;});
-    prompt+='\n[번역본]\n'+dl.map(function(l,i){return '['+i+'] '+l.text.replace(/\n/g,' | ');}).join('\n')+'\n';
-  }
-
-  prompt+='\n[출력 형식]\n[번호] 번역문 형식으로 순서대로';
-  return prompt;
-}
-
-function sendToClaudeDirect(){
-  if(!mainFile||!mainSMI){window.open('https://claude.ai','_blank');return;}
-  copyText(buildClaudePrompt('direct')).then(function(){
-    window.open('https://claude.ai','_blank');
-    setTimeout(function(){alert('✅ 프롬프트 복사 완료!\nclaude.ai에서 붙여넣기(Ctrl+V / 길게누르기)해주세요.');},500);
-  });
-}
-function sendToClaudeRefine(){
-  if(!resultSMI){alert('번역을 먼저 완료해주세요!');return;}
-  copyText(buildClaudePrompt('refine')).then(function(){
-    window.open('https://claude.ai','_blank');
-    setTimeout(function(){alert('✅ 복사! claude.ai에서 붙여넣기해주세요.');},500);
-  });
-}
-function downloadResult(){
-  if(!resultSMI||!mainFile)return;
-  dlBlob('\uFEFF'+resultSMI,'text/sami;charset=utf-8',mainFile.name.replace(/\.smi$/i,(transMode==='rewrite'?'_RW':'_KO')+'.smi'));
-}
-
-/* ── 요약 ── */
-async function generateSummary(){
-  var btn=el('btn-summary');btn.disabled=true;btn.textContent='⏳';
-  var smi=resultSMI||mainSMI;
-  if(!smi){alert('SMI 파일을 먼저 로드해주세요!');btn.disabled=false;btn.textContent='🎬 Groq 요약 + 명대사';return;}
-  try{
-    var lines=parseSMILines(smi).filter(function(l){return l.text;});
-    var txt=lines.slice(0,80).map(function(l){return l.text;}).join('\n');
-    var fname=mainFile?mainFile.name.replace(/\.[^.]+$/,''):'';
-    var ep=mainFile?detectEp(mainFile.name):null;
-    var raw=await callGroq(
-      '드라마: '+fname+(ep?' '+ep.label:'')+'\n\n자막:\n'+txt+'\n\nJSON만 출력:\n{"summary":"3~5줄 요약","highlight":"핵심 1~2줄","quotes":[{"quote":"명대사1","speaker":"발화자"},{"quote":"명대사2","speaker":""},{"quote":"명대사3","speaker":""}]}',
-      '드라마 자막 분석가. JSON만 출력. 모든 값 한국어.',
-      GROQ_HEAVY,1500
-    );
-    var parsed=safeJSON(raw);
-    lastSummary=(parsed.summary||'')+(parsed.highlight?'\n\n'+parsed.highlight:'');
-    lastQuotes=parsed.quotes||[];
-    el('summary-box').textContent=lastSummary;
-    var qBox=el('quotes-box');qBox.innerHTML='';
-    lastQuotes.forEach(function(q){
-      var d=document.createElement('div');d.className='quote-box';
-      d.textContent='"'+q.quote+'"'+(q.speaker?' — '+q.speaker:'');
-      qBox.appendChild(d);
-    });
-    el('summary-card').style.display='block';
-    el('summary-card').scrollIntoView({behavior:'smooth',block:'start'});
-  }catch(e){alert('요약 실패: '+e.message);}
-  btn.disabled=false;btn.textContent='🎬 Groq 요약 + 명대사';
-}
-function sendSummaryToBlog(){
-  var fname=mainFile?mainFile.name.replace(/\.[^.]+$/,'').replace(/_track\d+$/i,''):'';
-  var ep=mainFile?detectEp(mainFile.name):null,epLabel=ep?' '+ep.label:'';
-  setMain('blog');
-  setBlogCat('drama',true);
-  el('b-title').value=fname;
-  var info='드라마: '+fname+epLabel+'\n\n줄거리:\n'+lastSummary;
-  if(lastQuotes.length){info+='\n\n명대사:\n';lastQuotes.forEach(function(q){info+='"'+q.quote+'"'+(q.speaker?' — '+q.speaker:'')+'\n';});}
-  el('b-info').value=info;
-}
-
-/* ── 번역 설정 저장 ── */
-function saveDramaSettings(){
-  localStorage.setItem('drama_settings',JSON.stringify({
-    genre:el('genre').value,srcLang:el('src-lang').value,
-    extra:el('extra-prompt').value.trim(),transMode:transMode
-  }));
-  alert('✅ 저장!');
-}
-function loadDramaSettings(){
-  var raw=localStorage.getItem('drama_settings');
-  if(!raw){alert('저장된 설정 없음');return;}
-  try{
-    var d=JSON.parse(raw);
-    el('genre').value=d.genre||'drama';
-    el('src-lang').value=d.srcLang||'zh';
-    el('extra-prompt').value=d.extra||'';
-    if(d.transMode)setTransMode(d.transMode);
-    alert('✅ 불러왔어요!');
-  }catch(e){alert('실패: '+e.message);}
-}
-function deleteDramaSettings(){
-  if(!localStorage.getItem('drama_settings')){alert('없음');return;}
-  if(!confirm('삭제?'))return;
-  localStorage.removeItem('drama_settings');
-  alert('🗑!');
 }
 
 /* ── MKV 파서 ── */
@@ -841,6 +512,22 @@ function parseTracks(b,s,e){var tracks=[],p=s;while(p<e-1){try{var r1=eID(b,p),i
 function parseBlkHdr(b,pos,sz){var s=pos,r1=vint(b,pos),tn=r1[0];pos+=r1[1];var raw=(b[pos]<<8)|b[pos+1];pos+=2;var relTs=raw>=32768?raw-65536:raw;return{tn:tn,relTs:relTs,ds:pos+1,dl:sz-(pos+1-s)}}
 function parseCluster(b,start,end,subs,out){var p=start,clTs=0;while(p<end-1){try{var r1=eID(b,p),id=r1[0];p+=r1[1];var r2=vint(b,p),sz=r2[0];p+=r2[1];var se=sz<0?Math.min(end,b.length):Math.min(p+sz,b.length,end);if(id===EID.Timestamp)clTs=uint(b,p,Math.min(sz,8));else if(id===EID.SimpleBlock&&sz>3){var h=parseBlkHdr(b,p,sz);if(subs.has(h.tn))out.push({tn:h.tn,ts:clTs+h.relTs,dur:0,data:b.slice(h.ds,h.ds+h.dl)});}else if(id===EID.BlockGroup){var gp=p,gb=null,gd=0;while(gp<se-1){var gr1=eID(b,gp),gi=gr1[0];gp+=gr1[1];var gr2=vint(b,gp),gs=gr2[0];gp+=gr2[1];if(gs<0)break;if(gi===EID.Block&&gs>3)gb=parseBlkHdr(b,gp,gs);else if(gi===EID.BlockDuration)gd=uint(b,gp,Math.min(gs,8));gp+=gs;}if(gb&&subs.has(gb.tn))out.push({tn:gb.tn,ts:clTs+gb.relTs,dur:gd,data:b.slice(gb.ds,gb.ds+gb.dl)});}p=sz<0?se:p+sz;}catch(e){break;}}}
 function blkText(data,codec){var s=new TextDecoder('utf-8',{fatal:false}).decode(data).trim();if(codec==='S_TEXT/UTF8')return s;if(s.startsWith('Dialogue:')){var pts=s.split(',');if(pts.length>=10)return pts.slice(9).join(',').trim().replace(/\{[^}]*\}/g,'').replace(/\\[Nn]/g,'\n');}return s.replace(/\{[^}]*\}/g,'').replace(/\\[Nn]/g,'\n').trim()}
+
+/* 파일명 생성: 에피소드 번호를 앞으로 → 01파일명.smi */
+function buildSmiFilename(origName, suffix){
+  var base=origName.replace(/\.mkv$/i,'').replace(/\.smi$/i,'');
+  // 숫자(에피소드) 추출
+  var m=base.match(/(\d{1,3})$/)||base.match(/[._\s-](\d{1,3})(?:[._\s-]|$)/)||base.match(/(\d{1,3})/);
+  if(m){
+    var num=m[1];
+    // 드라마명: 숫자와 구분자 제거한 앞부분
+    var title=base.replace(new RegExp('[._\\s-]?'+num+'[._\\s-]?$'),'').replace(/[._-]/g,' ').trim();
+    if(!title)title=base;
+    return num+title+(suffix||'')+'.smi';
+  }
+  return base+(suffix||'')+'.smi';
+}
+
 function toSMI(blocks,codec,name,lang){
   blocks.sort(function(a,b){return a.ts-b.ts;});
   var ll=(lang||'').toLowerCase(),isKo=ll.includes('kor')||ll==='ko';
@@ -863,10 +550,12 @@ function toSMI(blocks,codec,name,lang){
   fin.forEach(function(f){o+='<SYNC Start='+f.ms+'><P Class='+cls+'>'+(f.t||'&nbsp;')+'</P></SYNC>\n';});
   return o+'</BODY>\n</SAMI>';
 }
+
 function mkLog(boxId){return function(msg,t){var b=el(boxId),d=document.createElement('div');d.className='ll'+(t?' l'+t:'');d.textContent=msg;b.appendChild(d);b.scrollTop=b.scrollHeight;}}
 function mkProg(fillId,pctId,lblId){return function(pct,lbl){el(fillId).style.width=pct+'%';el(pctId).textContent=pct+'%';if(lbl)el(lblId).textContent=lbl;}}
 var EL=mkLog('elb'),EP=mkProg('efill','epct','elbl');
 async function readChunk(file,s,len){return new Uint8Array(await file.slice(s,s+len).arrayBuffer())}
+
 async function extractMKV(file){
   el('prog-extract').style.display='block';el('track-section').style.display='none';
   el('trows').innerHTML='';el('elb').innerHTML='';
@@ -916,14 +605,65 @@ async function extractMKV(file){
   tracks.forEach(function(t){
     (function(tc,tblks){
       var row=document.createElement('div');row.className='track-row';
-      row.innerHTML='<div class="tr-info"><div class="tr-name">'+(tc.name||'Track '+tc.num)+'</div><div class="tr-meta">'+tc.codec+' · '+(tc.lang||'?')+' · '+tblks.length+'개</div></div><div class="tr-btns"><button class="btn b-dl b-sm"'+(tblks.length?'':' disabled')+'>💾 SMI</button><button class="btn b-blue b-sm"'+(tblks.length?'':' disabled')+'>🌐 번역</button></div>';
+      row.innerHTML='<div class="tr-info"><div class="tr-name">'+(tc.name||'Track '+tc.num)+'</div><div class="tr-meta">'+tc.codec+' · '+(tc.lang||'?')+' · '+tblks.length+'개</div></div><div class="tr-btns"><button class="btn b-dl b-sm"'+(tblks.length?'':' disabled')+'>💾 SMI</button><button class="btn b-blue b-sm"'+(tblks.length?'':' disabled')+'>🌐 자막탭</button></div>';
       var btns=row.querySelectorAll('button');
-      btns[0].onclick=function(){dlBlob('\uFEFF'+toSMI(tblks.slice(),tc.codec,tc.name,tc.lang),'text/sami;charset=utf-8',file.name.replace(/\.mkv$/i,'_track'+tc.num+'.smi'));};
-      btns[1].onclick=function(){transferToTranslate(toSMI(tblks.slice(),tc.codec,tc.name,tc.lang),file.name.replace(/\.mkv$/i,'_track'+tc.num+'.smi'));};
+      // SMI 저장: 에피소드 번호를 앞으로
+      btns[0].onclick=function(){
+        var fname=buildSmiFilename(file.name.replace(/\.mkv$/i,'_track'+tc.num),'');
+        dlBlob('\uFEFF'+toSMI(tblks.slice(),tc.codec,tc.name,tc.lang),'text/sami;charset=utf-8',fname);
+      };
+      btns[1].onclick=function(){
+        var fname=buildSmiFilename(file.name.replace(/\.mkv$/i,'_track'+tc.num),'');
+        transferToTranslate(toSMI(tblks.slice(),tc.codec,tc.name,tc.lang),fname);
+      };
       trows.appendChild(row);
     })(t,unique.filter(function(b){return b.tn===t.num;}));
   });
   el('track-section').style.display='block';
+}
+
+/* ── 자막 탭 ── */
+var mainFile=null,mainSMI='',lastSummary='',lastQuotes=[];
+
+function detectLangLabel(t){
+  var cls=(t.match(/Class=(\w+)/i)||[])[1]||'';
+  if(/KR|KO/i.test(cls))return'한국어';if(/ZH|CN|CH|TC|SC/i.test(cls))return'중국어';
+  if(/TH/i.test(cls))return'태국어';if(/EN/i.test(cls))return'영어';if(/JP|JA/i.test(cls))return'일본어';
+  var s=t.slice(0,3000);
+  if(/[\u0E00-\u0E7F]/.test(s))return'태국어';if(/[\u3040-\u30FF]/.test(s))return'일본어';
+  if(/[\u4E00-\u9FFF]/.test(s))return'중국어';if(/[\uAC00-\uD7A3]/.test(s))return'한국어';
+  return'영어/기타';
+}
+function detectEp(fn){
+  var f=fn.replace(/\.[^.]+$/,''),m;
+  m=f.match(/[Ss](\d{1,2})[Ee](\d{1,3})/);if(m)return{s:+m[1],e:+m[2],label:'S'+m[1].padStart(2,'0')+'E'+m[2].padStart(2,'0')};
+  m=f.match(/(\d{1,3})\s*화/);if(m)return{s:1,e:+m[1],label:m[1]+'화'};
+  m=f.match(/(?:ep|EP|episode)[\s._-]?(\d{1,3})/i);if(m)return{s:1,e:+m[1],label:'E'+m[1].padStart(2,'0')};
+  m=f.match(/[._\s-](\d{1,3})(?:[._\s-]|$)/);if(m)return{s:1,e:+m[1],label:'E'+m[1].padStart(2,'0')};
+  return null;
+}
+function parseSMILines(t){
+  var lines=[],re=/<SYNC\s+Start=(\d+)[^>]*>\s*<P[^>]*>([\s\S]*?)<\/SYNC>/gi,m;
+  while((m=re.exec(t))!==null){
+    var raw=m[2].replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').replace(/&nbsp;/gi,'').trim();
+    lines.push({ms:+m[1],text:raw});
+  }
+  return lines;
+}
+function updateFileInfo(fname,smiText){
+  var ep=detectEp(fname),lang=detectLangLabel(smiText);
+  var lc=parseSMILines(smiText).filter(function(l){return l.text;}).length;
+  el('fr-main-ep').textContent=ep?ep.label:'?';
+  var short=fname.replace(/\.[^.]+$/,'').replace(/[._]/g,' ').replace(/\s*(S\d+E\d+|\d+화|\d+ep)[\s\S]*/i,'').trim().slice(0,14)||fname.slice(0,14);
+  el('fr-main-name').textContent=short;
+  el('fr-main-zone').style.display='none';
+  el('fr-main-loaded').style.display='flex';
+  el('fi-ep').textContent=ep?ep.label:'?';
+  el('fi-ep').style.color=ep?'var(--ok)':'var(--warn)';
+  el('fi-lines').textContent=lc+'줄';
+  el('fi-lang').textContent=lang;
+  el('finfo').classList.add('on');
+  el('summary-trigger-card').style.display='block';
 }
 function transferToTranslate(smiText,fname){
   mainFile=new File([smiText],fname,{type:'text/plain'});
@@ -934,7 +674,7 @@ function transferToTranslate(smiText,fname){
   setMain('translate');
 }
 
-/* ── 파일 input 이벤트 ── */
+/* ── 파일 이벤트 ── */
 el('dz-mkv').addEventListener('click',function(){el('fi-mkv').click();});
 el('dz-mkv').addEventListener('dragover',function(e){e.preventDefault();this.classList.add('ov');});
 el('dz-mkv').addEventListener('dragleave',function(){this.classList.remove('ov');});
@@ -945,18 +685,44 @@ function loadSmiFile(f){readFileText(f).then(function(t){mainFile=f;mainSMI=t;up
 el('fi-smi').addEventListener('change',function(){if(this.files[0])loadSmiFile(this.files[0]);});
 el('fi-smi-reload').addEventListener('change',function(){if(this.files[0])loadSmiFile(this.files[0]);});
 
-async function loadRefFiles(input,txtId){
-  var store={},count=0;
-  for(var i=0;i<input.files.length;i++){
-    var f=input.files[i],ep=detectEp(f.name);
-    if(!ep)continue;
-    try{var c=await readFileText(f);store[ep.s+'_'+ep.e]={name:f.name,content:c};count++;}catch(e){}
-  }
-  el(txtId).textContent=count?'✅ '+count+'개':'선택';
-  return store;
+/* ── 요약 ── */
+async function generateSummary(){
+  var btn=el('btn-summary');btn.disabled=true;btn.textContent='⏳';
+  if(!mainSMI){alert('SMI 파일을 먼저 로드해주세요!');btn.disabled=false;btn.textContent='🎬 Groq 요약 + 명대사';return;}
+  try{
+    var lines=parseSMILines(mainSMI).filter(function(l){return l.text;});
+    var txt=lines.slice(0,80).map(function(l){return l.text;}).join('\n');
+    var fname=mainFile?mainFile.name.replace(/\.[^.]+$/,''):'';
+    var ep=mainFile?detectEp(mainFile.name):null;
+    var raw=await callGroq(
+      '드라마: '+fname+(ep?' '+ep.label:'')+'\n\n자막:\n'+txt+'\n\nJSON만 출력:\n{"summary":"3~5줄 요약","highlight":"핵심 1~2줄","quotes":[{"quote":"명대사1","speaker":"발화자"},{"quote":"명대사2","speaker":""},{"quote":"명대사3","speaker":""}]}',
+      '드라마 자막 분석가. JSON만 출력. 모든 값 한국어.',
+      GROQ_HEAVY,1500
+    );
+    var parsed=safeJSON(raw);
+    lastSummary=(parsed.summary||'')+(parsed.highlight?'\n\n'+parsed.highlight:'');
+    lastQuotes=parsed.quotes||[];
+    el('summary-box').textContent=lastSummary;
+    var qBox=el('quotes-box');qBox.innerHTML='';
+    lastQuotes.forEach(function(q){
+      var d=document.createElement('div');d.className='quote-box';
+      d.textContent='"'+q.quote+'"'+(q.speaker?' — '+q.speaker:'');
+      qBox.appendChild(d);
+    });
+    el('summary-card').style.display='block';
+    el('summary-card').scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(e){alert('요약 실패: '+e.message);}
+  btn.disabled=false;btn.textContent='🎬 Groq 요약 + 명대사';
 }
-el('fi-ref-orig').addEventListener('change',async function(){refOrig=await loadRefFiles(this,'ref-orig-txt');});
-el('fi-ref-done').addEventListener('change',async function(){refDone=await loadRefFiles(this,'ref-done-txt');});
+function sendSummaryToBlog(){
+  var fname=mainFile?mainFile.name.replace(/\.[^.]+$/,'').replace(/_track\d+$/i,''):'';
+  var ep=mainFile?detectEp(mainFile.name):null,epLabel=ep?' '+ep.label:'';
+  setMain('blog');setBlogCat('drama',true);
+  el('b-title').value=fname;
+  var info='드라마: '+fname+epLabel+'\n\n줄거리:\n'+lastSummary;
+  if(lastQuotes.length){info+='\n\n명대사:\n';lastQuotes.forEach(function(q){info+='"'+q.quote+'"'+(q.speaker?' — '+q.speaker:'')+'\n';});}
+  el('b-info').value=info;
+}
 
 /* ── 블로그 탭 ── */
 var curCat='travel',blogImgs=[];
@@ -968,21 +734,14 @@ var CAT={
   actor:{title:true,titlePh:'배우 이름',info:'국적, 대표작, 관심 계기, 매력 등',img:true,imgLabel:'배우 이미지',imgIcon:'🌟',prompt:'배우 소개. 배우명+프로필+출연작 키워드.'}
 };
 function setBlogCat(cat,skipClear){
-  curCat=cat;
-  var sel=el('blog-cat');if(sel.value!==cat)sel.value=cat;
+  curCat=cat;var sel=el('blog-cat');if(sel.value!==cat)sel.value=cat;
   var cfg=CAT[cat];
   el('b-title-row').style.display=cfg.title?'':'none';
   if(cfg.title)el('b-title').placeholder=cfg.titlePh||'';
   el('b-info').placeholder=cfg.info||'';
   el('b-img-row').style.display=cfg.img?'':'none';
   if(cfg.img){el('b-img-icon').textContent=cfg.imgIcon||'🖼️';el('b-img-label').textContent=cfg.imgLabel+' (선택)';}
-  if(!skipClear){
-    blogImgs=[];el('b-preview').innerHTML='';
-    el('b-title').value='';el('b-info').value='';
-    el('blog-completed').classList.remove('on');
-    el('bresult').classList.remove('on');
-    el('seo-result').classList.remove('on');
-  }
+  if(!skipClear){blogImgs=[];el('b-preview').innerHTML='';el('b-title').value='';el('b-info').value='';el('blog-completed').classList.remove('on');el('bresult').classList.remove('on');el('seo-result').classList.remove('on');}
 }
 el('blog-cat').addEventListener('change',function(){setBlogCat(this.value);});
 function handleBlogImgs(input){
@@ -1009,39 +768,25 @@ function buildBlogPrompt(info,forGroq){
   var tone=info.tone?'\n\n[말투]\n'+info.tone+'\n→ 위 말투 그대로. 없으면 담백한 구어체.':'';
   var infoStr='카테고리: '+info.cat+'\n';if(info.title)infoStr+='제목: '+info.title+'\n';infoStr+='내용:\n'+info.info;
   return(forGroq?'네이버 블로그 포스팅 작성. 완성된 글만 출력.\n\n':'네이버 블로그 포스팅 작성.\n\n')
-    +'[글쓰기 정보]\n'+infoStr+'\n글 길이: '+info.len
-    +tone
+    +'[글쓰기 정보]\n'+infoStr+'\n글 길이: '+info.len+tone
     +'\n\n[작성 규칙]\n- '+info.prompt
     +'\n- 사실 관계 위주, 간결\n- 과장·감탄 금지\n- 소제목으로 구조화\n- 이미지 위치: [이미지: 설명] 3~5곳\n- 글 마지막에 SEO 제목 후보 3개 + 네이버 태그 10~15개\n- 경험 없는 부분은 [[경험 추가]] 표시';
 }
-
-/* 말투 저장 */
 function saveToneSample(){var t=bv('b-tone');if(!t){alert('말투 샘플 없음');return;}localStorage.setItem('blog_tone',t);alert('✅ 말투 저장!');}
 function loadToneSample(){var t=localStorage.getItem('blog_tone');if(!t){alert('저장된 말투 없음');return;}el('b-tone').value=t;alert('✅ 불러왔어요!');}
 
-/* SEO 키워드 추천 (Groq 자동) */
 async function generateSeoKeywords(){
-  var info=bv('b-info');
-  var title=bv('b-title');
+  var info=bv('b-info'),title=bv('b-title');
   if(!info&&!title){alert('먼저 내용을 입력해주세요!');return;}
-  var seoEl=el('seo-result');
-  seoEl.textContent='⚡ 분석 중...';seoEl.classList.add('on');
+  var seoEl=el('seo-result');seoEl.textContent='⚡ 분석 중...';seoEl.classList.add('on');
   try{
     var result=await callGroq(
-      '아래 블로그 글 내용을 분석해서 네이버 검색에 최적화된 키워드와 제목 후보를 추천해줘.\n\n'
-      +(title?'제목: '+title+'\n':'')
-      +'내용: '+info.slice(0,500)+'\n\n'
-      +'다음 형식으로만 출력:\n'
-      +'[핵심 키워드] 검색 잘 되는 단어 5~7개 (쉼표 구분)\n'
-      +'[SEO 제목 후보]\n1. \n2. \n3. \n'
-      +'[네이버 태그] #태그1 #태그2 ... (10~15개)',
-      '네이버 블로그 SEO 전문가. 검색량 높고 경쟁 적당한 키워드 추천.',
-      GROQ_LIGHT,800
+      '아래 블로그 글 내용을 분석해서 네이버 검색에 최적화된 키워드와 제목 후보를 추천해줘.\n\n'+(title?'제목: '+title+'\n':'')+'내용: '+info.slice(0,500)+'\n\n다음 형식으로만 출력:\n[핵심 키워드] 검색 잘 되는 단어 5~7개 (쉼표 구분)\n[SEO 제목 후보]\n1. \n2. \n3. \n[네이버 태그] #태그1 #태그2 ... (10~15개)',
+      '네이버 블로그 SEO 전문가.',GROQ_LIGHT,800
     );
     seoEl.textContent=result;
   }catch(e){seoEl.textContent='❌ '+e.message;}
 }
-
 async function generateBlogWithGroq(){
   var info=getBlogInfo();if(!info)return;
   el('groq-load').classList.add('on');el('blog-completed').classList.remove('on');
@@ -1057,10 +802,8 @@ async function regenBlogSection(){
   var fb=bv('regen-input');if(!fb){alert('수정 요청을 입력해주세요!');return;}
   var cur=el('blog-content-area').textContent;
   el('regen-input').value='';el('blog-content-area').textContent='⏳ 재생성 중...';
-  try{
-    var r=await callGroq('수정 요청: '+fb+'\n\n현재 글:\n'+cur.slice(0,2000)+'\n\n수정된 전체 글만 출력.','네이버 블로그 작가. 사실 중심, 과장 금지.',GROQ_HEAVY,3000);
-    el('blog-content-area').textContent=r;
-  }catch(e){alert('재생성 실패: '+e.message);}
+  try{var r=await callGroq('수정 요청: '+fb+'\n\n현재 글:\n'+cur.slice(0,2000)+'\n\n수정된 전체 글만 출력.','네이버 블로그 작가. 사실 중심, 과장 금지.',GROQ_HEAVY,3000);el('blog-content-area').textContent=r;}
+  catch(e){alert('재생성 실패: '+e.message);}
 }
 function copyBlogContent(){copyText(el('blog-content-area').textContent).then(function(){var b=el('blog-copy-btn');b.textContent='✅';b.classList.add('done');setTimeout(function(){b.textContent='📋 복사';b.classList.remove('done');},2000);});}
 function sendBlogToClaude(){var tone=bv('b-tone');copyText('블로그 글 다듬기. 사실 중심, 과장 금지, SEO 유리하게.'+(tone?'\n말투: '+tone:'')+'\n\n'+el('blog-content-area').textContent).then(function(){window.open('https://claude.ai','_blank');setTimeout(function(){alert('✅ 복사!');},500);});}
@@ -1072,7 +815,6 @@ function deleteBlogDraft(){if(!localStorage.getItem('blog_draft')){alert('없음
 
 /* ── 이웃분석 탭 ── */
 var nbNames=[],nbLocked=false,pdfQueue=[],cumCounts={},procCount=0,aiExtractMode=false;
-
 function toggleAiExtract(){
   aiExtractMode=!aiExtractMode;
   var tog=el('ai-toggle'),knob=el('ai-knob');
@@ -1147,8 +889,7 @@ el('nb-direct').addEventListener('input',function(){
 });
 function lockNeighborList(){
   nbNames=getNbList();if(!nbNames.length){alert('이웃 목록을 입력해주세요!');return;}
-  nbLocked=true;
-  nbNames.forEach(function(n){if(cumCounts[n]===undefined)cumCounts[n]=0;});
+  nbLocked=true;nbNames.forEach(function(n){if(cumCounts[n]===undefined)cumCounts[n]=0;});
   el('nb-input-area').style.display='none';el('nb-locked').style.display='flex';
   el('nb-locked-txt').textContent='이웃 '+nbNames.length+'명 확정';updateLiveboard();
 }
@@ -1204,9 +945,8 @@ async function runPendingPdfs(){
       if(aiExtractMode&&getGroqKey()){
         NL('🤖 AI 작성자 추출 중...','i');
         try{
-          var trimmedText=text.slice(0,2000);
           var aiResult=await callGroq(
-            '아래는 네이버 블로그 댓글 PDF 텍스트다.\n댓글 작성자 닉네임만 추출해서 한 줄에 하나씩 출력하라.\n닉네임 외 내용(날짜, 댓글 내용, 숫자, URL) 출력 금지.\n\n'+trimmedText+'\n\n닉네임만:',
+            '아래는 네이버 블로그 댓글 PDF 텍스트다.\n댓글 작성자 닉네임만 추출해서 한 줄에 하나씩 출력하라.\n닉네임 외 내용(날짜, 댓글 내용, 숫자, URL) 출력 금지.\n\n'+text.slice(0,2000)+'\n\n닉네임만:',
             '블로그 댓글 분석기. 닉네임만 추출.',GROQ_LIGHT,500
           );
           var extractedNames=aiResult.split('\n').map(function(n){return n.trim();}).filter(function(n){return n&&n.length>=2&&n.length<=20&&!/^[\d\s\-\.]+$/.test(n);});
@@ -1215,7 +955,7 @@ async function runPendingPdfs(){
           });
           NL('✅ AI추출: '+extractedNames.length+'명','ok');
         }catch(aiErr){
-          NL('⚠️ AI실패 → 카운트 방식: '+aiErr.message,'warn');
+          NL('⚠️ AI실패 → 카운트 방식','warn');
           nbNames.forEach(function(name){cumCounts[name]=(cumCounts[name]||0)+countActivity(text,name);});
         }
       }else{
@@ -1271,7 +1011,7 @@ async function extractPdfText(file){
   return text;
 }
 
-function downloadSelf(){dlBlob(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.8.1.html');}
+function downloadSelf(){dlBlob(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.8.2.html');}
 
 (function init(){
   var sg=localStorage.getItem('groq_key');
@@ -1279,14 +1019,11 @@ function downloadSelf(){dlBlob(document.documentElement.outerHTML,'text/html;cha
   el('saved-groq').addEventListener('click',function(){el('saved-groq').style.display='none';el('input-groq').style.display='flex';});
   var tone=localStorage.getItem('blog_tone');if(tone)el('b-tone').value=tone;
   setBlogCat('travel',true);
-  setTransMode('new');
 })();
 
 return{
-  setMain:setMain,setNbTab:setNbTab,saveGroqKey:saveGroqKey,setTransMode:setTransMode,
-  sendToClaudeDirect:sendToClaudeDirect,sendToClaudeRefine:sendToClaudeRefine,
-  downloadResult:downloadResult,generateSummary:generateSummary,sendSummaryToBlog:sendSummaryToBlog,
-  saveDramaSettings:saveDramaSettings,loadDramaSettings:loadDramaSettings,deleteDramaSettings:deleteDramaSettings,
+  setMain:setMain,setNbTab:setNbTab,saveGroqKey:saveGroqKey,
+  generateSummary:generateSummary,sendSummaryToBlog:sendSummaryToBlog,
   handleBlogImgs:handleBlogImgs,removeBlogImg:removeBlogImg,
   generateBlogWithGroq:generateBlogWithGroq,regenBlogSection:regenBlogSection,
   copyBlogContent:copyBlogContent,sendBlogToClaude:sendBlogToClaude,
