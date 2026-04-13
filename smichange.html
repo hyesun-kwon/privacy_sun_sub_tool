@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>통합 툴 v1.9.0</title>
+<title>통합 툴 v1.9.1</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -140,7 +140,7 @@ textarea.binp{min-height:90px;line-height:1.6}
 <div class="wrap">
 <div class="hd">
   <div><div class="hd-title">🎬 통합 제작 툴</div><div class="hd-sub">MKV · 자막 · 블로그 · 이웃분석</div></div>
-  <div class="hd-r"><span class="ver">v1.9.0</span><button class="save-btn" onclick="G.save()">💾 저장</button></div>
+  <div class="hd-r"><span class="ver">v1.9.1</span><button class="save-btn" onclick="G.save()">💾 저장</button></div>
 </div>
 <div class="tabs">
   <button class="tab on" id="mtab-extract" onclick="G.tab('extract')"><span class="ti">🎞️</span>MKV</button>
@@ -152,7 +152,7 @@ textarea.binp{min-height:90px;line-height:1.6}
 <!-- MKV -->
 <div id="page-extract" class="pg on">
   <div class="card">
-    <div class="drop" id="dz-mkv"><span class="di">🎞️</span><div class="dh"><strong>MKV 파일 선택</strong>탭하거나 드래그</div><input type="file" id="fi-mkv" style="display:none"></div>
+    <div class="drop" id="dz-mkv"><span class="di">🎞️</span><div class="dh"><strong>MKV 파일 선택</strong>탭하거나 드래그</div><input type="file" accept="*/*" id="fi-mkv" style="display:none"></div>
   </div>
   <div class="card" id="prog-extract" style="display:none">
     <div class="prog-hd"><span id="elbl">분석 중...</span><span id="epct">0%</span></div>
@@ -184,11 +184,11 @@ textarea.binp{min-height:90px;line-height:1.6}
           <span class="fr-ep" id="fr-main-ep"></span>
           <span class="fr-short" id="fr-main-name"></span>
           <span style="font-size:10px;color:var(--mut);flex-shrink:0">탭→변경</span>
-          <input type="file" id="fi-smi-reload" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
+          <input type="file" accept="*/*" id="fi-smi-reload" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
         </div>
         <div id="fr-main-zone" class="fr-zone">
           <span style="font-size:13px">📝</span><span style="font-size:11px;color:var(--mut)">탭해서 선택</span>
-          <input type="file" id="fi-smi">
+          <input type="file" accept="*/*" id="fi-smi">
         </div>
       </div>
     </div>
@@ -235,7 +235,7 @@ textarea.binp{min-height:90px;line-height:1.6}
       <div style="position:relative;border:1px dashed var(--bd);border-radius:7px;padding:10px;text-align:center;cursor:pointer;background:#fafafa">
         <span style="font-size:16px" id="b-img-icon">🖼️</span>
         <div style="font-size:11px;color:var(--mut);margin-top:2px">이미지 업로드</div>
-        <input type="file" id="b-imgs" multiple onchange="G.blogImgs(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
+        <input type="file" accept="*/*" id="b-imgs" multiple onchange="G.blogImgs(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px" id="b-preview"></div>
     </div>
@@ -300,7 +300,7 @@ textarea.binp{min-height:90px;line-height:1.6}
           <div style="position:relative;border:1px dashed #93c5fd;border-radius:8px;padding:10px;text-align:center;cursor:pointer;background:#eff6ff;flex:1;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center">
             <span style="font-size:16px">📸</span>
             <div style="font-size:11px;color:var(--mut);margin-top:2px">캡처 이미지 업로드</div>
-            <input type="file" id="fi-nb-img" multiple onchange="G.ocrNb(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
+            <input type="file" accept="*/*" id="fi-nb-img" multiple onchange="G.ocrNb(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
           </div>
           <textarea id="nb-name-preview" placeholder="추출된 닉네임&#10;(직접 수정 가능)" style="flex:1;min-height:80px;max-height:120px;background:#fafafa;border:1px solid var(--bd);border-radius:8px;padding:5px 8px;font-size:11px;color:var(--txt);line-height:1.8;resize:none;font-family:'Noto Sans KR',sans-serif;display:none" oninput="G.syncNb()"></textarea>
         </div>
@@ -321,7 +321,8 @@ textarea.binp{min-height:90px;line-height:1.6}
     </div>
   </div>
   <div class="card">
-    <div class="ct">② PDF 분석</div>
+    <div class="ct">② 댓글 기록 분석</div>
+    <!-- AI 모드 토글 -->
     <div style="display:flex;align-items:center;gap:6px;padding:7px 9px;background:#f9fafb;border-radius:6px;border:1px solid var(--bd);margin-bottom:8px">
       <span style="font-size:12px">🤖</span>
       <div style="flex:1"><div style="font-size:11px;font-weight:700">AI 작성자 추출 모드</div><div style="font-size:10px;color:var(--mut)">Groq으로 댓글 작성자명 추출 → 이웃 대조</div></div>
@@ -329,7 +330,31 @@ textarea.binp{min-height:90px;line-height:1.6}
         <div id="ai-knob" style="position:absolute;top:2px;left:2px;width:16px;height:16px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></div>
       </div>
     </div>
-    <div class="drop" id="dz-pdf" style="padding:10px"><span class="di">📄</span><div class="dh"><strong>PDF 파일 추가</strong>탭하거나 드래그</div><input type="file" id="fi-pdf" multiple style="display:none"></div>
+    <!-- 입력 방식 탭 -->
+    <div class="nb-tabs" style="margin-bottom:8px">
+      <button class="nb-tab on" id="rec-tab-pdf" onclick="G.recTab('pdf',this)">📄 PDF</button>
+      <button class="nb-tab" id="rec-tab-img" onclick="G.recTab('img',this)">📸 이미지</button>
+      <button class="nb-tab" id="rec-tab-txt" onclick="G.recTab('txt',this)">📋 텍스트</button>
+    </div>
+    <!-- PDF 패널 -->
+    <div id="rec-panel-pdf">
+      <div class="drop" id="dz-pdf" style="padding:10px"><span class="di">📄</span><div class="dh"><strong>PDF 파일 추가</strong>탭하거나 드래그</div><input type="file" accept="*/*" id="fi-pdf" multiple style="display:none"></div>
+    </div>
+    <!-- 이미지 패널 -->
+    <div id="rec-panel-img" style="display:none">
+      <div style="position:relative;border:2px dashed #93c5fd;border-radius:8px;padding:14px;text-align:center;cursor:pointer;background:#eff6ff;min-height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+        <span style="font-size:20px">📸</span>
+        <div style="font-size:11px;color:var(--mut)"><strong style="color:var(--txt);display:block">댓글 캡처 이미지</strong>탭하거나 드래그</div>
+        <input type="file" accept="*/*" id="fi-rec-img" multiple style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
+      </div>
+      <div id="rec-img-queue" style="margin-top:6px"></div>
+    </div>
+    <!-- 텍스트 패널 -->
+    <div id="rec-panel-txt" style="display:none">
+      <textarea class="inp inp-w" id="rec-txt" style="min-height:90px;margin-bottom:6px" placeholder="댓글 내용을 붙여넣기&#10;(닉네임이 포함된 텍스트면 됩니다)&#10;&#10;예:&#10;벚꽃송송이 좋은 글이에요!&#10;하늘여행자 잘 봤습니다"></textarea>
+      <button class="btn b-main b-sm" onclick="G.addRecTxt()" style="width:100%">✅ 추가</button>
+      <div id="rec-txt-list" style="margin-top:6px;font-size:11px;color:var(--mut)"></div>
+    </div>
     <div id="pdf-queue" style="margin-top:6px"></div>
     <div class="btn-row" style="margin-top:6px">
       <button class="btn b-main b-sm" id="btn-run-pdfs" onclick="G.runPdfs()" disabled>▶ 분석 시작</button>
@@ -672,7 +697,79 @@ function resetNb(){
   $('pdf-queue').innerHTML='';
   $('live-board').style.display='none';$('nb-result').style.display='none';$('prog-neighbor').style.display='none';
   $('ai-toggle').style.background='#d1d5db';$('ai-knob').style.left='2px';
+  recImgQ=[];recTxts=[];rndImgQ();rndTxtQ();
 }
+// 댓글 기록 탭 전환
+var recMode='pdf';
+var recImgQ=[];  // 이미지 큐
+var recTxts=[];  // 텍스트 큐
+
+function recTab(id,btn){
+  recMode=id;
+  document.querySelectorAll('#rec-tab-pdf,#rec-tab-img,#rec-tab-txt').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  $('rec-panel-pdf').style.display=id==='pdf'?'':'none';
+  $('rec-panel-img').style.display=id==='img'?'':'none';
+  $('rec-panel-txt').style.display=id==='txt'?'':'none';
+  updRunBtn();
+}
+
+function updRunBtn(){
+  var hasPdf=pdfQ.some(function(q){return q.status==='wait'});
+  var hasImg=recImgQ.some(function(q){return q.status==='wait'});
+  var hasTxt=recTxts.some(function(q){return q.status==='wait'});
+  $('btn-run-pdfs').disabled=!(hasPdf||hasImg||hasTxt);
+}
+
+// 이미지 큐
+$('fi-rec-img').addEventListener('change',function(){addRecImg(this.files);this.value=''});
+$('rec-panel-img').addEventListener('dragover',function(e){e.preventDefault();this.style.borderColor='var(--ac)'});
+$('rec-panel-img').addEventListener('dragleave',function(){this.style.borderColor='#93c5fd'});
+$('rec-panel-img').addEventListener('drop',function(e){e.preventDefault();this.style.borderColor='#93c5fd';addRecImg(e.dataTransfer.files)});
+
+function addRecImg(files){
+  if(!nbL){alert('먼저 이웃 목록을 확정해주세요!');return}
+  var added=0;
+  Array.from(files).forEach(function(f){
+    if(!f.type.startsWith('image/'))return;
+    if(recImgQ.some(function(q){return q.name===f.name}))return;
+    recImgQ.push({file:f,name:f.name,status:'wait'});added++;
+  });
+  if(!added){alert('이미지 파일만 추가 가능');return}
+  rndImgQ();updRunBtn();
+}
+
+function rndImgQ(){
+  var q=$('rec-img-queue');q.innerHTML='';
+  recImgQ.forEach(function(item,idx){
+    var d=document.createElement('div');d.className='pq-item';
+    var st=item.status==='done'?'<span class="pq-st pq-done">✅</span>':item.status==='proc'?'<span class="pq-st pq-proc">⏳</span>':'<span class="pq-st pq-wait">⏸</span>';
+    var del=item.status!=='proc'?'<button class="pq-del" onclick="G.rmRecImg('+idx+')">🗑</button>':'';
+    d.innerHTML='<span class="pq-name">🖼️ '+item.name+'</span>'+st+del;
+    q.appendChild(d);
+  });
+}
+function rmRecImg(idx){if(recImgQ[idx].status==='proc')return;recImgQ.splice(idx,1);rndImgQ();updRunBtn()}
+
+// 텍스트 큐
+function addRecTxt(){
+  if(!nbL){alert('먼저 이웃 목록을 확정해주세요!');return}
+  var txt=$('rec-txt').value.trim();
+  if(!txt){alert('텍스트를 입력해주세요');return}
+  recTxts.push({text:txt,status:'wait',label:txt.slice(0,20)+'...'});
+  $('rec-txt').value='';
+  rndTxtQ();updRunBtn();
+}
+function rndTxtQ(){
+  var q=$('rec-txt-list');
+  if(!recTxts.length){q.textContent='';return}
+  q.innerHTML=recTxts.map(function(item,idx){
+    var st=item.status==='done'?'✅':item.status==='proc'?'⏳':'⏸';
+    return'<div class="pq-item"><span class="pq-name">📋 '+item.label+'</span><span class="pq-st">'+(item.status==='done'?'<span class="pq-done">✅</span>':item.status==='proc'?'<span class="pq-proc">⏳</span>':'<span class="pq-wait">⏸</span>')+'</span>'+(item.status!=='proc'?'<button class="pq-del" onclick="G.rmRecTxt('+idx+')">🗑</button>':'')+'</div>';
+  }).join('');
+}
+function rmRecTxt(idx){if(recTxts[idx].status==='proc')return;recTxts.splice(idx,1);rndTxtQ();updRunBtn()}
+
 $('dz-pdf').addEventListener('click',function(){$('fi-pdf').click()});
 $('fi-pdf').addEventListener('change',function(){addPdf(this.files);this.value=''});
 $('dz-pdf').addEventListener('dragover',function(e){e.preventDefault();this.classList.add('ov')});
@@ -686,30 +783,79 @@ function addPdf(files){
 }
 function rndQ(){var q=$('pdf-queue');q.innerHTML='';pdfQ.forEach(function(item,idx){var d=document.createElement('div');d.className='pq-item';var st=item.status==='done'?'<span class="pq-st pq-done">✅</span>':item.status==='proc'?'<span class="pq-st pq-proc">⏳</span>':'<span class="pq-st pq-wait">⏸</span>';var del=item.status!=='proc'?'<button class="pq-del" onclick="G.rmPdf('+idx+')">🗑</button>':'';d.innerHTML='<span class="pq-name">📄 '+item.name+'</span>'+st+del;q.appendChild(d)})}
 function rmPdf(idx){if(pdfQ[idx].status==='proc')return;pdfQ.splice(idx,1);rndQ()}
-function clearDone(){pdfQ=pdfQ.filter(function(q){return q.status!=='done'});rndQ()}
+function clearDone(){pdfQ=pdfQ.filter(function(q){return q.status!=='done'});rndQ();recImgQ=recImgQ.filter(function(q){return q.status!=='done'});rndImgQ();recTxts=recTxts.filter(function(q){return q.status!=='done'});rndTxtQ();updRunBtn()}
 async function runPdfs(){
-  var pending=pdfQ.filter(function(q){return q.status==='wait'});if(!pending.length){alert('분석할 파일 없음');return}
+  var pendingPdf=pdfQ.filter(function(q){return q.status==='wait'});
+  var pendingImg=recImgQ.filter(function(q){return q.status==='wait'});
+  var pendingTxt=recTxts.filter(function(q){return q.status==='wait'});
+  if(!pendingPdf.length&&!pendingImg.length&&!pendingTxt.length){alert('분석할 항목 없음');return}
   $('btn-run-pdfs').disabled=true;$('prog-neighbor').style.display='block';$('nlb').innerHTML='';
   var NL=mLog('nlb'),NP=mPrg('nfill','npct','nlbl');
-  try{
-    for(var i=0;i<pending.length;i++){
-      var item=pending[i];item.status='proc';rndQ();
-      NL('['+(i+1)+'/'+pending.length+'] '+item.name,'i');NP(Math.round(i/pending.length*90)+5,'파싱 중...');
-      var text=await pdfTxt(item.file);
-      if(aiM&&gk()){
-        NL('🤖 AI 작성자 추출 중...','i');
-        try{
-          var ar=await groq('아래는 네이버 블로그 댓글 PDF 텍스트다.\n댓글 작성자 닉네임만 추출해서 한 줄에 하나씩 출력하라.\n닉네임 외 내용(날짜, 댓글 내용, 숫자, URL) 출력 금지.\n\n'+text.slice(0,2000)+'\n\n닉네임만:','블로그 댓글 분석기. 닉네임만 추출.',GL,500);
-          var en=ar.split('\n').map(function(n){return n.trim()}).filter(function(n){return n&&n.length>=2&&n.length<=20&&!/^[\d\s\-\.]+$/.test(n)});
-          en.forEach(function(name){nbN.forEach(function(nb){if(nb===name||nb.includes(name)||name.includes(nb))cnt[nb]=(cnt[nb]||0)+1})});
-          NL('✅ AI추출: '+en.length+'명','ok');
-        }catch(ae){NL('⚠️ AI실패 → 카운트 방식','warn');nbN.forEach(function(name){cnt[name]=(cnt[name]||0)+cntAct(text,name)})}
-      }else{nbN.forEach(function(name){cnt[name]=(cnt[name]||0)+cntAct(text,name)})}
-      item.status='done';pCnt++;rndQ();NL('✅','ok');updLive();updRes();
-    }
-    NP(100,'✅ 완료!');NL('📊 '+pCnt+'개 완료','ok');
-  }catch(e){NL('❌ '+e.message,'er')}
+  var total=pendingPdf.length+pendingImg.length+pendingTxt.length,done2=0;
+
+  // PDF 처리
+  for(var i=0;i<pendingPdf.length;i++){
+    var item=pendingPdf[i];item.status='proc';rndQ();
+    NL('📄 PDF ['+(i+1)+'/'+pendingPdf.length+'] '+item.name,'i');
+    NP(Math.round(done2/total*90)+5,'PDF 파싱...');
+    var text=await pdfTxt(item.file);
+    await procText(text,NL);
+    item.status='done';pCnt++;done2++;rndQ();NL('✅','ok');updLive();updRes();
+  }
+
+  // 이미지 처리 (Groq Vision OCR → 닉네임 추출 후 대조)
+  for(var i=0;i<pendingImg.length;i++){
+    var item=pendingImg[i];item.status='proc';rndImgQ();
+    NL('🖼️ 이미지 ['+(i+1)+'/'+pendingImg.length+'] '+item.name,'i');
+    NP(Math.round(done2/total*90)+5,'이미지 분석...');
+    if(!gk()){NL('⚠️ Groq 키 없음 - 건너뜀','warn');item.status='done';done2++;rndImgQ();continue}
+    try{
+      var b64=await new Promise(function(res){var r=new FileReader();r.onload=function(e){res(e.target.result.split(',')[1])};r.readAsDataURL(item.file)});
+      var OCR_PROMPT='이 이미지는 네이버 블로그 댓글 화면이다. 댓글 작성자 닉네임만 추출해서 한 줄에 하나씩 출력하라. 규칙: 1.화면에 보이는 닉네임을 오타 없이 그대로 복사 2.닉네임이 아닌 것(날짜,댓글내용,숫자,버튼)은 출력 금지 3.한 줄에 닉네임 하나만. 닉네임만 출력:';
+      var imgResult=await groqV(OCR_PROMPT,[{b64:b64,type:item.file.type}]);
+      var names=imgResult.split('\n').map(function(n){return n.trim().replace(/^[-\d\s•·,*]+/,'').trim()}).filter(function(n){return n&&n.length>=2&&n.length<=20&&!/^[\d\s]+$/.test(n)});
+      matchNames(names);
+      NL('✅ 이미지에서 '+names.length+'명 추출','ok');
+    }catch(imgErr){NL('⚠️ 이미지 실패: '+imgErr.message,'warn')}
+    item.status='done';done2++;rndImgQ();updLive();updRes();
+    if(i<pendingImg.length-1){NL('⏳ 25초 대기...','i');await sl(25000)}
+  }
+
+  // 텍스트 처리
+  for(var i=0;i<pendingTxt.length;i++){
+    var item=pendingTxt[i];item.status='proc';rndTxtQ();
+    NL('📋 텍스트 ['+(i+1)+'/'+pendingTxt.length+']','i');
+    NP(Math.round(done2/total*90)+5,'텍스트 분석...');
+    await procText(item.text,NL);
+    item.status='done';done2++;rndTxtQ();NL('✅','ok');updLive();updRes();
+  }
+
+  NP(100,'✅ 완료!');NL('📊 총 '+pCnt+'건 처리','ok');
   $('btn-run-pdfs').disabled=false;
+}
+
+async function procText(text,NL){
+  if(aiM&&gk()){
+    try{
+      var TXT_PROMPT='아래는 네이버 블로그 댓글 텍스트다. 댓글 작성자 닉네임만 추출해서 한 줄에 하나씩 출력하라. 닉네임 외 내용(날짜,댓글내용,숫자,URL) 출력 금지. 닉네임만:';
+      var ar=await groq(TXT_PROMPT+'\n\n'+text.slice(0,2000)+'\n\n닉네임만:','블로그 댓글 분석기. 닉네임만 추출.',GL,500);
+      var names=ar.split('\n').map(function(n){return n.trim()}).filter(function(n){return n&&n.length>=2&&n.length<=20&&!/^[\d\s\-\.]+$/.test(n)});
+      matchNames(names);
+      if(NL)NL('🤖 AI추출: '+names.length+'명','ok');
+    }catch(ae){
+      if(NL)NL('⚠️ AI실패 → 카운트 방식','warn');
+      nbN.forEach(function(name){cnt[name]=(cnt[name]||0)+cntAct(text,name)});
+    }
+  }else{
+    nbN.forEach(function(name){cnt[name]=(cnt[name]||0)+cntAct(text,name)});
+  }
+  pCnt++;
+}
+
+function matchNames(names){
+  names.forEach(function(name){
+    nbN.forEach(function(nb){if(nb===name||nb.includes(name)||name.includes(nb))cnt[nb]=(cnt[nb]||0)+1});
+  });
 }
 function cntAct(text,name){var norm=String(name).replace(/\s/g,'').toLowerCase(),t=String(text).replace(/\s/g,'').toLowerCase(),c=0,i=0;while((i=t.indexOf(norm,i))>=0){c++;i+=norm.length}return c}
 function updLive(){
@@ -746,7 +892,7 @@ async function pdfTxt(file){
   return text;
 }
 
-function save(){dl(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.9.0.html')}
+function save(){dl(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.9.1.html')}
 
 (function init(){
   var sg=localStorage.getItem('groq_key');
@@ -764,7 +910,7 @@ return{
   saveDraft:saveDraft,loadDraft:loadDraft,delDraft:delDraft,
   saveTone:saveTone,loadTone:loadTone,seoKw:seoKw,
   parseRaw:parseRaw,ocrNb:ocrNb,lockNb:lockNb,resetNb:resetNb,syncNb:syncNb,
-  runPdfs:runPdfs,rmPdf:rmPdf,clearDone:clearDone,
+  runPdfs:runPdfs,rmPdf:rmPdf,clearDone:clearDone,recTab:recTab,addRecTxt:addRecTxt,rmRecImg:rmRecImg,rmRecTxt:rmRecTxt,
   copyGhost:copyGhost,exportAll:exportAll,save:save
 };
 })();
