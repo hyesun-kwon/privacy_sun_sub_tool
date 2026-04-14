@@ -765,7 +765,7 @@ async function addRecTxt(){
       var TXT_PROMPT='아래는 네이버 블로그 댓글 또는 공감 목록 텍스트다. 댓글/공감 작성자 닉네임만 추출해서 한 줄에 하나씩 출력하라. 닉네임 외(날짜,내용,숫자,URL) 출력 금지. 닉네임만:';
       var ar=await groq(TXT_PROMPT+'\n\n'+txt.slice(0,2000),'블로그 댓글 분석기. 닉네임만 추출.',GL,500);
       var names=ar.split('\n').map(function(n){return n.trim()}).filter(function(n){return n&&n.length>=2&&n.length<=20&&!/^[\d\s\-\.]+$/.test(n)});
-      names.forEach(function(name){nbN.forEach(function(nb){if(nb===name||nb.includes(name)||name.includes(nb)){cnt[nb]=(cnt[nb]||0)+1;matched++}})});
+      names.forEach(function(name){nbN.forEach(function(nb){if(nb===name){cnt[nb]=(cnt[nb]||0)+1;matched++}})});
       statusEl.textContent='✅ AI추출 '+names.length+'명, '+matched+'명 이웃 매칭';
     }catch(ae){
       // fallback: 텍스트에서 직접 카운트
@@ -787,7 +787,7 @@ async function addRecTxt(){
       if(first&&first.length>=2&&first.length<=20&&!/^\d/.test(first))names.push(first);
     });
     names=names.filter(function(n,i){return names.indexOf(n)===i});
-    names.forEach(function(name){nbN.forEach(function(nb){if(nb===name||nb.includes(name)||name.includes(nb)){cnt[nb]=(cnt[nb]||0)+1;matched++}})});
+    names.forEach(function(name){nbN.forEach(function(nb){if(nb===name){cnt[nb]=(cnt[nb]||0)+1;matched++}})});
     statusEl.textContent='✅ '+names.length+'명 추출, '+matched+'명 이웃 매칭';
   }
   statusEl.style.color=matched>0?'var(--ok)':'var(--mut)';
@@ -870,7 +870,7 @@ async function procText(text,NL){
 
 function matchNames(names){
   names.forEach(function(name){
-    nbN.forEach(function(nb){if(nb===name||nb.includes(name)||name.includes(nb))cnt[nb]=(cnt[nb]||0)+1});
+    nbN.forEach(function(nb){if(nb===name)cnt[nb]=(cnt[nb]||0)+1});
   });
 }
 function cntAct(text,name){var norm=String(name).replace(/\s/g,'').toLowerCase(),t=String(text).replace(/\s/g,'').toLowerCase(),c=0,i=0;while((i=t.indexOf(norm,i))>=0){c++;i+=norm.length}return c}
