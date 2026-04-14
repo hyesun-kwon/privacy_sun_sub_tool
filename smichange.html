@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>통합 툴 v1.9.1</title>
+<title>통합 툴 v1.9.2</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -140,7 +140,7 @@ textarea.binp{min-height:90px;line-height:1.6}
 <div class="wrap">
 <div class="hd">
   <div><div class="hd-title">🎬 통합 제작 툴</div><div class="hd-sub">MKV · 자막 · 블로그 · 이웃분석</div></div>
-  <div class="hd-r"><span class="ver">v1.9.1</span><button class="save-btn" onclick="G.save()">💾 저장</button></div>
+  <div class="hd-r"><span class="ver">v1.9.2</span><button class="save-btn" onclick="G.save()">💾 저장</button></div>
 </div>
 <div class="tabs">
   <button class="tab on" id="mtab-extract" onclick="G.tab('extract')"><span class="ti">🎞️</span>MKV</button>
@@ -351,9 +351,10 @@ textarea.binp{min-height:90px;line-height:1.6}
     </div>
     <!-- 텍스트 패널 -->
     <div id="rec-panel-txt" style="display:none">
-      <textarea class="inp inp-w" id="rec-txt" style="min-height:90px;margin-bottom:6px" placeholder="댓글 내용을 붙여넣기&#10;(닉네임이 포함된 텍스트면 됩니다)&#10;&#10;예:&#10;벚꽃송송이 좋은 글이에요!&#10;하늘여행자 잘 봤습니다"></textarea>
-      <button class="btn b-main b-sm" onclick="G.addRecTxt()" style="width:100%">✅ 추가</button>
-      <div id="rec-txt-list" style="margin-top:6px;font-size:11px;color:var(--mut)"></div>
+      <div style="font-size:11px;color:var(--mut);margin-bottom:5px">댓글·공감 원문을 붙여넣으면 닉네임을 자동 추출해서 이웃 목록과 대조합니다</div>
+      <textarea class="inp inp-w" id="rec-txt" style="min-height:100px;margin-bottom:6px" placeholder="네이버 블로그 댓글/공감 목록을 그대로 붙여넣기&#10;&#10;예시:&#10;벚꽃송송이  2024.01.15  좋은 글이에요!&#10;하늘여행자  2024.01.14  잘 봤습니다&#10;케이찌앙  공감"></textarea>
+      <button class="btn b-main b-sm" onclick="G.addRecTxt()" style="width:100%">🔍 닉네임 추출 후 대조</button>
+      <div id="rec-txt-status" style="margin-top:6px;font-size:11px;display:none"></div>
     </div>
     <div id="pdf-queue" style="margin-top:6px"></div>
     <div class="btn-row" style="margin-top:6px">
@@ -697,12 +698,11 @@ function resetNb(){
   $('pdf-queue').innerHTML='';
   $('live-board').style.display='none';$('nb-result').style.display='none';$('prog-neighbor').style.display='none';
   $('ai-toggle').style.background='#d1d5db';$('ai-knob').style.left='2px';
-  recImgQ=[];recTxts=[];rndImgQ();rndTxtQ();
+  recImgQ=[];rndImgQ();
 }
 // 댓글 기록 탭 전환
 var recMode='pdf';
 var recImgQ=[];  // 이미지 큐
-var recTxts=[];  // 텍스트 큐
 
 function recTab(id,btn){
   recMode=id;
@@ -717,8 +717,7 @@ function recTab(id,btn){
 function updRunBtn(){
   var hasPdf=pdfQ.some(function(q){return q.status==='wait'});
   var hasImg=recImgQ.some(function(q){return q.status==='wait'});
-  var hasTxt=recTxts.some(function(q){return q.status==='wait'});
-  $('btn-run-pdfs').disabled=!(hasPdf||hasImg||hasTxt);
+  $('btn-run-pdfs').disabled=!(hasPdf||hasImg);
 }
 
 // 이미지 큐
@@ -752,26 +751,53 @@ function rndImgQ(){
 function rmRecImg(idx){if(recImgQ[idx].status==='proc')return;recImgQ.splice(idx,1);rndImgQ();updRunBtn()}
 
 // 텍스트 큐
-function addRecTxt(){
+async function addRecTxt(){
   if(!nbL){alert('먼저 이웃 목록을 확정해주세요!');return}
   var txt=$('rec-txt').value.trim();
   if(!txt){alert('텍스트를 입력해주세요');return}
-  recTxts.push({text:txt,status:'wait',label:txt.slice(0,20)+'...'});
+  var statusEl=$('rec-txt-status');
+  statusEl.style.display='block';
+  statusEl.style.color='var(--warn)';
+  statusEl.textContent='🔍 추출 중...';
+  var matched=0;
+  if(aiM&&gk()){
+    try{
+      var TXT_PROMPT='아래는 네이버 블로그 댓글 또는 공감 목록 텍스트다. 댓글/공감 작성자 닉네임만 추출해서 한 줄에 하나씩 출력하라. 닉네임 외(날짜,내용,숫자,URL) 출력 금지. 닉네임만:';
+      var ar=await groq(TXT_PROMPT+'\n\n'+txt.slice(0,2000),'블로그 댓글 분석기. 닉네임만 추출.',GL,500);
+      var names=ar.split('\n').map(function(n){return n.trim()}).filter(function(n){return n&&n.length>=2&&n.length<=20&&!/^[\d\s\-\.]+$/.test(n)});
+      names.forEach(function(name){nbN.forEach(function(nb){if(nb===name||nb.includes(name)||name.includes(nb)){cnt[nb]=(cnt[nb]||0)+1;matched++}})});
+      statusEl.textContent='✅ AI추출 '+names.length+'명, '+matched+'명 이웃 매칭';
+    }catch(ae){
+      // fallback: 텍스트에서 직접 카운트
+      nbN.forEach(function(name){var c=cntAct(txt,name);cnt[name]=(cnt[name]||0)+c;if(c>0)matched++});
+      statusEl.textContent='⚠️ AI실패 → 카운트 방식: '+matched+'명 감지';
+    }
+  }else{
+    // AI 없이: parseRaw 방식과 동일하게 닉네임 추출 후 대조
+    var names=[];
+    txt.split('\n').forEach(function(line){
+      line=line.trim();if(!line)return;
+      // | 구분자
+      if(line.indexOf('|')>-1){var n=line.split('|')[0].trim();if(n&&n.length>=2&&n.length<=20)names.push(n);return}
+      // 공백+날짜 패턴 제거
+      var nd=line.replace(/[\t\s]\d{2,4}[.\-]\d{1,2}[.\-]\d{1,2}.*/,'').trim();
+      if(nd&&nd.length>=2&&nd.length<=20&&!/^\d/.test(nd)){names.push(nd);return}
+      // 첫 단어만 (닉네임 + 내용 형태)
+      var first=line.split(/[\s\t]/)[0];
+      if(first&&first.length>=2&&first.length<=20&&!/^\d/.test(first))names.push(first);
+    });
+    names=names.filter(function(n,i){return names.indexOf(n)===i});
+    names.forEach(function(name){nbN.forEach(function(nb){if(nb===name||nb.includes(name)||name.includes(nb)){cnt[nb]=(cnt[nb]||0)+1;matched++}})});
+    statusEl.textContent='✅ '+names.length+'명 추출, '+matched+'명 이웃 매칭';
+  }
+  statusEl.style.color=matched>0?'var(--ok)':'var(--mut)';
   $('rec-txt').value='';
-  rndTxtQ();updRunBtn();
+  pCnt++;updLive();updRes();
 }
-function rndTxtQ(){
-  var q=$('rec-txt-list');
-  if(!recTxts.length){q.textContent='';return}
-  q.innerHTML=recTxts.map(function(item,idx){
-    var st=item.status==='done'?'✅':item.status==='proc'?'⏳':'⏸';
-    return'<div class="pq-item"><span class="pq-name">📋 '+item.label+'</span><span class="pq-st">'+(item.status==='done'?'<span class="pq-done">✅</span>':item.status==='proc'?'<span class="pq-proc">⏳</span>':'<span class="pq-wait">⏸</span>')+'</span>'+(item.status!=='proc'?'<button class="pq-del" onclick="G.rmRecTxt('+idx+')">🗑</button>':'')+'</div>';
-  }).join('');
-}
-function rmRecTxt(idx){if(recTxts[idx].status==='proc')return;recTxts.splice(idx,1);rndTxtQ();updRunBtn()}
+function rndTxtQ(){}
+function rmRecTxt(){}
 
-$('dz-pdf').addEventListener('click',function(){$('fi-pdf').click()});
-$('fi-pdf').addEventListener('change',function(){addPdf(this.files);this.value=''});
+// PDF/이미지 이벤트
 $('dz-pdf').addEventListener('dragover',function(e){e.preventDefault();this.classList.add('ov')});
 $('dz-pdf').addEventListener('dragleave',function(){this.classList.remove('ov')});
 $('dz-pdf').addEventListener('drop',function(e){e.preventDefault();this.classList.remove('ov');addPdf(e.dataTransfer.files)});
@@ -783,15 +809,14 @@ function addPdf(files){
 }
 function rndQ(){var q=$('pdf-queue');q.innerHTML='';pdfQ.forEach(function(item,idx){var d=document.createElement('div');d.className='pq-item';var st=item.status==='done'?'<span class="pq-st pq-done">✅</span>':item.status==='proc'?'<span class="pq-st pq-proc">⏳</span>':'<span class="pq-st pq-wait">⏸</span>';var del=item.status!=='proc'?'<button class="pq-del" onclick="G.rmPdf('+idx+')">🗑</button>':'';d.innerHTML='<span class="pq-name">📄 '+item.name+'</span>'+st+del;q.appendChild(d)})}
 function rmPdf(idx){if(pdfQ[idx].status==='proc')return;pdfQ.splice(idx,1);rndQ()}
-function clearDone(){pdfQ=pdfQ.filter(function(q){return q.status!=='done'});rndQ();recImgQ=recImgQ.filter(function(q){return q.status!=='done'});rndImgQ();recTxts=recTxts.filter(function(q){return q.status!=='done'});rndTxtQ();updRunBtn()}
+function clearDone(){pdfQ=pdfQ.filter(function(q){return q.status!=='done'});rndQ();recImgQ=recImgQ.filter(function(q){return q.status!=='done'});rndImgQ();updRunBtn()}
 async function runPdfs(){
   var pendingPdf=pdfQ.filter(function(q){return q.status==='wait'});
   var pendingImg=recImgQ.filter(function(q){return q.status==='wait'});
-  var pendingTxt=recTxts.filter(function(q){return q.status==='wait'});
-  if(!pendingPdf.length&&!pendingImg.length&&!pendingTxt.length){alert('분석할 항목 없음');return}
+  if(!pendingPdf.length&&!pendingImg.length){alert('분석할 파일 없음');return}
   $('btn-run-pdfs').disabled=true;$('prog-neighbor').style.display='block';$('nlb').innerHTML='';
   var NL=mLog('nlb'),NP=mPrg('nfill','npct','nlbl');
-  var total=pendingPdf.length+pendingImg.length+pendingTxt.length,done2=0;
+  var total=pendingPdf.length+pendingImg.length,done2=0;
 
   // PDF 처리
   for(var i=0;i<pendingPdf.length;i++){
@@ -800,10 +825,10 @@ async function runPdfs(){
     NP(Math.round(done2/total*90)+5,'PDF 파싱...');
     var text=await pdfTxt(item.file);
     await procText(text,NL);
-    item.status='done';pCnt++;done2++;rndQ();NL('✅','ok');updLive();updRes();
+    item.status='done';done2++;rndQ();NL('✅','ok');updLive();updRes();
   }
 
-  // 이미지 처리 (Groq Vision OCR → 닉네임 추출 후 대조)
+  // 이미지 처리 (Groq Vision → 닉네임 추출 후 대조)
   for(var i=0;i<pendingImg.length;i++){
     var item=pendingImg[i];item.status='proc';rndImgQ();
     NL('🖼️ 이미지 ['+(i+1)+'/'+pendingImg.length+'] '+item.name,'i');
@@ -815,22 +840,13 @@ async function runPdfs(){
       var imgResult=await groqV(OCR_PROMPT,[{b64:b64,type:item.file.type}]);
       var names=imgResult.split('\n').map(function(n){return n.trim().replace(/^[-\d\s•·,*]+/,'').trim()}).filter(function(n){return n&&n.length>=2&&n.length<=20&&!/^[\d\s]+$/.test(n)});
       matchNames(names);
-      NL('✅ 이미지에서 '+names.length+'명 추출','ok');
+      NL('✅ '+names.length+'명 추출','ok');
     }catch(imgErr){NL('⚠️ 이미지 실패: '+imgErr.message,'warn')}
     item.status='done';done2++;rndImgQ();updLive();updRes();
     if(i<pendingImg.length-1){NL('⏳ 25초 대기...','i');await sl(25000)}
   }
 
-  // 텍스트 처리
-  for(var i=0;i<pendingTxt.length;i++){
-    var item=pendingTxt[i];item.status='proc';rndTxtQ();
-    NL('📋 텍스트 ['+(i+1)+'/'+pendingTxt.length+']','i');
-    NP(Math.round(done2/total*90)+5,'텍스트 분석...');
-    await procText(item.text,NL);
-    item.status='done';done2++;rndTxtQ();NL('✅','ok');updLive();updRes();
-  }
-
-  NP(100,'✅ 완료!');NL('📊 총 '+pCnt+'건 처리','ok');
+  NP(100,'✅ 완료!');NL('📊 완료','ok');
   $('btn-run-pdfs').disabled=false;
 }
 
@@ -892,7 +908,7 @@ async function pdfTxt(file){
   return text;
 }
 
-function save(){dl(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.9.1.html')}
+function save(){dl(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.9.2.html')}
 
 (function init(){
   var sg=localStorage.getItem('groq_key');
