@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>통합 툴 v1.9.3</title>
+<title>통합 툴 v1.9.5</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -140,7 +140,7 @@ textarea.binp{min-height:90px;line-height:1.6}
 <div class="wrap">
 <div class="hd">
   <div><div class="hd-title">🎬 통합 제작 툴</div><div class="hd-sub">MKV · 자막 · 블로그 · 이웃분석</div></div>
-  <div class="hd-r"><span class="ver">v1.9.3</span><button class="save-btn" onclick="G.save()">💾 저장</button></div>
+  <div class="hd-r"><span class="ver">v1.9.5</span><button class="save-btn" onclick="G.save()">💾 저장</button></div>
 </div>
 <div class="tabs">
   <button class="tab on" id="mtab-extract" onclick="G.tab('extract')"><span class="ti">🎞️</span>MKV</button>
@@ -558,9 +558,14 @@ async function genSummary(){
   if(!ms){alert('SMI 파일을 먼저 로드해주세요!');btn.disabled=false;btn.textContent='🎬 Groq 요약 + 명대사';return}
   try{
     var lines=pSMI(ms).filter(function(l){return l.text});
-    var txt=lines.slice(0,80).map(function(l){return l.text}).join('\n');
+    // 토큰 절약: 40줄만 사용, 줄당 30자 제한
+    var txt=lines.slice(0,40).map(function(l){return l.text.slice(0,30).replace(/\n/g,' ')}).join('\n');
     var fname=mf?mf.name.replace(/\.[^.]+$/,''):'',ep=mf?dEp(mf.name):null;
-    var raw=await groq('드라마: '+fname+(ep?' '+ep.label:'')+'\n\n자막:\n'+txt+'\n\nJSON만 출력:\n{"summary":"3~5줄 요약","highlight":"핵심 1~2줄","quotes":[{"quote":"명대사1","speaker":"발화자"},{"quote":"명대사2","speaker":""},{"quote":"명대사3","speaker":""}]}','드라마 자막 분석가. JSON만 출력. 모든 값 한국어.',GH,1500);
+    var lang=$('fi-lang').textContent||'';
+    var isKo=lang.indexOf('한국어')>-1;
+    var SYS='드라마 자막 분석가. 외국어 자막은 한국어로 번역해서 분석. JSON만 출력.';
+    var PROMPT='자막('+(isKo?'한국어':'외국어→한국어번역필수')+')\n드라마:'+fname+(ep?' '+ep.label:'')+'\n\n'+txt+'\n\nJSON:{"summary":"줄거리3줄","highlight":"핵심1줄","quotes":[{"quote":"명대사","speaker":"화자"},{"quote":"명대사","speaker":""},{"quote":"명대사","speaker":""}]}';
+    var raw=await groq(PROMPT,SYS,GH,1200);
     var p=sj(raw);
     lsum=(p.summary||'')+(p.highlight?'\n\n'+p.highlight:'');lq=p.quotes||[];
     $('summary-box').textContent=lsum;
@@ -908,7 +913,7 @@ async function pdfTxt(file){
   return text;
 }
 
-function save(){dl(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.9.3.html')}
+function save(){dl(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.9.5.html')}
 
 (function init(){
   var sg=localStorage.getItem('groq_key');
