@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>통합 툴 v1.9.7</title>
+<title>통합 툴 v1.9.8</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -140,7 +140,7 @@ textarea.binp{min-height:90px;line-height:1.6}
 <div class="wrap">
 <div class="hd">
   <div><div class="hd-title">🎬 통합 제작 툴</div><div class="hd-sub">MKV · 자막 · 블로그 · 이웃분석</div></div>
-  <div class="hd-r"><span class="ver">v1.9.7</span><button class="save-btn" onclick="G.save()">💾 저장</button></div>
+  <div class="hd-r"><span class="ver">v1.9.8</span><button class="save-btn" onclick="G.save()">💾 저장</button></div>
 </div>
 <div class="tabs">
   <button class="tab on" id="mtab-extract" onclick="G.tab('extract')"><span class="ti">🎞️</span>MKV</button>
@@ -455,6 +455,19 @@ var o='<SAMI>\n<HEAD>\n<STYLE TYPE="text/css">\nP{margin-left:8pt;margin-right:8
 fin.forEach(function(f){o+='<SYNC Start='+f.ms+'><P Class='+cls+'>'+(f.t||'&nbsp;')+'</P></SYNC>\n'});
 return o+'</BODY>\n</SAMI>';
 }
+function mkSRT(blocks,codec){
+blocks.sort(function(a,b){return a.ts-b.ts});
+var evts=[],idx=1;
+blocks.forEach(function(blk){
+var txt=bTx(blk.data,codec);if(!txt)return;
+var end=blk.dur>0?blk.ts+blk.dur:blk.ts+3000;
+evts.push({s:blk.ts,e:end,t:txt.replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').trim()});
+});
+// 겹치는 구간 정리
+for(var i=0;i<evts.length-1;i++){if(evts[i].e>evts[i+1].s)evts[i].e=evts[i+1].s-1;}
+function tc(ms){var h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000),s=Math.floor(ms%60000/1000),f=ms%1000;return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+','+String(f).padStart(3,'0');}
+return evts.filter(function(e){return e.t}).map(function(e){return(idx++)+'\n'+tc(e.s)+' --> '+tc(e.e)+'\n'+e.t+'\n';}).join('\n');
+}
 function mkFname(orig){
 var base=orig.replace(/\.mkv$/i,'').replace(/\.smi$/i,'').replace(/_track\d+$/i,'');
 var num='',title='',m;
@@ -503,11 +516,13 @@ EL('총 '+unique.length+'개','ok');EP(100,'✅ 완료!');
 var trows=$('trows');
 tracks.forEach(function(t){(function(tc,tblks){
 var row=document.createElement('div');row.className='track-row';
-row.innerHTML='<div class="tr-info"><div class="tr-name">'+(tc.name||'Track '+tc.num)+'</div><div class="tr-meta">'+tc.codec+' · '+(tc.lang||'?')+' · '+tblks.length+'개</div></div><div class="tr-btns"><button class="btn b-dl b-sm"'+(tblks.length?'':' disabled')+'>💾 SMI</button><button class="btn b-blue b-sm"'+(tblks.length?'':' disabled')+'>🌐 자막탭</button></div>';
+row.innerHTML='<div class="tr-info"><div class="tr-name">'+(tc.name||'Track '+tc.num)+'</div><div class="tr-meta">'+tc.codec+' · '+(tc.lang||'?')+' · '+tblks.length+'개</div></div><div class="tr-btns"><button class="btn b-dl b-sm"'+(tblks.length?'':' disabled')+'>💾 SMI</button><button class="btn b-main b-sm"'+(tblks.length?'':' disabled')+'>💾 SRT</button><button class="btn b-blue b-sm"'+(tblks.length?'':' disabled')+'>🌐 자막탭</button></div>';
 var btns=row.querySelectorAll('button');
 var fname=mkFname(file.name.replace(/\.mkv$/i,'_track'+tc.num));
+var srtname=fname.replace(/\.smi$/i,'.srt');
 btns[0].onclick=function(){dl('\uFEFF'+mkSMI(tblks.slice(),tc.codec,tc.name,tc.lang),'text/sami;charset=utf-8',fname)};
-btns[1].onclick=function(){xferSMI(mkSMI(tblks.slice(),tc.codec,tc.name,tc.lang),fname)};
+btns[1].onclick=function(){dl('\uFEFF'+mkSRT(tblks.slice(),tc.codec),'text/srt;charset=utf-8',srtname)};
+btns[2].onclick=function(){xferSMI(mkSMI(tblks.slice(),tc.codec,tc.name,tc.lang),fname)};
 trows.appendChild(row);
 })(t,unique.filter(function(b){return b.tn===t.num}))});
 $('track-section').style.display='block';
@@ -868,7 +883,7 @@ var ab=await file.arrayBuffer(),pdf=await window.pdfjsLib.getDocument({data:ab})
 for(var i=1;i<=pdf.numPages;i++){var page=await pdf.getPage(i),content=await page.getTextContent();text+=content.items.map(function(it){return it.str}).join(' ')+'\n'}
 return text;
 }
-function save(){dl(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.9.7.html')}
+function save(){dl(document.documentElement.outerHTML,'text/html;charset=utf-8','tool_v1.9.8.html')}
 (function init(){
 var sg=localStorage.getItem('groq_key');
 if(sg){$('key-groq').value=sg;$('saved-groq').style.display='block';$('input-groq').style.display='none'}
